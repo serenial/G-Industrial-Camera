@@ -1,0 +1,11 @@
+{
+  "dependencies": [
+    "aravis"
+  ],
+  "overrides": [
+    {
+      "name": "aravis",
+      "version": "0.8"
+    }
+]
+}
