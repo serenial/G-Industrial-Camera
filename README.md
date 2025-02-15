@@ -6,6 +6,10 @@ YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera
 
 This repository contains code licenced under two different methods to respect the licences of upstream dependencies.
 
+Any items within the `LGPL-2.0` directory are released under the LGPL-2.0 licence.
+
+The remaining content of this repository is released under 0-clause BSD licence.
+
 ## Supported Platforms
 The LabVIEW code is written in LabVIEW 2020 SP1 and provides binaries for the following platforms:
 
