@@ -1,0 +1,19 @@
+set SCRIPT_DIR="%~dp0."
+echo off
+set BUILD_TYPE=release
+
+@REM If you are using a different MSVC Version than 2022 you will need to modify this path
+call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat
+
+if "%1" == "" (
+     echo *** Building release ***
+     echo If a debug version is required supply the batch file with the argument "debug".
+)
+if "%1" == "debug" (
+    set BUILD_TYPE=debug
+    echo ** Building debug ***
+)
+
+cd %SCRIPT_DIR%
+
+cmake --preset=windows-%BUILD_TYPE% && cmake --build --preset=windows-%BUILD_TYPE%-build

@@ -1,0 +1,83 @@
+{
+    "version": 8,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 27,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "generator": "Ninja"
+        },
+        {
+            "name": "windows-debug",
+            "inherits": "base",
+            "binaryDir": "${sourceDir}/build/windows-$penv{Platform}",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "$penv{Platform}-windows-static",
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Windows"
+            }
+        },
+        {
+            "name": "linux-desktop-debug",
+            "inherits": "base",
+            "binaryDir": "${sourceDir}/build/linux-desktop",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-linux",
+                "CMAKE_BUILD_TYPE": "Debug"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "${hostSystemName}",
+                "rhs": "Linux"
+            }
+        },
+        {
+            "name": "windows-release",
+            "inherits": "windows-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "linux-desktop-release",
+            "inherits": "linux-desktop-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "windows-debug-build",
+            "configurePreset": "windows-debug",
+            "targets": "install",
+            "configuration": "Debug"
+        },
+        {
+            "name": "windows-release-build",
+            "configurePreset": "windows-release",
+            "targets": "install",
+            "configuration": "Release"
+        },
+        {
+            "name": "linux-desktop-debug-build",
+            "configurePreset": "linux-desktop-debug",
+            "targets": "install",
+            "configuration": "Debug"
+        },
+        {
+            "name": "linux-desktop-release-build",
+            "configurePreset": "linux-desktop-release",
+            "targets": "install",
+            "configuration": "Release"
+        }
+    ]
+}
