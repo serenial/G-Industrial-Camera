@@ -26,6 +26,7 @@ The LabVIEW code is written in LabVIEW 2020 SP1 and provides binaries for the fo
 
 ### Required Tools
 CMake (27 or greater)
+Ninja build tools
 MSVC 2023 on Windows
 gcc 11 on Linux
 LabVIEW 2020
