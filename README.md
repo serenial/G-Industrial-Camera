@@ -46,3 +46,6 @@ git submodule update --init --recursive
 ... from inside the cloned repository
 
 
+## Resources
+* [USB3Vision device in Mingw64 Win10](https://github.com/AravisProject/aravis/issues/431)
+* [Roll Back](https://superuser.com/questions/1818679/how-to-return-to-original-usb-driver)

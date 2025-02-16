@@ -1,11 +1,12 @@
 {
   "dependencies": [
-    "aravis"
+    "aravis",
+    "pkgconf"
   ],
   "overrides": [
     {
       "name": "aravis",
       "version": "0.8"
     }
-]
+  ]
 }
