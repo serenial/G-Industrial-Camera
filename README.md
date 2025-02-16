@@ -53,12 +53,12 @@ git submodule update --init --recursive
 Open to contributions - please open an issue to discuss
 
 ## TODO
-[] Enumerate Cameras
-[] Start Stream
-[] Stop Stream
-[] Capture Frame
-[] Documentation
-[] Distribution Packages
+- [ ] Enumerate Cameras
+- [ ] Start Stream
+- [ ] Stop Stream
+- [ ] Capture Frame
+- [ ] Documentation
+- [ ] Distribution Packages
 
 ## Resources
 * [USB3Vision device in Mingw64 Win10](https://github.com/AravisProject/aravis/issues/431)
