@@ -58,8 +58,6 @@ Ensure you modify the `call "C:\Program Files (x86)\Microsoft Visual Studio\2022
 
 Alternatively if you are using `VSCode` you can use the integrated CMake extension to build but ensure you launch the `VSCode` instance from either the x86 or x64 developer command prompt to setup all the build tools.
 
-### Windows libusb setup
-Windows doesn't always play nice with libusb so look at the resources section to see guides on how to make the OS use a liusb compatible driver. #TODO - explain this properly
 
 ### Linux-Desktop (Ubuntu)
 ```bash
@@ -73,6 +71,15 @@ Alternatively if you are using `VSCode` you can use the integrated CMake eztensi
 
 ## Contributions
 Open to contributions - please open an issue to discuss
+
+## Usage
+
+**ENSURE YOU HAVE INSTALED THE DRIVERS FOR YOU DEVICE ON YOUR SYSTEM**
+
+For example "Pylon" on basler.
+
+### Windows libusb setup
+Windows doesn't always play nice with libusb so look at the resources section to see guides on how to make the OS use a liusb compatible driver. #TODO - explain this properly
 
 ## TODO
 - [ ] Enumerate Cameras
