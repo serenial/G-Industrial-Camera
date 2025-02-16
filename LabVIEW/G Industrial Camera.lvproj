@@ -1,5 +1,6 @@
 ﻿<?xml version='1.0' encoding='UTF-8'?>
 <Project Type="Project" LVVersion="20008000">
+	<Property Name="NI.LV.All.SaveVersion" Type="Str">20.0</Property>
 	<Property Name="NI.LV.All.SourceOnly" Type="Bool">true</Property>
 	<Item Name="My Computer" Type="My Computer">
 		<Property Name="server.app.propertiesEnabled" Type="Bool">true</Property>
@@ -25,7 +26,7 @@
 				<Item Name="Flatten Pixmap.vi" Type="VI" URL="/&lt;vilib&gt;/picture/pixmap.llb/Flatten Pixmap.vi"/>
 				<Item Name="imagedata.ctl" Type="VI" URL="/&lt;vilib&gt;/picture/picture.llb/imagedata.ctl"/>
 			</Item>
-			<Item Name="gindustrialcam_32-1.dll" Type="Document" URL="../bin/gindustrialcam_32-1.dll"/>
+			<Item Name="gindustrialcam_64-1.so" Type="Document" URL="../bin/gindustrialcam_64-1.so"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
 	</Item>

@@ -21,7 +21,7 @@ The LabVIEW code is written in LabVIEW 2020 SP1 and provides binaries for the fo
 | Windows x86 | 🔧 |
 | Windows x64 | 🔧 |
 | Linux x64 | 🔧 |
-| NI-LinuxRT x64 | ❌ |
+| NI-LinuxRT x64 | ❔ |
 | NI-LinuxRT ARM | ❌ |
 | MacOS (x86-64 or Apple Silicon) | ❌ |
 
