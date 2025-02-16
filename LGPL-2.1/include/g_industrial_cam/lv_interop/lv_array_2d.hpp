@@ -35,12 +35,6 @@ namespace g_industrial_cam
                 return std::array<int32_t, 2>{{0, 0}};
             }
 
-            cv::Size size() const
-            {
-                std::array<int32_t, 2> dims = extents();
-                return cv::Size(dims[1], dims[0]);
-            }
-
             T &operator[](std::array<int32_t, 2> el)
             {
                 if (m_handle && element_is_in_data_range(el))
