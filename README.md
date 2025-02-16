@@ -67,7 +67,7 @@ Ensure `vckpg/bootstrap-vcpkg.sh` has been called
 
 Use the `x64-linux-desktop-build.sh` script to build the binaries.
 
-Alternatively if you are using `VSCode` you can use the integrated CMake eztension to build.
+Alternatively if you are using `VSCode` you can use the integrated CMake extension to build.
 
 ## Contributions
 Open to contributions - please open an issue to discuss
@@ -76,7 +76,7 @@ Open to contributions - please open an issue to discuss
 
 **ENSURE YOU HAVE INSTALED THE DRIVERS FOR YOU DEVICE ON YOUR SYSTEM**
 
-For example "Pylon" on basler.
+For example "Pylon" for Basler cameras.
 
 ### Windows libusb setup
 Windows doesn't always play nice with libusb so look at the resources section to see guides on how to make the OS use a liusb compatible driver. #TODO - explain this properly
@@ -90,5 +90,4 @@ Windows doesn't always play nice with libusb so look at the resources section to
 - [ ] Distribution Packages
 
 ## Resources
-* [USB3Vision device in Mingw64 Win10](https://github.com/AravisProject/aravis/issues/431)
-* [Roll Back](https://superuser.com/questions/1818679/how-to-return-to-original-usb-driver)
+* [Swapping USB3 Device Driver on Windows to use `libsub`](https://github.com/AravisProject/aravis/issues/431#issuecomment-1092243935) - note: Use Windows Device Manager to swap back to the original driver to see the Basler Device in Pylon again.
