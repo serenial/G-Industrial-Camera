@@ -5,18 +5,16 @@ include(GenerateExportHeader)
 # Find aravis from package config file
 # Which requires the use of PkgConfig tool
 find_package(PkgConfig)
-pkg_search_module(Aravis REQUIRED aravis-0.8)
+pkg_check_modules(aravis REQUIRED IMPORTED_TARGET aravis-0.8)
 
 # specify shared-library target
 add_library(g_industrial_cam SHARED)
 
-target_sources(g_industrial_cam PRIVATE 
-    src/enumerate_devices.cpp
-)
+include(${CMAKE_CURRENT_LIST_DIR}/src/CMakeLists.txt)
 
 target_include_directories(g_industrial_cam
   PUBLIC
-  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}"
+  "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/g_industrial_cam>"
   # add binary directory so auto-generated g_industrial_cam_export.h is found
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>"
 )
@@ -41,7 +39,7 @@ elseif(UNIX)
 endif()
 
 # specify target properties
-set_property(TARGET g_industrial_cam PROPERTY CXX_STANDARD 17)
+set_property(TARGET g_industrial_cam PROPERTY CXX_STANDARD 20)
 
 set_target_properties(g_industrial_cam PROPERTIES
   POSITION_INDEPENDENT_CODE ON
@@ -56,8 +54,10 @@ generate_export_header(g_industrial_cam)
 
 # Set the Library Filename to include the bitness
 math(EXPR BITNESS "8*${CMAKE_SIZEOF_VOID_P}")
-set_target_properties(g_industrial_cam PROPERTIES OUTPUT_NAME gindustrialcam${BITNESS}-${CMAKE_PROJECT_VERSION_MAJOR})
-#target_link_libraries(g_industrial_cam PRIVATE )
+set_target_properties(g_industrial_cam PROPERTIES OUTPUT_NAME gindustrialcam_${BITNESS}-${CMAKE_PROJECT_VERSION_MAJOR})
+target_link_libraries(g_industrial_cam PRIVATE 
+  PkgConfig::aravis
+)
 
 # Install Shared Library
 INSTALL(TARGETS g_industrial_cam

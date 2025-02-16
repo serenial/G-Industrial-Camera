@@ -1,4 +1,4 @@
-# G Industrial Camera
+# G Industrial Cam
 
 YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
