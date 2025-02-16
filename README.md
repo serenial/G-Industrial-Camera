@@ -49,6 +49,28 @@ git submodule update --init --recursive
 
 ... from inside the cloned repository
 
+## Building Shared Binaries
+
+### Windows
+Copy the and modify the `x<Arch>-win-build.bat-example` files and update the extension to `.bat`.
+
+Ensure you modify the `call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat` path to the location for your MSVC `vcvars` setups scripts on your system.
+
+Alternatively if you are using `VSCode` you can use the integrated CMake extension to build but ensure you launch the `VSCode` instance from either the x86 or x64 developer command prompt to setup all the build tools.
+
+### Windows libusb setup
+Windows doesn't always play nice with libusb so look at the resources section to see guides on how to make the OS use a liusb compatible driver. #TODO - explain this properly
+
+### Linux-Desktop (Ubuntu)
+```bash
+sudo apt install autoconf libudev-dev
+```
+Ensure `vckpg/bootstrap-vcpkg.sh` has been called
+
+Use the `x64-linux-desktop-build.sh` script to build the binaries.
+
+Alternatively if you are using `VSCode` you can use the integrated CMake eztension to build.
+
 ## Contributions
 Open to contributions - please open an issue to discuss
 

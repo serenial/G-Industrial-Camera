@@ -120,7 +120,7 @@ namespace g_industrial_cam
 
             bool element_is_in_data_range(std::array<int32_t, 2> el)
             {
-                return get_data_index < get_data_index(extents());
+                return get_data_index() < get_data_index(extents());
             }
         };
     }
