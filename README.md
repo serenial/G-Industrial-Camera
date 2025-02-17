@@ -74,7 +74,7 @@ Open to contributions - please open an issue to discuss
 
 ## Usage
 
-**ENSURE YOU HAVE INSTALED THE DRIVERS FOR YOU DEVICE ON YOUR SYSTEM**
+**ENSURE YOU HAVE INSTALED THE DRIVERS FOR THE DEVICE ON YOUR SYSTEM**
 
 For example "Pylon" for Basler cameras.
 
