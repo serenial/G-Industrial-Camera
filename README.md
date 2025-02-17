@@ -1,4 +1,4 @@
-# G Industrial Camera (Work in Progress)
+# G Industrial Camera (🚧 Under Construction 🚧)
 
 YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
@@ -52,7 +52,7 @@ git submodule update --init --recursive
 ## Building Shared Binaries
 
 ### Windows
-Copy the and modify the `x<Arch>-win-build.bat-example` files and update the extension to `.bat`.
+Copy and modify the `x<Arch>-win-build.bat-example` files and update the extension to `.bat`.
 
 Ensure you modify the `call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat` path to the location for your MSVC `vcvars` setups scripts on your system.
 
