@@ -1,4 +1,4 @@
-# G Industrial Camera (Under Development)
+# G Industrial Camera (Work in Progress)
 
 YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
