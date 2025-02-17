@@ -1,4 +1,4 @@
-# G Industrial Cam (Under Development)
+# G Industrial Camera (Under Development)
 
 YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
@@ -79,7 +79,7 @@ Open to contributions - please open an issue to discuss
 For example "Pylon" for Basler cameras.
 
 ### Windows libusb setup
-Windows doesn't always play nice with libusb so look at the resources section to see guides on how to make the OS use a liusb compatible driver. #TODO - explain this properly
+Windows doesn't always play nice with libusb so look at the resources section to see guides on how to make the OS use a libusb compatible driver. #TODO - explain this properly
 
 ## TODO
 - [ ] Enumerate Cameras
