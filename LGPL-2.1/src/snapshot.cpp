@@ -30,7 +30,7 @@ extern "C"
                 auto height = arv_buffer_get_image_width(buffer.get());
                 handle.size_to_fit({width, height});
 
-                std::memcpy(handle.data_handle(), arv_buffer_get_image_data(buffer.get(), NULL), width * height);
+                std::memcpy(handle.at({0,0}), arv_buffer_get_image_data(buffer.get(), NULL), width * height);
             }
         }
         catch (...)

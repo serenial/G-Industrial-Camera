@@ -8,8 +8,6 @@
 #include <exception>
 #include <algorithm>
 
-#include <opencv2/core/mat.hpp>
-
 #include "./lv_types.hpp"
 #include "./lv_functions.hpp"
 #include "./lv_array_md.hpp"
@@ -26,6 +24,7 @@ namespace g_industrial_cam
         {
         public:
             LV_2DArrayHandle_t() = delete;
+        };
     }
 }
 
