@@ -21,11 +21,10 @@ namespace
     static LV_EDVRCreateReferenceFnPtr_t EDVR_CreateReferenceImp = nullptr;
     static LV_EDVRAddRefWithContextFnPtr_t EDVR_AddRefWithContextImp = nullptr;
     static LV_EDVRReleaseRefWithContextFnPtr_t EDVR_ReleaseRefWithContextImp = nullptr;
-    static LV_NumericArrayResizeFnPtr_t NumericArrayResizeImp = nullptr;
     static LV_DSDisposeHandleFnPtr_t DSDisposeHandleImp = nullptr;
     static LV_DSCheckHandlePtr_t DSCheckHandleImp = nullptr;
-    static LV_DSNewHandlePtr_t DSNewHandleImp = nullptr;
-    static LV_DSSetHandleSizePtr_t DSSetHandleSizeImp = nullptr;
+    static LV_DSNewHClrPtr_t DSNewHClrImp = nullptr;
+    static LV_DSSetHSzClrPtr_t DSSetHSzClrImp = nullptr;
     static LV_DSGetHandleSizePtr_t DSGetHandleSizeImp = nullptr;
 }
 
@@ -68,11 +67,10 @@ void g_industrial_cam::on_shared_library_load()
             EDVR_CreateReferenceImp = reinterpret_cast<LV_EDVRCreateReferenceFnPtr_t>(GetProcAddress(module, "EDVR_CreateReference"));
             EDVR_AddRefWithContextImp = reinterpret_cast<LV_EDVRAddRefWithContextFnPtr_t>(GetProcAddress(module, "EDVR_AddRefWithContext"));
             EDVR_ReleaseRefWithContextImp = reinterpret_cast<LV_EDVRReleaseRefWithContextFnPtr_t>(GetProcAddress(module, "EDVR_ReleaseRefWithContext"));
-            NumericArrayResizeImp = reinterpret_cast<LV_NumericArrayResizeFnPtr_t>(GetProcAddress(module, "NumericArrayResize"));
             DSDisposeHandleImp = reinterpret_cast<LV_DSDisposeHandleFnPtr_t>(GetProcAddress(module, "DSDisposeHandle"));
             DSCheckHandleImp = reinterpret_cast<LV_DSCheckHandlePtr_t>(GetProcAddress(module, "DSCheckHandle"));
-            DSNewHandleImp = reinterpret_cast<LV_DSNewHandlePtr_t>(GetProcAddress(module, "DSNewHandle"));
-            DSSetHandleSizeImp = reinterpret_cast<LV_DSSetHandleSizePtr_t>(GetProcAddress(module, "DSSetHandleSize"));
+            DSNewHClrImp = reinterpret_cast<LV_DSNewHClrPtr_t>(GetProcAddress(module, "DSNewHClr"));
+            DSSetHSzClrImp = reinterpret_cast<LV_DSSetHSzClrPtr_t>(GetProcAddress(module, "DSSetHSzClr"));
             DSGetHandleSizeImp = reinterpret_cast<LV_DSGetHandleSizePtr_t>(GetProcAddress(module, "DSGetHandleSize"));
 #else
             auto module = dlopen(nullptr, RTLD_LAZY);
@@ -86,11 +84,10 @@ void g_industrial_cam::on_shared_library_load()
             EDVR_CreateReferenceImp = reinterpret_cast<LV_EDVRCreateReferenceFnPtr_t>(dlsym(module, "EDVR_CreateReference"));
             EDVR_AddRefWithContextImp = reinterpret_cast<LV_EDVRAddRefWithContextFnPtr_t>(dlsym(module, "EDVR_AddRefWithContext"));
             EDVR_ReleaseRefWithContextImp = reinterpret_cast<LV_EDVRReleaseRefWithContextFnPtr_t>(dlsym(module, "EDVR_ReleaseRefWithContext"));
-            NumericArrayResizeImp = reinterpret_cast<LV_NumericArrayResizeFnPtr_t>(dlsym(module, "NumericArrayResize"));
             DSDisposeHandleImp = reinterpret_cast<LV_DSDisposeHandleFnPtr_t>(dlsym(module, "DSDisposeHandle"));
             DSCheckHandleImp = reinterpret_cast<LV_DSCheckHandlePtr_t>(dlsym(module, "DSCheckHandle"));
-            DSNewHandleImp = reinterpret_cast<LV_DSNewHandlePtr_t>(dlsym(module, "DSNewHandle"));
-            DSSetHandleSizeImp = reinterpret_cast<LV_DSSetHandleSizePtr_t>(dlsym(module, "DSSetHandleSize"));
+            DSNewHClrImp = reinterpret_cast<LV_DSNewHClrPtr_t>(dlsym(module, "DSNewHClr"));
+            DSSetHSzClrImp = reinterpret_cast<LV_DSSetHSzClrPtr_t>(dlsym(module, "DSSetHSzClr"));
             DSGetHandleSizeImp = reinterpret_cast<LV_DSGetHandleSizePtr_t>(dlsym(module, "DSGetHandleSize"));
 #endif
 }
@@ -149,10 +146,6 @@ LV_MgErr_t lv_interop::EDVR_ReleaseRefWithContext(LV_EDVRReference_t edvr_ref_pt
 {
     return EDVR_ReleaseRefWithContextImp? EDVR_ReleaseRefWithContextImp(edvr_ref_ptr, ctx): LV_ERR_bogusError;
 }
-LV_MgErr_t lv_interop::NumericArrayResize(int32_t type, int32_t n_dims, LV_UHandlePtr_t hndl, size_t size)
-{
-    return NumericArrayResizeImp? NumericArrayResizeImp(type, n_dims, hndl, size): LV_ERR_bogusError;
-}
 LV_MgErr_t lv_interop::DSDisposeHandle(LV_UHandle_t hndl)
 {
     return DSDisposeHandleImp? DSDisposeHandleImp(hndl): LV_ERR_bogusError;
@@ -161,13 +154,13 @@ LV_MgErr_t lv_interop::DSCheckHandle(LV_UHandle_t hndl)
 {
     return DSCheckHandleImp? DSCheckHandleImp(hndl): LV_ERR_bogusError;
 }
-LV_UHandle_t lv_interop::DSNewHandle(size_t size)
+LV_UHandle_t lv_interop::DSNewHClr(size_t size)
 {
-    return DSNewHandleImp? DSNewHandleImp(size): nullptr;
+    return DSNewHClrImp? DSNewHClrImp(size): nullptr;
 }
-LV_MgErr_t lv_interop::DSSetHandleSize(LV_UHandle_t hndl, size_t size)
+LV_MgErr_t lv_interop::DSSetHSzClr(LV_UHandle_t hndl, size_t size)
 {
-    return DSSetHandleSizeImp? DSSetHandleSizeImp(hndl, size): LV_ERR_bogusError;
+    return DSSetHSzClrImp? DSSetHSzClrImp(hndl, size): LV_ERR_bogusError;
 }
 size_t lv_interop::DSGetHandleSize(LV_UHandle_t hndl)
 {
@@ -230,7 +223,7 @@ void lv_interop::throw_if_edvr_ref_pointers_not_unique(std::initializer_list<LV_
 #ifdef _WIN32
 extern "C"
 {
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_specify_lv_runtime_windows(const char * const path)
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_ar_tk_specify_lv_runtime_windows(const char * const path)
     {
         // set the path
         lv_runtime_path_windows = path;

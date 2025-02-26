@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <cstddef>
 #include <string>
 #include <type_traits>
 #include <stddef.h>
@@ -49,12 +50,14 @@ namespace g_industrial_cam
                 return reinterpret_cast<T *>(&data[0]);
             }
             static size_t data_member_offset_bytes(){
-                LV_Array_t<n_dims, T> tmp;
-                return size_t(reinterpret_cast<uintptr_t>(&tmp.data[0]) - reinterpret_cast<uintptr_t>(&tmp));
+                // this class is not constuctable so use a dummy struct with the same layout as this class
+                // to determine the data_member_offset_bytes without needing a valid rvalue to call a function on
+                struct dummy_layout{
+                    int32_t dims[n_dims];
+                    T data[1];
+                };
+                return offsetof(dummy_layout, data);
             }
-            private:
-            // make the default constructor private so it can still be used internally
-            LV_Array_t(){}
         };
 
         // LabVIEW EDVR structure types
