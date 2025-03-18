@@ -23,4 +23,4 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   string(REPLACE "/MD" "/MT" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
 endif()
 
-add_subdirectory(LGPL-2.1)
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/shared-binary)

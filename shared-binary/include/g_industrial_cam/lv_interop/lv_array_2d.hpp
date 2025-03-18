@@ -14,7 +14,7 @@
 
 #include "./set_packing.hpp"
 
-namespace g_industrial_cam
+namespace namespace g_industrial_cam
 {
     namespace lv_interop
     {
@@ -24,6 +24,12 @@ namespace g_industrial_cam
         {
         public:
             LV_2DArrayHandle_t() = delete;
+
+            cv::Size size() const
+            {
+                auto dims = this->extents();
+                return cv::Size(dims[1], dims[0]);
+            }
         };
     }
 }

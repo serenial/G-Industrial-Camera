@@ -129,7 +129,7 @@ namespace g_industrial_cam
 
             bool element_is_in_data_range(std::array<int32_t, n_dims> el) const
             {
-                return get_data_index() < get_data_index(extents());
+                return get_data_index(el) < get_data_index(extents());
             }
 
             bool is_valid_handle() const

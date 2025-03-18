@@ -2,16 +2,10 @@
 
 YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
-## Licencing and Usage in Closed Source Applications
+# Licence
+The LabVIEW source is distributed under the Zero-Clause BSD licence. The shared binary component of this toolkit is distributed under the LGPL-2.1 licence.
 
-This repository contains code under different licences to respect the licences of upstream dependencies.
-
-Any items within the `LGPL-2.1` directory are released under the LGPL-2.1 licence and are used to produce shared-binary `.dll` or `.so` file which can then linked to dynamically. 
-
-The remaining content of this repository is released under 0-clause BSD licence.
-
-### Usage in Closed Source Applications
-The 0-clause BSD licenced LabVIEW code can be freely used in closed source applications. Ensure that you provide the end user with the appropriate licence notices and rights under the LGPL-2.1 licence for the `.dll` or `.so` components. 
+A licence file which contains the list of dependencies to provide to end users is under construction 
 
 ## Supported Platforms
 The LabVIEW code is written in LabVIEW 2020 SP1 and provides binaries for the following platforms:
@@ -26,7 +20,6 @@ The LabVIEW code is written in LabVIEW 2020 SP1 and provides binaries for the fo
 | MacOS (x86-64 or Apple Silicon) | ❌ |
 
 ## Developement Setup
-
 
 ### Required Tools
 * CMake (27 or greater)
@@ -48,6 +41,9 @@ git submodule update --init --recursive
 ```
 
 ... from inside the cloned repository
+
+#### `vcpkg` bootstrap
+Run either the `vcpkg/bootstrap-vcpkg.bat` if you are on Windows or `vcpkg/bootstrap-vcpkg.sh` on Linux platforms.
 
 ## Building Shared Binaries
 
@@ -82,6 +78,7 @@ For example "Pylon" for Basler cameras.
 Windows doesn't always play nice with libusb so look at the resources section to see guides on how to make the OS use a libusb compatible driver. #TODO - explain this properly
 
 ## TODO
+- [ ] Dependency Licence Notices
 - [ ] Enumerate Cameras
 - [ ] Start Stream
 - [ ] Stop Stream
