@@ -54,7 +54,7 @@ generate_export_header(g_industrial_cam)
 
 # Set the Library Filename to include the bitness
 math(EXPR BITNESS "8*${CMAKE_SIZEOF_VOID_P}")
-set_target_properties(g_industrial_cam PROPERTIES OUTPUT_NAME g_industrial_cam_${BITNESS}-${CMAKE_PROJECT_VERSION_MAJOR})
+set_target_properties(g_industrial_cam PROPERTIES OUTPUT_NAME gindustrialcam_${BITNESS}-${CMAKE_PROJECT_VERSION_MAJOR})
 target_link_libraries(g_industrial_cam PRIVATE 
   PkgConfig::aravis
 )
