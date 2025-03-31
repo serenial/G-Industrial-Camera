@@ -192,38 +192,10 @@ LV_MgErr_t lv_interop::get_edvr_data_handle_with_context(LV_EDVRReference_t edvr
     return err;
 }
 
-void lv_interop::throw_if_edvr_ref_pointers_not_unique(std::initializer_list<LV_EDVRReferencePtr_t> ptr_list)
-{
-    std::vector<LV_EDVRReference_t> refs;
-    refs.reserve(ptr_list.size());
-
-    // de-reference
-    std::transform(ptr_list.begin(), ptr_list.end(),
-                   std::back_inserter(refs),
-                   [](LV_EDVRReferencePtr_t ptr)
-                   { return *ptr; });
-
-    // compare
-    refs.erase(std::remove(refs.begin(), refs.end(), 0), refs.end());
-
-    // sort
-    std::sort(refs.begin(), refs.end());
-
-    auto end = refs.end();
-
-    // remove potential duplicates
-    auto last = std::unique(refs.begin(), refs.end());
-
-    if (last != end)
-    {
-        throw std::invalid_argument("image references must be unique. This function cannot operate in-place.");
-    }
-}
-
 #ifdef _WIN32
 extern "C"
 {
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_ar_tk_specify_lv_runtime_windows(const char * const path)
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_specify_lv_runtime_windows(const char * const path)
     {
         // set the path
         lv_runtime_path_windows = path;

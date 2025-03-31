@@ -12,6 +12,7 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
+		<Item Name="devices.lvlib" Type="Library" URL="../devices/devices.lvlib"/>
 		<Item Name="Snapshot.vi" Type="VI" URL="../Snapshot.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
@@ -26,7 +27,7 @@
 				<Item Name="Flatten Pixmap.vi" Type="VI" URL="/&lt;vilib&gt;/picture/pixmap.llb/Flatten Pixmap.vi"/>
 				<Item Name="imagedata.ctl" Type="VI" URL="/&lt;vilib&gt;/picture/picture.llb/imagedata.ctl"/>
 			</Item>
-			<Item Name="gindustrialcam_64-1.so" Type="Document" URL="../bin/gindustrialcam_64-1.so"/>
+			<Item Name="gindustrialcam_32-1.dll" Type="Document" URL="../bin/gindustrialcam_32-1.dll"/>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
 	</Item>
