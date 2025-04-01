@@ -12,8 +12,9 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="devices.lvlib" Type="Library" URL="../devices/devices.lvlib"/>
+		<Item Name="device.lvlib" Type="Library" URL="../device/device.lvlib"/>
 		<Item Name="Snapshot.vi" Type="VI" URL="../Snapshot.vi"/>
+		<Item Name="Test.vi" Type="VI" URL="../Test.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Draw 1-Bit Pixmap.vi" Type="VI" URL="/&lt;vilib&gt;/picture/picture.llb/Draw 1-Bit Pixmap.vi"/>

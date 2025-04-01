@@ -35,7 +35,7 @@ extern "C"
         }
         catch (...)
         {
-            error_cluster_ptr->copy_from_exception(std::current_exception(), __func__);
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
         }
         return LV_ERR_noError;
     }

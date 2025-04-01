@@ -10,6 +10,9 @@ pkg_check_modules(aravis REQUIRED IMPORTED_TARGET aravis-0.8)
 # specify shared-library target
 add_library(g_industrial_cam SHARED)
 
+# add compile definitions
+target_compile_definitions(g_industrial_cam PUBLIC G_INDUSTRIAL_CAM_BYTE_PACKING_${CMAKE_SIZEOF_VOID_P})
+
 include(${CMAKE_CURRENT_LIST_DIR}/src/CMakeLists.txt)
 
 target_include_directories(g_industrial_cam

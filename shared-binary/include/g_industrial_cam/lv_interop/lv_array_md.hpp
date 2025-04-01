@@ -6,6 +6,7 @@
 #include <cstring>
 #include <numeric>
 #include <exception>
+#include <stdexcept>
 #include <algorithm>
 
 #include "./lv_types.hpp"

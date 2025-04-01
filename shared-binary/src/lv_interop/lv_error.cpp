@@ -8,7 +8,7 @@
 using namespace g_industrial_cam;
 using namespace lv_interop;
 
-void LV_ErrorCluster_t::copy_from_exception(std::exception_ptr ex, const char * caller_name){
+void LV_ErrorClusterPtr_t::copy_from_exception(const std::exception_ptr ex, const char * caller_name){
 
     std::stringstream ss;
 
@@ -24,29 +24,29 @@ void LV_ErrorCluster_t::copy_from_exception(std::exception_ptr ex, const char * 
     catch (LV_MemoryManagerException const&e)
     {
         ss << e.what();
-        m_code = e.err;
+        m_err->code = e.err;
     }
     catch (LV_EDVRInvalidException const&e)
     {
         ss << e.what();
-        m_code = 1556;
+        m_err->code = 1556;
     }
     catch (std::system_error const&e){
         ss << e.what();
-        m_code = e.code().value();
+        m_err->code = e.code().value();
     }
     catch (std::exception const&e)
     {
         ss << e.what();
-        m_code = LV_ERR_bogusError;
+        m_err->code = LV_ERR_bogusError;
     }
     catch (...)
     {
         ss << "An undefined exception occured.";
-        m_code = LV_ERR_bogusError;
+        m_err->code = LV_ERR_bogusError;
     }
 
-    m_status = m_code != 0;
+    m_err->status = m_err->code != 0;
 
-    m_source.copy_from(ss.str());
+    m_err->source.copy_from(ss.str());
 }

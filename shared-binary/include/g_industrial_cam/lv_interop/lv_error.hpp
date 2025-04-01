@@ -5,26 +5,34 @@
 #include "./lv_types.hpp"
 #include "./lv_str.hpp"
 
+using namespace g_industrial_cam;
+using namespace lv_interop;
+
+namespace
+{
+#include "./set_packing.hpp"
+    struct LV_Error_t
+    {
+        LV_Error_t() = delete;
+        LV_Boolean_t status;
+        LV_MgErr_t code;
+        LV_StringHandle_t source;
+    };
+#include "./reset_packing.hpp"
+}
+
 namespace g_industrial_cam
 {
     namespace lv_interop
     {
-
-#include "./set_packing.hpp"
         // LabVIEW Error Cluster type
-        class LV_ErrorCluster_t
+        class LV_ErrorClusterPtr_t
         {
         public:
+            LV_ErrorClusterPtr_t() = delete;
             void copy_from_exception(std::exception_ptr ex, const char *caller_name);
-
         private:
-            LV_Boolean_t m_status;
-            LV_MgErr_t m_code;
-            LV_StringHandle_t m_source;
+            LV_Ptr_t<LV_Error_t> m_err;
         };
-#include "./reset_packing.hpp"
-
-        using LV_ErrorClusterPtr_t = LV_Ptr_t<LV_ErrorCluster_t>;
     }
-
 }
