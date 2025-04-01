@@ -6,6 +6,7 @@
 #include "g_industrial_cam/lv_interop/lv_error.hpp"
 #include "g_industrial_cam/lv_interop/lv_edvr_managed_object.hpp"
 #include "g_industrial_cam/camera.hpp"
+#include "g_industrial_cam/aravis-error.hpp"
 
 #include "g_industrial_cam_export.h"
 
@@ -15,17 +16,14 @@ using namespace lv_interop;
 camera::camera(const std::string& identifier) : m_camera(nullptr),
                                          m_is_streaming(false)
 {
-    GError *error = nullptr;
-    auto cam = arv_camera_new(identifier.c_str(), &error);
+    aravis_error err;
+    auto cam = arv_camera_new(identifier.c_str(), err);
 
     if(!ARV_IS_CAMERA(cam)){
         throw std::invalid_argument("Unable to find a matching camera.");
     }
     
-    if (error != nullptr)
-    {
-        throw std::runtime_error(error->message);
-    }
+    aravis_error::check_error(err);
 
     m_camera =  cam;
 }
@@ -41,15 +39,12 @@ camera::~camera()
 buffer *camera::take_snapshot(uint32_t timeout) const
 {
 
-    GError *error = nullptr;
+    aravis_error err;
 
     /* Acquire a single buffer */
-    ArvBuffer *buf = arv_camera_acquisition(m_camera, timeout, &error);
-
-    if (error)
-    {
-        throw std::runtime_error(error->message);
-    }
+    ArvBuffer *buf = arv_camera_acquisition(m_camera, timeout, err);
+    
+    aravis_error::check_error(err);
 
     return new buffer(buf);
 }

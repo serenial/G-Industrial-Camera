@@ -1,6 +1,9 @@
 #include <cstring>
 #include <string>
 #include <sstream>
+#include <exception>
+#include <stdexcept>
+#include <system_error>
 
 #include "g_industrial_cam/lv_interop/lv_error.hpp"
 #include "g_industrial_cam/lv_interop/lv_edvr_managed_object.hpp"
