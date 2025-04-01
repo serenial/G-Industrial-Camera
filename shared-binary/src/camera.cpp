@@ -13,42 +13,6 @@
 using namespace g_industrial_cam;
 using namespace lv_interop;
 
-camera::camera(const std::string& identifier) : m_camera(nullptr),
-                                         m_is_streaming(false)
-{
-    aravis_error err;
-    auto cam = arv_camera_new(identifier.c_str(), err);
-
-    if(!ARV_IS_CAMERA(cam)){
-        throw std::invalid_argument("Unable to find a matching camera.");
-    }
-    
-    aravis_error::check_error(err);
-
-    m_camera =  cam;
-}
-
-camera::~camera()
-{
-    if(m_camera!=nullptr){
-        g_clear_object(&m_camera);
-    }
-    m_camera = nullptr;
-}
-
-buffer *camera::take_snapshot(uint32_t timeout) const
-{
-
-    aravis_error err;
-
-    /* Acquire a single buffer */
-    ArvBuffer *buf = arv_camera_acquisition(m_camera, timeout, err);
-    
-    aravis_error::check_error(err);
-
-    return new buffer(buf);
-}
-
 extern "C"
 {
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_create(
@@ -93,4 +57,33 @@ extern "C"
         }
         return LV_ERR_noError;
     }
+}
+
+camera::camera(const std::string& identifier) : m_camera(nullptr),
+                                         m_is_streaming(false)
+{
+    aravis_error err;
+    m_camera = arv_camera_new(identifier.c_str(), err);
+    aravis_error::check_error(err);
+}
+
+camera::~camera()
+{
+    if(m_camera!=nullptr){
+        g_clear_object(&m_camera);
+    }
+    m_camera = nullptr;
+}
+
+buffer *camera::take_snapshot(uint32_t timeout) const
+{
+
+    aravis_error err;
+
+    /* Acquire a single buffer */
+    ArvBuffer *buf = arv_camera_acquisition(m_camera, timeout, err);
+
+    aravis_error::check_error(err);
+
+    return new buffer(buf);
 }
