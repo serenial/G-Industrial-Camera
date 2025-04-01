@@ -6,7 +6,6 @@
 #include "g_industrial_cam/lv_interop/lv_error.hpp"
 #include "g_industrial_cam/lv_interop/lv_edvr_managed_object.hpp"
 #include "g_industrial_cam/device-io/camera.hpp"
-#include "g_industrial_cam/device-io/aravis-error.hpp"
 
 #include "g_industrial_cam_export.h"
 
@@ -23,6 +22,30 @@ extern "C"
         try
         {
             EDVRManagedObject<camera>(edvr_ref_ptr, new camera(id_handle.to_utf8_string()));
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_get_avaliable_pixel_formats(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_1DArrayHandle_t<LV_StringHandle_t> formats_handle
+    )
+    {
+        try
+        {
+            EDVRManagedObject<camera> cam(edvr_ref_ptr);
+
+            std::vector<std::string> formats;
+            cam->get_avaliable_pixel_formats(formats);
+
+            formats_handle.copy_element_by_element_from(formats, [](auto from, auto to){
+                to->copy_from_utf8(from);
+            });
         }
         catch (...)
         {

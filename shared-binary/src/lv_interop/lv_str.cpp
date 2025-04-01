@@ -59,6 +59,10 @@ void LV_StringHandle_t::copy_from_utf8(const char* utf8_chars){
     #endif
 }
 
+void LV_StringHandle_t::copy_from_utf8(const std::string& utf8string){
+    copy_from_utf8(utf8string.c_str());
+}
+
 std::string LV_StringHandle_t::to_utf8_string() const{
     #ifndef WIN32
     // not windows - just convert to std::string

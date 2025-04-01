@@ -7,9 +7,8 @@ buffer::buffer(ArvBuffer* buf): m_buffer(buf){
 }
 
 buffer::~buffer(){
-    if(m_buffer){
-        g_clear_object(&m_buffer);
-    }
+
+    g_clear_object(&m_buffer);
     m_buffer = nullptr;
 }
 
