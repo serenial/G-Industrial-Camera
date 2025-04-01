@@ -6,10 +6,13 @@
 #include "g_industrial_cam/device-io/buffer.hpp"
 #include "g_industrial_cam/device-io/aravis-error.hpp"
 
-namespace {
-    template<class T>
-    struct g_pointer_deleter_t{
-        void operator()(T ptr){
+namespace
+{
+    template <class T>
+    struct g_pointer_deleter_t
+    {
+        void operator()(T ptr)
+        {
             g_free(ptr);
         }
     };
@@ -17,8 +20,8 @@ namespace {
 
 using namespace g_industrial_cam;
 
-camera::camera(const std::string& identifier_utf8) : m_camera(nullptr),
-                                         m_is_streaming(false)
+camera::camera(const std::string &identifier_utf8) : m_camera(nullptr),
+                                                     m_is_streaming(false)
 {
     aravis_error err;
     m_camera = arv_camera_new(identifier_utf8.c_str(), err);
@@ -31,23 +34,25 @@ camera::~camera()
     m_camera = nullptr;
 }
 
-void camera::get_avaliable_pixel_formats(std::vector<std::string>& pixel_formats_utf8) const{
+void camera::get_avaliable_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const
+{
 
-    size_t n_formats = 0;
+    guint n_formats = 0;
     aravis_error err;
 
     // use a unique_ptr to ensure the const char** "container" returned by arv_camera_dup_avaliable_pixel_formats_as_strings
     // is cleared - we own the container but not the data
-    std::unique_ptr<const char*, ::g_pointer_deleter_t<const char**>> list(arv_camera_dup_available_pixel_formats_as_strings(m_camera,&n_formats,err));
+    std::unique_ptr<const char *, ::g_pointer_deleter_t<const char **>> list(arv_camera_dup_available_pixel_formats_as_strings(m_camera, &n_formats, err));
 
     aravis_error::check_error(err);
 
-    for(size_t i=0; i< n_formats; i++){
+    for (guint i = 0; i < n_formats; i++)
+    {
         pixel_formats_utf8.emplace_back(list.get()[i]);
     }
 }
 
-buffer *camera::take_snapshot(uint32_t timeout) const
+buffer *camera::take_snapshot(uint64_t timeout) const
 {
     aravis_error err;
 
@@ -59,7 +64,8 @@ buffer *camera::take_snapshot(uint32_t timeout) const
     return new buffer(buf);
 }
 
-std::string camera::get_pixel_format() const{
+std::string camera::get_pixel_format() const
+{
     aravis_error err;
 
     auto format = std::string(arv_camera_get_pixel_format_as_string(m_camera, err));
@@ -69,12 +75,12 @@ std::string camera::get_pixel_format() const{
     return format;
 }
 
-void camera::set_pixel_format(const std::string& pixel_format_utf8){
+void camera::set_pixel_format(const std::string &pixel_format_utf8)
+{
 
     aravis_error err;
 
     arv_camera_set_pixel_format_from_string(m_camera, pixel_format_utf8.c_str(), err);
 
     aravis_error::check_error(err);
-    
 }
