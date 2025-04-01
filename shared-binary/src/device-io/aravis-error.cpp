@@ -1,4 +1,4 @@
-#include "g_industrial_cam/aravis-error.hpp"
+#include "g_industrial_cam/device-io/aravis-error.hpp"
 
 using namespace g_industrial_cam;
 

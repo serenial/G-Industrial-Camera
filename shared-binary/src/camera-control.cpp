@@ -5,8 +5,8 @@
 #include "g_industrial_cam/lv_interop/lv_str.hpp"
 #include "g_industrial_cam/lv_interop/lv_error.hpp"
 #include "g_industrial_cam/lv_interop/lv_edvr_managed_object.hpp"
-#include "g_industrial_cam/camera.hpp"
-#include "g_industrial_cam/aravis-error.hpp"
+#include "g_industrial_cam/device-io/camera.hpp"
+#include "g_industrial_cam/device-io/aravis-error.hpp"
 
 #include "g_industrial_cam_export.h"
 
@@ -57,33 +57,4 @@ extern "C"
         }
         return LV_ERR_noError;
     }
-}
-
-camera::camera(const std::string& identifier) : m_camera(nullptr),
-                                         m_is_streaming(false)
-{
-    aravis_error err;
-    m_camera = arv_camera_new(identifier.c_str(), err);
-    aravis_error::check_error(err);
-}
-
-camera::~camera()
-{
-    if(m_camera!=nullptr){
-        g_clear_object(&m_camera);
-    }
-    m_camera = nullptr;
-}
-
-buffer *camera::take_snapshot(uint32_t timeout) const
-{
-
-    aravis_error err;
-
-    /* Acquire a single buffer */
-    ArvBuffer *buf = arv_camera_acquisition(m_camera, timeout, err);
-
-    aravis_error::check_error(err);
-
-    return new buffer(buf);
 }

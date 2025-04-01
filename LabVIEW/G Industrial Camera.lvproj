@@ -12,7 +12,12 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="device.lvlib" Type="Library" URL="../device/device.lvlib"/>
+		<Item Name="g_industrial_cam" Type="Folder">
+			<Item Name="Buffer.lvclass" Type="LVClass" URL="../g_industrial_cam/Buffer/Buffer.lvclass"/>
+			<Item Name="Camera.lvclass" Type="LVClass" URL="../g_industrial_cam/Camera/Camera.lvclass"/>
+			<Item Name="Device Enumeration.ctl" Type="VI" URL="../g_industrial_cam/Device Enumeration.ctl"/>
+			<Item Name="Enumerate Devices.vi" Type="VI" URL="../g_industrial_cam/Enumerate Devices.vi"/>
+		</Item>
 		<Item Name="Snapshot.vi" Type="VI" URL="../Snapshot.vi"/>
 		<Item Name="Test.vi" Type="VI" URL="../Test.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">

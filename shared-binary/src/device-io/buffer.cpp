@@ -1,4 +1,4 @@
-#include "g_industrial_cam/buffer.hpp"
+#include "g_industrial_cam/device-io/buffer.hpp"
 
 using namespace g_industrial_cam;
 
