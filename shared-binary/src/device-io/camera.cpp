@@ -58,3 +58,23 @@ buffer *camera::take_snapshot(uint32_t timeout) const
 
     return new buffer(buf);
 }
+
+std::string camera::get_pixel_format() const{
+    aravis_error err;
+
+    auto format = std::string(arv_camera_get_pixel_format_as_string(m_camera, err));
+
+    aravis_error::check_error(err);
+
+    return format;
+}
+
+void camera::set_pixel_format(const std::string& pixel_format_utf8){
+
+    aravis_error err;
+
+    arv_camera_set_pixel_format_from_string(m_camera, pixel_format_utf8.c_str(), err);
+
+    aravis_error::check_error(err);
+    
+}

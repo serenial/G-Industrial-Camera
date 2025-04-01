@@ -54,6 +54,31 @@ extern "C"
         return LV_ERR_noError;
     }
 
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_get_set_pixel_format(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_StringHandle_t format_handle,
+        LV_BooleanPtr_t set
+    )
+    {
+        try
+        {
+            EDVRManagedObject<camera> cam(edvr_ref_ptr);
+
+            if(*set){
+                cam->set_pixel_format(format_handle.to_utf8_string());
+            }
+            else{
+                format_handle.copy_from_utf8(cam->get_pixel_format());
+            }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_take_snapshot(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_StringHandle_t id_handle,
