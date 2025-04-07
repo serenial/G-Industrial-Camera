@@ -5,6 +5,7 @@
 #include "g_industrial_cam/lv_interop/lv_str.hpp"
 #include "g_industrial_cam/lv_interop/lv_error.hpp"
 #include "g_industrial_cam/lv_interop/lv_edvr_managed_object.hpp"
+#include "g_industrial_cam/lv_interop/lv_buffer.hpp"
 #include "g_industrial_cam/device-io/camera.hpp"
 
 #include "g_industrial_cam_export.h"
@@ -104,12 +105,12 @@ extern "C"
 
             auto buf = camera_handle(camera_ref_ptr)->take_snapshot(timeout_us);
 
-            if (!buf->has_status_success())
+            if (arv_buffer_get_status(buf) != ARV_BUFFER_STATUS_SUCCESS)
             {
                 return LV_ERR_ncTimeOutErr;
             }
 
-            EDVRManagedObject<buffer>(buffer_ref_ptr, buf);
+            lv_buffer(buffer_ref_ptr, buf);
         }
         catch (...)
         {

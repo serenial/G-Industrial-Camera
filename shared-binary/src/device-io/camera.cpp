@@ -2,8 +2,8 @@
 
 #include <arv.h>
 
+#include "g_industrial_cam/lv_interop/lv_buffer.hpp"
 #include "g_industrial_cam/device-io/camera.hpp"
-#include "g_industrial_cam/device-io/buffer.hpp"
 #include "g_industrial_cam/device-io/aravis-error.hpp"
 
 namespace
@@ -52,7 +52,7 @@ void camera::get_avaliable_pixel_formats(std::vector<std::string> &pixel_formats
     }
 }
 
-buffer *camera::take_snapshot(uint64_t timeout) const
+ArvBuffer *camera::take_snapshot(uint64_t timeout) const
 {
     aravis_error err;
 
@@ -61,7 +61,7 @@ buffer *camera::take_snapshot(uint64_t timeout) const
 
     aravis_error::check_error(err);
 
-    return new buffer(buf);
+    return buf;
 }
 
 std::string camera::get_pixel_format() const
