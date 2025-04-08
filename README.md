@@ -1,4 +1,4 @@
-# G Industrial Camera (🚧 Under Construction 🚧)
+# G Industrial Camera
 
 YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
@@ -21,13 +21,22 @@ The LabVIEW code is written in LabVIEW 2020 SP1 and provides binaries for the fo
 
 ## Developement Setup
 
-### Required Tools
-* CMake (27 or greater)
-* Ninja build tools
-* MSVC 2023 on Windows
-* gcc 11 on Linux
-* LabVIEW 2020 SP1
+The library consists of two components - LabVIEW code and a shared library built from C++ code. This repository does not include the pre-built binaries as these would ideally be built from source as this provides the option to enable the debugging symbols on the build.
 
+### Building for Windows Dependencies
+
+Install the following:
+
+* [Build Tools for Windows 2022 - MSVC C++ Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022) (Newer versions should work but you will have to update the build scripts later)
+* CMake 3.27 or later (This can be installed as part of the MSVC Build Tools)
+* (Ninja Build)[https://github.com/ninja-build/ninja/releases] (accessible on the System's Path)
+
+### Building for Linux Dependencies
+* autoconf
+* libudev-dev
+* #TODO
+
+### Cloning the Respository
 
 This respository uses git submodules to manage build tooling. When cloning ensure you use
 
@@ -40,30 +49,21 @@ If you already have cloned the top-level repo then use
 git submodule update --init --recursive
 ```
 
-... from inside the cloned repository
+#### Bootstrapping `vcpkg`
 
-#### `vcpkg` bootstrap
-Run either the `vcpkg/bootstrap-vcpkg.bat` if you are on Windows or `vcpkg/bootstrap-vcpkg.sh` on Linux platforms.
+Open a command prompt at the root of this repository and run either `vcpkg/bootstrap-vcpkg.bat` if you are on Windows or `vcpkg/bootstrap-vcpkg.sh` on Linux platforms.
 
-## Building Shared Binaries
+### Building Shared Binaries
 
-### Windows
-Copy and modify the `x<Arch>-win-build.bat-example` files and update the extension to `.bat`.
+If you use `VSCode` with the `C++` and `CMake` extensions installed then you can use the CMake Integration to select and build either the `release` or `debug` configurations. If you are using `VScode` on Windows, ensure you launch it by entering `code` into the `Visual Studio Developer Command Prompt` (choose the `x86` or `x64` prompt depending on if you want to build for 32 or 64 bit).
 
-Ensure you modify the `call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat` path to the location for your MSVC `vcvars` setups scripts on your system.
+Example build scripts are provided to allow for easy building without VSCode:
 
-Alternatively if you are using `VSCode` you can use the integrated CMake extension to build but ensure you launch the `VSCode` instance from either the x86 or x64 developer command prompt to setup all the build tools.
+Windows users should copy the `x<Arch>-win-build.bat-example` files and update the extension to `.bat`. If you are using a different version of MSVC then you will have to update the `call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat` path to the location for your MSVC `vcvars` setups scripts on your system.
 
+Linux users can run `x64-linux-dektop-build.sh ` but might need to make the file executable using `chmod +x` first.
 
-### Linux-Desktop (Ubuntu)
-```bash
-sudo apt install autoconf libudev-dev
-```
-Ensure `vckpg/bootstrap-vcpkg.sh` has been called
-
-Use the `x64-linux-desktop-build.sh` script to build the binaries.
-
-Alternatively if you are using `VSCode` you can use the integrated CMake extension to build.
+The binary build will take some time as all the dependencies are built from source. The binaries will be copied into `LabVIEW/g_industrial_cam/bin` when done.
 
 ## Contributions
 Open to contributions - please open an issue to discuss
