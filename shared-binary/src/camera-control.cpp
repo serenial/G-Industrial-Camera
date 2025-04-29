@@ -1,5 +1,4 @@
 #include <stdexcept>
-#include <format>
 
 #include "g_industrial_cam/lv_interop/lv_types.hpp"
 #include "g_industrial_cam/lv_interop/lv_str.hpp"
