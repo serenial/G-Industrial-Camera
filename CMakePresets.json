@@ -1,5 +1,5 @@
 {
-    "version": 8,
+    "version": 7,
     "cmakeMinimumRequired": {
         "major": 3,
         "minor": 27,
@@ -12,12 +12,23 @@
             "generator": "Ninja"
         },
         {
+            "name": "ci",
+            "inherits": "base",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}",
+                "VCPKG_TARGET_TRIPLET": "$penv{VCPKG_DEFAULT_TRIPLET}"
+            }
+        },
+        {
             "name": "windows-debug",
             "inherits": "base",
             "binaryDir": "${sourceDir}/build/windows-$penv{Platform}",
             "cacheVariables": {
                 "VCPKG_TARGET_TRIPLET": "$penv{Platform}-windows-static",
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/LabVIEW/common"
             },
             "condition": {
                 "type": "equals",
@@ -31,7 +42,8 @@
             "binaryDir": "${sourceDir}/build/linux-desktop",
             "cacheVariables": {
                 "VCPKG_TARGET_TRIPLET": "x64-linux",
-                "CMAKE_BUILD_TYPE": "Debug"
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/LabVIEW/common"
             },
             "condition": {
                 "type": "equals",
@@ -76,6 +88,12 @@
         {
             "name": "linux-desktop-release-build",
             "configurePreset": "linux-desktop-release",
+            "targets": "install",
+            "configuration": "Release"
+        },
+        {
+            "name": "ci-build",
+            "configurePreset": "ci",
             "targets": "install",
             "configuration": "Release"
         }

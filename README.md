@@ -2,6 +2,8 @@
 
 YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
+This library is intended to provide a simple LabVIEW driver for use with GenICam compatible cameras.
+
 # Licence
 The LabVIEW source is distributed under the Zero-Clause BSD licence. The shared binary component of this toolkit is distributed under the LGPL-2.1 licence.
 
@@ -30,6 +32,9 @@ Install the following:
 * [Build Tools for Windows 2022 - MSVC C++ Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022) (Newer versions should work but you will have to update the build scripts later)
 * CMake 3.27 or later (This can be installed as part of the MSVC Build Tools)
 * (Ninja Build)[https://github.com/ninja-build/ninja/releases] (accessible on the System's Path)
+
+This screenshot shows the recommended items to install for MSVC Build Tools
+![Build Tools for Visual Studio 2022](./img/msvc_installer.png)
 
 ### Building for Linux Dependencies
 * autoconf
