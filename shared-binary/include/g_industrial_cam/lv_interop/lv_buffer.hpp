@@ -38,11 +38,11 @@ namespace g_industrial_cam
                 CPP,
                 CPP_MAPPED
             };
-            ArvBuffer *buffer;
-            lock_states locked;
-            std::mutex m;
-            std::condition_variable cv;
-
+            ArvBuffer *m_arv_buffer_ptr;
+            lock_states m_locked;
+            std::mutex m_mtx;
+            std::condition_variable m_cv;
+            ~buffer_persistant_data_t();
             // locking and unlocking utility functions
             static void lock(buffer_persistant_data_t *, lock_states);
             static void unlock(buffer_persistant_data_t *, lock_states);

@@ -10,12 +10,12 @@ using namespace lv_interop;
 
 bool lv_buffer::is_valid() const
 {
-    return data->buffer != nullptr;
+    return data->m_arv_buffer_ptr != nullptr;
 }
 
 bool lv_buffer::has_status_success() const
 {
-    return arv_buffer_get_status(data->buffer) == ARV_BUFFER_STATUS_SUCCESS;
+    return arv_buffer_get_status(data->m_arv_buffer_ptr) == ARV_BUFFER_STATUS_SUCCESS;
 }
 
 const uint8_t *lv_buffer::begin() const
@@ -37,31 +37,33 @@ const size_t lv_buffer::size() const
 std::pair<const uint8_t *, const size_t> lv_buffer::buffer_image_data() const
 {
     size_t size;
-    auto begin = static_cast<const uint8_t *>(arv_buffer_get_image_data(data->buffer, &size));
+    auto begin = static_cast<const uint8_t *>(arv_buffer_get_image_data(data->m_arv_buffer_ptr, &size));
     return std::make_pair(begin, size);
 }
 
-const uint16_t lv_buffer::width() const{
-    return arv_buffer_get_image_width(data->buffer);
+const uint16_t lv_buffer::width() const
+{
+    return arv_buffer_get_image_width(data->m_arv_buffer_ptr);
 }
 
-const uint16_t lv_buffer::height() const{
-    return arv_buffer_get_image_height(data->buffer);
+const uint16_t lv_buffer::height() const
+{
+    return arv_buffer_get_image_height(data->m_arv_buffer_ptr);
 }
 
-lv_buffer::lv_buffer(LV_EDVRReferencePtr_t edvr_ref_ptr, ArvBuffer * buf) : edvr_ref_ptr(edvr_ref_ptr),
-                                                                                      ctx(0),
-                                                                                      edvr_data_ptr(create_new_edvr_data_ptr()),
-                                                                                      data(get_metadata())
+lv_buffer::lv_buffer(LV_EDVRReferencePtr_t edvr_ref_ptr, ArvBuffer *buf) : edvr_ref_ptr(edvr_ref_ptr),
+                                                                           ctx(0),
+                                                                           edvr_data_ptr(create_new_edvr_data_ptr()),
+                                                                           data(get_metadata())
 
 {
-    data->buffer = buf;
+    data->m_arv_buffer_ptr = buf;
     buffer_persistant_data_t::lock(data, buffer_persistant_data_t::lock_states::CPP);
 }
 
 lv_buffer::lv_buffer(LV_EDVRReferencePtr_t edvr_ref_ptr) : edvr_ref_ptr(edvr_ref_ptr), ctx(get_ctx()),
-                                                         edvr_data_ptr(get_edvr_data_ptr()),
-                                                         data(get_metadata())
+                                                           edvr_data_ptr(get_edvr_data_ptr()),
+                                                           data(get_metadata())
 {
     buffer_persistant_data_t::lock(data, buffer_persistant_data_t::lock_states::CPP);
 }
@@ -72,7 +74,7 @@ lv_buffer::~lv_buffer()
     // set the n_dims
     edvr_data_ptr->n_dims = 1;
     // set the subArray data pointer to the buffers data
-    edvr_data_ptr->sub_array.data_ptr = reinterpret_cast<uintptr_t *>(const_cast<uint8_t*>(begin()));
+    edvr_data_ptr->sub_array.data_ptr = reinterpret_cast<uintptr_t *>(const_cast<uint8_t *>(begin()));
     // set subArray dimension_specifier
     // strides/steps are in bytes, size is number of elements so we can directly use values
     // datatype is a single byte so stride is just 1.
@@ -140,56 +142,62 @@ lv_buffer::buffer_persistant_data_t *lv_buffer::get_metadata()
 void lv_buffer::buffer_persistant_data_t::lock(lv_buffer::buffer_persistant_data_t *d, lv_buffer::buffer_persistant_data_t::lock_states transition_to)
 {
     // obtain the mutex
-    std::unique_lock lk(d->m);
+    std::unique_lock lk(d->m_mtx);
     // wait for the locked flag to be NONE
     // this will lead to deadlocks if CPP or CPP_MAPPED but that is probably desired behaviour
-    d->cv.wait(lk, [&]
-               { return d->locked == NONE; });
-    d->locked = transition_to;
+    d->m_cv.wait(lk, [&]
+                 { return d->m_locked == NONE; });
+    d->m_locked = transition_to;
     lk.unlock();
-    d->cv.notify_all();
+    d->m_cv.notify_all();
 }
 
 void lv_buffer::buffer_persistant_data_t::unlock(lv_buffer::buffer_persistant_data_t *d, lv_buffer::buffer_persistant_data_t::lock_states transition_from)
 {
     {
         // obtain the mutex
-        std::lock_guard lk(d->m);
-        if (d->locked == transition_from)
+        std::lock_guard lk(d->m_mtx);
+        if (d->m_locked == transition_from)
         {
-            d->locked = NONE;
+            d->m_locked = NONE;
         };
     }
     // scoped-unlock and notify
-    d->cv.notify_all();
+    d->m_cv.notify_all();
+}
+
+lv_buffer::buffer_persistant_data_t::~buffer_persistant_data_t()
+{
+    g_clear_object(&m_arv_buffer_ptr);
+    m_arv_buffer_ptr = nullptr;
 }
 
 void lv_buffer::upgrade_to_mapped()
 {
     {
         // obtain the mutex
-        std::lock_guard lk(data->m);
-        if (data->locked == buffer_persistant_data_t::lock_states::CPP)
+        std::lock_guard lk(data->m_mtx);
+        if (data->m_locked == buffer_persistant_data_t::lock_states::CPP)
         {
-            data->locked = buffer_persistant_data_t::lock_states::CPP_MAPPED;
+            data->m_locked = buffer_persistant_data_t::lock_states::CPP_MAPPED;
         };
     }
     // scoped-unlock and notify
-    data->cv.notify_all();
+    data->m_cv.notify_all();
 }
 
 void lv_buffer::downgrade_from_mapped()
 {
     {
         // obtain the mutex
-        std::lock_guard lk(data->m);
-        if (data->locked == buffer_persistant_data_t::lock_states::CPP_MAPPED)
+        std::lock_guard lk(data->m_mtx);
+        if (data->m_locked == buffer_persistant_data_t::lock_states::CPP_MAPPED)
         {
-            data->locked = buffer_persistant_data_t::lock_states::CPP;
+            data->m_locked = buffer_persistant_data_t::lock_states::CPP;
         };
     }
     // scoped-unlock and notify
-    data->cv.notify_all();
+    data->m_cv.notify_all();
 }
 
 LV_MgErr_t lv_buffer::on_labview_lock(LV_EDVRDataPtr_t ptr)
@@ -226,11 +234,11 @@ void lv_buffer::on_labview_delete(LV_EDVRDataPtr_t ptr)
 {
     auto data = reinterpret_cast<buffer_persistant_data_t *>(ptr->metadata_ptr);
     // obtain the mutex
-    std::unique_lock lk(data->m);
+    std::unique_lock lk(data->m_mtx);
     // wait for the locked flag to be cleared
     // note - DVR Delete calls lock_callback_fn first so only check we aren't locked from CPP side
-    data->cv.wait(lk, [&]
-                  { return data->locked == buffer_persistant_data_t::lock_states::NONE || data->locked == buffer_persistant_data_t::lock_states::LABVIEW; });
+    data->m_cv.wait(lk, [&]
+                    { return data->m_locked == buffer_persistant_data_t::lock_states::NONE || data->m_locked == buffer_persistant_data_t::lock_states::LABVIEW; });
     // free the lock
     lk.unlock();
     // delete data

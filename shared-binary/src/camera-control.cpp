@@ -25,7 +25,7 @@ extern "C"
     {
         try
         {
-            camera_handle(edvr_ref_ptr, new camera(id_handle.to_utf8_string()));
+            camera_handle(edvr_ref_ptr, camera::create(id_handle.to_utf8_string()));
         }
         catch (...)
         {

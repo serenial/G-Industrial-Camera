@@ -20,9 +20,13 @@ namespace
 
 using namespace g_industrial_cam;
 
-camera::camera(const std::string &identifier_utf8) : m_camera(nullptr),
-                                                     m_is_streaming(false)
-{
+camera* camera::create(const std::string& identifier_utf8){
+    auto c = new camera();
+    c->connect(identifier_utf8);
+    return c;
+}
+
+void camera::connect(const std::string& identifier_utf8){
     aravis_error err;
     m_camera = arv_camera_new(identifier_utf8.c_str(), err);
     aravis_error::check_error(err);
