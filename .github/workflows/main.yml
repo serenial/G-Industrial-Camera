@@ -47,6 +47,5 @@ jobs:
       with:
         name: g_industrial_cam_${{ env.VCPKG_DEFAULT_TRIPLET }}
         path: |
-         ${{ github.workspace }}/ase/ase/bin
-         ${{ github.workspace }}/test-executable/
+         ${{ github.workspace }}/g_industrial_cam/bin
          ${{ github.workspace }}/build/vcpkg_installed/**/share

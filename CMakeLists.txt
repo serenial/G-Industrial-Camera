@@ -9,9 +9,6 @@ project(g_industrial_cam VERSION 1.0.0 LANGUAGES C CXX)
 # export a json file with the compile commands
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Install directory
-set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_LIST_DIR}/LabVIEW/g_industrial_cam)
-
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
   # set to use Multithreaded Static Runtime
   set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")

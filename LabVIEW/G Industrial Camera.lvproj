@@ -31,6 +31,7 @@
 			<Property Name="NI.DISK" Type="Bool">true</Property>
 		</Item>
 		<Item Name="Test.vi" Type="VI" URL="../Test.vi"/>
+		<Item Name="COPYING" Type="Document" URL="../../shared-binary/COPYING"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Error Cluster From Error Code.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Error Cluster From Error Code.vi"/>
@@ -173,8 +174,10 @@
 				<Property Name="Destination[2].libraryName" Type="Str">g_industrial_cam.lvlib</Property>
 				<Property Name="Destination[2].path" Type="Path">../build/source-distribution/g_industrial_cam</Property>
 				<Property Name="Destination[2].preserveHierarchy" Type="Bool">true</Property>
-				<Property Name="DestinationCount" Type="Int">3</Property>
-				<Property Name="Source[0].itemID" Type="Str">{DBE3FBFA-62A0-4A87-9F07-697BC66D4B10}</Property>
+				<Property Name="Destination[3].destName" Type="Str">root</Property>
+				<Property Name="Destination[3].path" Type="Path">../build/source-distribution</Property>
+				<Property Name="DestinationCount" Type="Int">4</Property>
+				<Property Name="Source[0].itemID" Type="Str">{7108F87C-9515-4537-8379-DF0AA64A197F}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].Container.applyInclusion" Type="Bool">true</Property>
 				<Property Name="Source[1].Container.applyPrefix" Type="Bool">true</Property>
@@ -206,7 +209,10 @@
 				<Property Name="Source[7].itemID" Type="Ref">/My Computer/Test.vi</Property>
 				<Property Name="Source[7].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[7].type" Type="Str">VI</Property>
-				<Property Name="SourceCount" Type="Int">8</Property>
+				<Property Name="Source[8].destinationIndex" Type="Int">3</Property>
+				<Property Name="Source[8].itemID" Type="Ref">/My Computer/COPYING</Property>
+				<Property Name="Source[8].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="SourceCount" Type="Int">9</Property>
 			</Item>
 		</Item>
 	</Item>

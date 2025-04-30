@@ -64,6 +64,6 @@ target_link_libraries(g_industrial_cam PRIVATE
 
 # Install Shared Library
 INSTALL(TARGETS g_industrial_cam
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION bin
+  RUNTIME DESTINATION g_industrial_cam/bin
+  LIBRARY DESTINATION g_industrial_cam/bin
 )
