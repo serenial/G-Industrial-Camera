@@ -168,7 +168,7 @@ void lv_buffer::buffer_persistant_data_t::unlock(lv_buffer::buffer_persistant_da
 
 lv_buffer::buffer_persistant_data_t::~buffer_persistant_data_t()
 {
-    g_clear_object(&m_arv_buffer_ptr);
+    g_object_unref(&m_arv_buffer_ptr);
     m_arv_buffer_ptr = nullptr;
 }
 

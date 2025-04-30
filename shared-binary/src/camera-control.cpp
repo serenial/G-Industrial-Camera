@@ -106,6 +106,7 @@ extern "C"
 
             if (arv_buffer_get_status(buf) != ARV_BUFFER_STATUS_SUCCESS)
             {
+                auto status = arv_buffer_get_status(buf);
                 return LV_ERR_ncTimeOutErr;
             }
 
