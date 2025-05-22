@@ -40,8 +40,13 @@ void camera::connect(const std::string& identifier_utf8){
 
 camera::~camera()
 {
-    if(m_stream){
-        stream_stop();
+    try{
+        if(m_stream){
+            stream_stop();
+        }
+    }
+    catch(...){
+        // do nothing
     }
     g_clear_object(&m_camera);
     m_camera = nullptr;

@@ -84,12 +84,14 @@ Windows doesn't always play nice with libusb so look at the resources section to
 
 ## TODO
 - [ ] Dependency Licence Notices
-- [ ] Enumerate Cameras
-- [ ] Start Stream
-- [ ] Stop Stream
-- [ ] Capture Frame
+- [x] Enumerate Cameras
+- [x] Start Stream
+- [x] Stop Stream
+- [x] Capture Frame
 - [ ] Documentation
 - [ ] Distribution Packages
+- [ ] Walk Camera Config
+- [ ] Modify Camera Config
 
 ## Resources
 * [Swapping USB3 Device Driver on Windows to use `libsub`](https://github.com/AravisProject/aravis/issues/431#issuecomment-1092243935) - note: Use Windows Device Manager to swap back to the original driver to see the Basler Device in Pylon again.
