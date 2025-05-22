@@ -139,26 +139,31 @@ void camera::stream_start(uint16_t n_additional_buffers){
     // we are going to use a circular buffer to automatically push buffers from the output stream FIFO
     // into the input stream FIFO
     m_stream_buffers.set_capacity(n_additional_buffers+1);
+
+    arv_camera_start_acquisition(m_camera, err);
+
+    aravis_error::check_error(err);
 }
 
 void camera::stream_stop(){
 
+    if(!m_stream){
+        return;
+    }
+    
     aravis_error err;
 
-    /* Stop the acquisition */
-	arv_camera_stop_acquisition (m_camera, err);
+	arv_camera_stop_acquisition(m_camera, err);
 
-	/* Destroy the stream object */
 	g_clear_object(&m_stream);
     m_stream = nullptr;
 
     // cleanup any buffers in the circular buffer
     for(auto buf: m_stream_buffers){
-        g_object_unref(&buf);
+        g_object_unref(buf);
     }
 
     m_stream_buffers.clear();
-
 
     aravis_error::check_error(err);
 }
@@ -173,16 +178,16 @@ bool camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer** buffer_ptr){
         throw std::runtime_error("Camera Stream is not running.");
     }
 
-    auto has_frames = [&]{ return !m_stream_buffers.empty() || m_stream == nullptr; };
+    auto check_something_to_pop = [&]{ return !m_stream_buffers.empty() || m_stream == nullptr; };
     bool success = true;
 
     std::unique_lock lk(m_stream_buffers_mtx);
 
     if(timeout_ms<0){
-        m_stream_event.wait(lk, has_frames);
+        m_stream_event.wait(lk, check_something_to_pop);
     }
     else{
-        success = m_stream_event.wait_for(lk, std::chrono::milliseconds(timeout_ms), has_frames);
+        success = m_stream_event.wait_for(lk, std::chrono::milliseconds(timeout_ms), check_something_to_pop);
     }
  
     if(success && !m_stream_buffers.empty()){
@@ -196,7 +201,7 @@ bool camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer** buffer_ptr){
             size_t passed_buffer_size;
             arv_buffer_get_image_data(*buffer_ptr, &passed_buffer_size);
             if( passed_buffer_size != m_camera_payload){
-                g_object_unref(buffer_ptr);
+                g_object_unref(*buffer_ptr);
                 to_push_fifo = arv_buffer_new_allocate(m_camera_payload);
             }
         }

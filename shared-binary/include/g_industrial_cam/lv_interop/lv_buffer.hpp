@@ -28,6 +28,7 @@ namespace g_industrial_cam
         void upgrade_to_mapped();
         void downgrade_from_mapped();
         void reallocate(size_t required_size);
+        operator ArvBuffer**() const;
 
     private:
         struct buffer_persistant_data_t

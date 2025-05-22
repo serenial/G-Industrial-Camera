@@ -15,40 +15,64 @@ bool lv_buffer::is_valid() const
 
 bool lv_buffer::has_status_success() const
 {
-    return arv_buffer_get_status(data->m_arv_buffer_ptr) == ARV_BUFFER_STATUS_SUCCESS;
+    if(is_valid()){
+        return arv_buffer_get_status(data->m_arv_buffer_ptr) == ARV_BUFFER_STATUS_SUCCESS;
+    }
+
+    return false;
 }
 
 const uint8_t *lv_buffer::begin() const
 {
-    return buffer_image_data().first;
+    if(is_valid()){
+        return buffer_image_data().first;
+    }
+    return nullptr;
 }
 
 const uint8_t *lv_buffer::end() const
 {
+    if(is_valid()){
     auto image_data = buffer_image_data();
     return image_data.first + image_data.second;
+    }
+    return nullptr;
 }
 
 const size_t lv_buffer::size() const
 {
+    if(is_valid()){
     return buffer_image_data().second;
+    }
+
+    return 0;
 }
 
 std::pair<const uint8_t *, const size_t> lv_buffer::buffer_image_data() const
 {
+    if(is_valid()){
     size_t size;
     auto begin = static_cast<const uint8_t *>(arv_buffer_get_image_data(data->m_arv_buffer_ptr, &size));
     return std::make_pair(begin, size);
+    }
+
+    return std::pair<const uint8_t *, const size_t>(nullptr, 0);
 }
 
 const uint16_t lv_buffer::width() const
 {
+    if(is_valid()){
     return arv_buffer_get_image_width(data->m_arv_buffer_ptr);
+    }
+    return 0;
 }
 
 const uint16_t lv_buffer::height() const
 {
+    if(is_valid()){
     return arv_buffer_get_image_height(data->m_arv_buffer_ptr);
+    }
+    return 0;
 }
 
 lv_buffer::lv_buffer(LV_EDVRReferencePtr_t edvr_ref_ptr, ArvBuffer *buf) : edvr_ref_ptr(edvr_ref_ptr),
@@ -168,7 +192,7 @@ void lv_buffer::buffer_persistant_data_t::unlock(lv_buffer::buffer_persistant_da
 
 lv_buffer::buffer_persistant_data_t::~buffer_persistant_data_t()
 {
-    g_object_unref(&m_arv_buffer_ptr);
+    g_object_unref(m_arv_buffer_ptr);
     m_arv_buffer_ptr = nullptr;
 }
 
@@ -249,7 +273,11 @@ void lv_buffer::on_labview_delete(LV_EDVRDataPtr_t ptr)
 void lv_buffer::reallocate(size_t required_size){
     if(size() != required_size){
         // unref the current buffer
-        g_object_unref(&data->m_arv_buffer_ptr);
+        g_object_unref(data->m_arv_buffer_ptr);
         data->m_arv_buffer_ptr = arv_buffer_new_allocate(required_size);
     }
+}
+
+lv_buffer::operator ArvBuffer**() const{
+    return &data->m_arv_buffer_ptr;
 }

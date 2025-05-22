@@ -28,7 +28,7 @@
             "cacheVariables": {
                 "VCPKG_TARGET_TRIPLET": "$penv{Platform}-windows-static",
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/LabVIEW/common"
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/LabVIEW"
             },
             "condition": {
                 "type": "equals",
@@ -43,7 +43,7 @@
             "cacheVariables": {
                 "VCPKG_TARGET_TRIPLET": "x64-linux",
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/LabVIEW/common"
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/LabVIEW"
             },
             "condition": {
                 "type": "equals",

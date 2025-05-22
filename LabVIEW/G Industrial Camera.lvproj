@@ -32,6 +32,7 @@
 		</Item>
 		<Item Name="Test.vi" Type="VI" URL="../Test.vi"/>
 		<Item Name="COPYING" Type="Document" URL="../../shared-binary/COPYING"/>
+		<Item Name="Test-Streaming.vi" Type="VI" URL="../Test-Streaming.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Error Cluster From Error Code.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Error Cluster From Error Code.vi"/>

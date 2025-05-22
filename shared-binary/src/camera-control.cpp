@@ -1,4 +1,5 @@
 #include <stdexcept>
+#include <system_error>
 
 #include "g_industrial_cam/lv_interop/lv_types.hpp"
 #include "g_industrial_cam/lv_interop/lv_str.hpp"
@@ -97,6 +98,59 @@ extern "C"
             }
 
             lv_buffer(buffer_ref_ptr, buf);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_stream_start(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        uint16_t additional_buffers)
+    {
+        try
+        {
+            camera_handle(camera_ref_ptr)->stream_start(additional_buffers);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_stream_stop(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr)
+    {
+        try
+        {
+            camera_handle(camera_ref_ptr)->stream_stop();
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    
+        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_stream_pop_buffer(
+            LV_ErrorClusterPtr_t error_cluster_ptr,
+            LV_EDVRReferencePtr_t camera_ref_ptr,
+            LV_EDVRReferencePtr_t buffer_ref_ptr,
+            int32_t timeout_ms
+        )
+    {
+        try
+        {
+            if(camera_handle(camera_ref_ptr)->stream_pop_buffer(timeout_ms, lv_buffer(buffer_ref_ptr))){
+                throw std::system_error(56, std::iostream_category(), "A Timeout occured whilst waiting for a stream buffer.");
+            }
         }
         catch (...)
         {
