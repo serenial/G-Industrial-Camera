@@ -1,7 +1,8 @@
 {
   "dependencies": [
     "aravis",
-    "pkgconf"
+    "pkgconf",
+    "boost-circular-buffer"
   ],
   "overrides": [
     {

@@ -24,6 +24,7 @@ namespace g_industrial_cam
         LV_UHandle_t DSNewHClr(size_t);
         LV_MgErr_t DSSetHSzClr(LV_UHandle_t, size_t);
         size_t DSGetHandleSize(LV_UHandle_t);
+        LV_MgErr_t PostLVUserEvent(LV_UserEventRef_t, void*);
 
         // MgErr EDVR_GetCurrentContext(ExternalDataValueReferenceContext* pContext);
         using LV_EDVRGetCurrentContextFnPtr_t = std::add_pointer_t<LV_MgErr_t(LV_Ptr_t<LV_EDVRContext_t>)>;
@@ -60,6 +61,11 @@ namespace g_industrial_cam
         // https://www.ni.com/docs/en-US/bundle/labview-api-ref/page/properties-and-methods/lv-manager/DSGetHandleSize.html
         // size_t DSGetHandleSize(h);
         using LV_DSGetHandleSizePtr_t = std::add_pointer_t<size_t(LV_UHandle_t)>;
+
+        // https://www.ni.com/docs/en-US/bundle/labview-api-ref/page/properties-and-methods/lv-manager/postlvuserevent.html
+        // MgErr PostLVUserEvent(LVUserEventRef ref, void *data);
+        using LV_PostLVUserEventPtr_t = std::add_pointer_t<LV_MgErr_t(LV_UserEventRef_t, void *)>;
+
 
         LV_MgErr_t get_edvr_data_handle_with_context(LV_EDVRReference_t, LV_EDVRContext_t *, LV_EDVRDataHandle_t);
         void throw_if_edvr_ref_pointers_not_unique(std::initializer_list<LV_EDVRReferencePtr_t>);

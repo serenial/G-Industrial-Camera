@@ -26,6 +26,7 @@ namespace
     static LV_DSNewHClrPtr_t DSNewHClrImp = nullptr;
     static LV_DSSetHSzClrPtr_t DSSetHSzClrImp = nullptr;
     static LV_DSGetHandleSizePtr_t DSGetHandleSizeImp = nullptr;
+    static LV_PostLVUserEventPtr_t PostLVUserEventImp = nullptr;
 }
 
 // call this function when the .so is loaded on linux
@@ -72,6 +73,7 @@ void g_industrial_cam::on_shared_library_load()
             DSNewHClrImp = reinterpret_cast<LV_DSNewHClrPtr_t>(GetProcAddress(module, "DSNewHClr"));
             DSSetHSzClrImp = reinterpret_cast<LV_DSSetHSzClrPtr_t>(GetProcAddress(module, "DSSetHSzClr"));
             DSGetHandleSizeImp = reinterpret_cast<LV_DSGetHandleSizePtr_t>(GetProcAddress(module, "DSGetHandleSize"));
+            PostLVUserEventImp = reinterpret_cast<LV_PostLVUserEventPtr_t>(GetProcAddress(module, "PostLVUserEvent"));
 #else
             auto module = dlopen(nullptr, RTLD_LAZY);
 
@@ -89,6 +91,7 @@ void g_industrial_cam::on_shared_library_load()
             DSNewHClrImp = reinterpret_cast<LV_DSNewHClrPtr_t>(dlsym(module, "DSNewHClr"));
             DSSetHSzClrImp = reinterpret_cast<LV_DSSetHSzClrPtr_t>(dlsym(module, "DSSetHSzClr"));
             DSGetHandleSizeImp = reinterpret_cast<LV_DSGetHandleSizePtr_t>(dlsym(module, "DSGetHandleSize"));
+            PostLVUserEventImp = reinterpret_cast<LV_PostLVUserEventPtr_t>(dlsym(module, "PostLVUserEvent"));
 #endif
 }
 
@@ -166,6 +169,11 @@ size_t lv_interop::DSGetHandleSize(LV_UHandle_t hndl)
 {
     return DSGetHandleSizeImp? DSGetHandleSizeImp(hndl): LV_ERR_bogusError;
 }
+
+LV_MgErr_t lv_interop::PostLVUserEvent(LV_UserEventRef_t ref, void* data){
+    return PostLVUserEventImp ? PostLVUserEventImp(ref, data) : LV_ERR_bogusError;
+}
+
 
 LV_MgErr_t lv_interop::get_edvr_data_handle_with_context(LV_EDVRReference_t edvr_ref, LV_EDVRContext_t *cntx_ptr, LV_EDVRDataHandle_t data_handle)
 {

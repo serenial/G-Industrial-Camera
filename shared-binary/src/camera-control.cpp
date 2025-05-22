@@ -88,21 +88,7 @@ extern "C"
     {
         try
         {
-            // make timeout behvaiour match LabVIEW-style timeout-symantics
-
-            uint64_t timeout_us = timeout_ms * 1000;
-
-            if (timeout_ms == 0)
-            {
-                timeout_us = 1; // the closest we can get to zero ms timeout is 1us;
-            }
-
-            if (timeout_ms < 0)
-            {
-                timeout_us = 0;
-            }
-
-            auto buf = camera_handle(camera_ref_ptr)->take_snapshot(timeout_us);
+            auto buf = camera_handle(camera_ref_ptr)->take_snapshot(timeout_ms);
 
             if (arv_buffer_get_status(buf) != ARV_BUFFER_STATUS_SUCCESS)
             {

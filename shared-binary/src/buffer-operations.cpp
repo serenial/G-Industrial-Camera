@@ -44,4 +44,21 @@ extern "C"
         }
         return LV_ERR_noError;
     }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_buffer_create_empty(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_Ptr_t<LV_BufferImageDimensions_t> dims_ptr
+    )
+    {
+        try
+        {
+            lv_buffer buffer(edvr_ref_ptr, nullptr);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
 }

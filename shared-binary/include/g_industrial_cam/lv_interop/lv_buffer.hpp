@@ -27,6 +27,7 @@ namespace g_industrial_cam
         const uint16_t height() const;
         void upgrade_to_mapped();
         void downgrade_from_mapped();
+        void reallocate(size_t required_size);
 
     private:
         struct buffer_persistant_data_t

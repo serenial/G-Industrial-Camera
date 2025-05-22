@@ -1,4 +1,6 @@
 #include <memory>
+#include <functional>
+#include <utility>
 
 #include <arv.h>
 
@@ -30,10 +32,17 @@ void camera::connect(const std::string& identifier_utf8){
     aravis_error err;
     m_camera = arv_camera_new(identifier_utf8.c_str(), err);
     aravis_error::check_error(err);
+
+    // get payload
+    m_camera_payload = arv_camera_get_payload(m_camera, err);
+    aravis_error::check_error(err);
 }
 
 camera::~camera()
 {
+    if(m_stream){
+        stream_stop();
+    }
     g_clear_object(&m_camera);
     m_camera = nullptr;
 }
@@ -56,12 +65,26 @@ void camera::get_avaliable_pixel_formats(std::vector<std::string> &pixel_formats
     }
 }
 
-ArvBuffer *camera::take_snapshot(uint64_t timeout) const
+ArvBuffer *camera::take_snapshot(int32_t  timeout_ms) const
 {
     aravis_error err;
 
+        // make timeout behvaiour match LabVIEW-style timeout-symantics
+
+    uint64_t timeout_us = timeout_ms * 1000;
+
+    if (timeout_ms == 0)
+    {
+        timeout_us = 1; // the closest we can get to zero ms timeout is 1us;
+    }
+
+    if (timeout_ms < 0)
+    {
+        timeout_us = 0;
+    }
+
     /* Acquire a single buffer */
-    ArvBuffer *buf = arv_camera_acquisition(m_camera, timeout, err);
+    ArvBuffer *buf = arv_camera_acquisition(m_camera, timeout_us, err);
 
     aravis_error::check_error(err);
 
@@ -87,4 +110,157 @@ void camera::set_pixel_format(const std::string &pixel_format_utf8)
     arv_camera_set_pixel_format_from_string(m_camera, pixel_format_utf8.c_str(), err);
 
     aravis_error::check_error(err);
+}
+
+void camera::stream_start(uint16_t n_additional_buffers){
+
+    if(m_stream != nullptr){
+        throw std::runtime_error("Camera is already streaming.");
+    }
+
+    aravis_error err;
+
+    arv_camera_set_acquisition_mode (m_camera, ARV_ACQUISITION_MODE_CONTINUOUS, err);
+
+    aravis_error::check_error(err);
+
+    m_stream = arv_camera_create_stream(m_camera, &camera::stream_callback, this, err);
+
+    if(!ARV_IS_STREAM(m_stream)){
+        m_stream = nullptr;
+        throw std::runtime_error("Unable to create stream");
+    }
+
+    for(int i=0; i < n_additional_buffers+2; i++){
+            // queue up the buffers into the stream - enough to fill the circular_buffer and one extra to load into the stream fifo
+            arv_stream_push_buffer(m_stream, arv_buffer_new_allocate(m_camera_payload));
+    }
+
+    // we are going to use a circular buffer to automatically push buffers from the output stream FIFO
+    // into the input stream FIFO
+    m_stream_buffers.set_capacity(n_additional_buffers+1);
+}
+
+void camera::stream_stop(){
+
+    aravis_error err;
+
+    /* Stop the acquisition */
+	arv_camera_stop_acquisition (m_camera, err);
+
+	/* Destroy the stream object */
+	g_clear_object(&m_stream);
+    m_stream = nullptr;
+
+    // cleanup any buffers in the circular buffer
+    for(auto buf: m_stream_buffers){
+        g_object_unref(&buf);
+    }
+
+    m_stream_buffers.clear();
+
+
+    aravis_error::check_error(err);
+}
+
+bool camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer** buffer_ptr){
+
+    if(!buffer_ptr){
+        throw std::invalid_argument("Buffer Pointer cannot be null.");
+    }
+
+    if(!m_stream){
+        throw std::runtime_error("Camera Stream is not running.");
+    }
+
+    auto has_frames = [&]{ return !m_stream_buffers.empty() || m_stream == nullptr; };
+    bool success = true;
+
+    std::unique_lock lk(m_stream_buffers_mtx);
+
+    if(timeout_ms<0){
+        m_stream_event.wait(lk, has_frames);
+    }
+    else{
+        success = m_stream_event.wait_for(lk, std::chrono::milliseconds(timeout_ms), has_frames);
+    }
+ 
+    if(success && !m_stream_buffers.empty()){
+        // something to get from the circular buffer
+
+        ArvBuffer* to_push_fifo = *buffer_ptr;
+
+        // check buffer we were passed
+        if(*buffer_ptr){
+            // check buffer is correct size - delete and reallocate if not
+            size_t passed_buffer_size;
+            arv_buffer_get_image_data(*buffer_ptr, &passed_buffer_size);
+            if( passed_buffer_size != m_camera_payload){
+                g_object_unref(buffer_ptr);
+                to_push_fifo = arv_buffer_new_allocate(m_camera_payload);
+            }
+        }
+        else{
+            // null-buffer: create new
+            to_push_fifo = arv_buffer_new_allocate(m_camera_payload);
+        }
+
+        to_push_fifo = *buffer_ptr;
+
+        // collect an old buffer from the circular buffer;
+        *buffer_ptr = m_stream_buffers.front();
+
+        // pop the front to remove the buffer we have just grabbed.
+        m_stream_buffers.pop_front();
+
+        // push this new buffer onto the stream FIFO
+        arv_stream_push_buffer(m_stream, to_push_fifo);
+
+    }
+
+    lk.unlock();
+
+    return !success;
+
+}
+
+void camera::stream_callback(void* self_void_ptr, ArvStreamCallbackType type, ArvBuffer *buffer){
+
+    auto self = reinterpret_cast<camera*>(self_void_ptr);
+
+	switch (type) {
+		case ARV_STREAM_CALLBACK_TYPE_INIT:
+			break;
+		case ARV_STREAM_CALLBACK_TYPE_START_BUFFER:
+			break;
+		case ARV_STREAM_CALLBACK_TYPE_BUFFER_DONE:
+
+			if(buffer != arv_stream_pop_buffer(self->m_stream) || buffer == nullptr){
+                return;
+            }
+
+			if (arv_buffer_get_status(buffer) == ARV_BUFFER_STATUS_SUCCESS){
+
+                {
+                    std::lock_guard lk(self->m_stream_buffers_mtx);
+
+                    if(self->m_stream_buffers.full()){
+                        // move the element that is about to be overwritten into the input FIFO
+                        arv_stream_push_buffer(self->m_stream, self->m_stream_buffers.front());
+                    }
+
+                    // take the newly filled buffer and add it to the end of the circular buffer
+                    self->m_stream_buffers.push_back(buffer);
+
+                    // mutex'd work done
+                }
+
+                self-> m_stream_event.notify_one();
+			}
+
+			break;
+		case ARV_STREAM_CALLBACK_TYPE_EXIT:
+			/* Stream thread ended */
+			break;
+	}
 }

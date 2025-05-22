@@ -245,3 +245,11 @@ void lv_buffer::on_labview_delete(LV_EDVRDataPtr_t ptr)
     delete data;
     ptr->metadata_ptr = reinterpret_cast<uintptr_t>(nullptr);
 }
+
+void lv_buffer::reallocate(size_t required_size){
+    if(size() != required_size){
+        // unref the current buffer
+        g_object_unref(&data->m_arv_buffer_ptr);
+        data->m_arv_buffer_ptr = arv_buffer_new_allocate(required_size);
+    }
+}

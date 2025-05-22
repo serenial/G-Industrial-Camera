@@ -7,6 +7,8 @@ include(GenerateExportHeader)
 find_package(PkgConfig)
 pkg_check_modules(aravis REQUIRED IMPORTED_TARGET aravis-0.8)
 
+find_package(boost_circular_buffer REQUIRED CONFIG)
+
 # specify shared-library target
 add_library(g_industrial_cam SHARED)
 
@@ -60,6 +62,7 @@ math(EXPR BITNESS "8*${CMAKE_SIZEOF_VOID_P}")
 set_target_properties(g_industrial_cam PROPERTIES OUTPUT_NAME gindustrialcam_${BITNESS}-${CMAKE_PROJECT_VERSION_MAJOR})
 target_link_libraries(g_industrial_cam PRIVATE 
   PkgConfig::aravis
+  Boost::circular_buffer
 )
 
 # Install Shared Library
