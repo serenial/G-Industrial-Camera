@@ -71,6 +71,10 @@ void camera::control_lost(ArvGvDevice *gv_device, void* self_void_ptr){
 
     auto self = static_cast<camera*>(self_void_ptr);
 
+    if(!self){
+        return;
+    }
+
     self->m_on_disconnect();
 }
 
@@ -287,8 +291,11 @@ void camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr, camer
 
 void camera::stream_callback(void *self_void_ptr, ArvStreamCallbackType type, ArvBuffer *buffer)
 {
-
     auto self = static_cast<camera *>(self_void_ptr);
+
+    if(!self){
+        return;
+    }
 
     switch (type)
     {

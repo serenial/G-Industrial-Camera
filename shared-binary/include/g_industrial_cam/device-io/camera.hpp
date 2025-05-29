@@ -28,6 +28,7 @@ namespace g_industrial_cam{
         camera(signal_fn_t on_disconnect);
         void connect(const std::string& identifier_utf8);
         static void stream_callback(void* self, ArvStreamCallbackType type, ArvBuffer *buffer_ptr);
+        static void control_lost(ArvGvDevice *gv_device, void* self);
         ArvCamera *m_camera;
         ArvStream *m_stream;
         size_t m_camera_payload;
