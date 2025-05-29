@@ -13,8 +13,10 @@
 using namespace g_industrial_cam;
 using namespace lv_interop;
 
-namespace{
+namespace
+{
     using camera_handle = EDVRManagedObject<camera>;
+    using LV_UserEventRefPtr_t = LV_Ptr_t<LV_UserEventRef_t>;
 }
 
 extern "C"
@@ -22,11 +24,16 @@ extern "C"
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_create(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_StringHandle_t id_handle,
+        LV_UserEventRefPtr_t disconnect_user_event_ref,
         LV_EDVRReferencePtr_t edvr_ref_ptr)
     {
         try
         {
-            camera_handle(edvr_ref_ptr, camera::create(id_handle.to_utf8_string()));
+            LV_UserEventRef_t disconnect = *disconnect_user_event_ref;
+            camera_handle(edvr_ref_ptr, camera::create(id_handle.to_utf8_string(), [=]
+                                                       {
+                LV_Boolean_t data = false;
+                PostLVUserEvent(disconnect,&data); }));
         }
         catch (...)
         {
@@ -106,14 +113,25 @@ extern "C"
         return LV_ERR_noError;
     }
 
-        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_stream_start(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_stream_start(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr,
-        uint16_t additional_buffers)
+        uint16_t additional_buffers,
+        LV_UserEventRefPtr_t on_stream_start_event,
+        LV_UserEventRefPtr_t on_stream_stop_event)
     {
         try
         {
-            camera_handle(camera_ref_ptr)->stream_start(additional_buffers);
+            LV_UserEventRef_t start = *on_stream_start_event;
+            LV_UserEventRef_t stop = *on_stream_stop_event;
+
+            camera_handle(camera_ref_ptr)->stream_start(additional_buffers, [=]()
+                                                        {
+                LV_Boolean_t data = false;
+                PostLVUserEvent(start,&data); }, [=]()
+                                                        {
+                LV_Boolean_t data = false;
+                PostLVUserEvent(stop,&data); });
         }
         catch (...)
         {
@@ -122,7 +140,6 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_stream_stop(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr)
@@ -138,19 +155,26 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    
-        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_stream_pop_buffer(
-            LV_ErrorClusterPtr_t error_cluster_ptr,
-            LV_EDVRReferencePtr_t camera_ref_ptr,
-            LV_EDVRReferencePtr_t buffer_ref_ptr,
-            int32_t timeout_ms
-        )
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_stream_pop_buffer(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_EDVRReferencePtr_t buffer_ref_ptr,
+        int32_t timeout_ms,
+        LV_UserEventRefPtr_t on_success_event,
+        LV_UserEventRefPtr_t on_fail_event)
     {
         try
         {
-            if(camera_handle(camera_ref_ptr)->stream_pop_buffer(timeout_ms, lv_buffer(buffer_ref_ptr))){
-                throw std::system_error(56, std::iostream_category(), "A Timeout occured whilst waiting for a stream buffer.");
-            }
+            LV_UserEventRef_t success = *on_success_event;
+            LV_UserEventRef_t fail = *on_fail_event;
+
+            camera_handle(camera_ref_ptr)->stream_pop_buffer(timeout_ms, lv_buffer(buffer_ref_ptr), [=]()
+                                                             {
+                LV_Boolean_t data = false;
+                PostLVUserEvent(success,&data); }, [=]()
+                                                             {
+                LV_Boolean_t data = false;
+                PostLVUserEvent(fail,&data); });
         }
         catch (...)
         {
