@@ -41,6 +41,9 @@ void camera::connect(const std::string &identifier_utf8)
     m_camera = arv_camera_new(identifier_utf8.c_str(), err);
     aravis_error::check_error(err);
 
+    // connect on_disconnect caller
+    g_signal_connect(arv_camera_get_device (m_camera), "control-lost", G_CALLBACK(control_lost), this);
+
     // get payload
     m_camera_payload = arv_camera_get_payload(m_camera, err);
     aravis_error::check_error(err);
@@ -61,6 +64,14 @@ camera::~camera()
     }
     g_clear_object(&m_camera);
     m_camera = nullptr;
+}
+
+
+void camera::control_lost(ArvGvDevice *gv_device, void* self_void_ptr){
+
+    auto self = static_cast<camera*>(self_void_ptr);
+
+    self->m_on_disconnect();
 }
 
 void camera::get_avaliable_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const
@@ -277,7 +288,7 @@ void camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr, camer
 void camera::stream_callback(void *self_void_ptr, ArvStreamCallbackType type, ArvBuffer *buffer)
 {
 
-    auto self = reinterpret_cast<camera *>(self_void_ptr);
+    auto self = static_cast<camera *>(self_void_ptr);
 
     switch (type)
     {
