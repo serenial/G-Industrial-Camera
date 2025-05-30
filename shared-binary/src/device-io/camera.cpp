@@ -44,7 +44,7 @@ void camera::connect(const std::string &identifier_utf8)
 
     // connect on_disconnect caller for gige vision cameras
     if(arv_camera_is_gv_device(m_camera)){
-        g_signal_connect(arv_camera_get_device (m_camera), "control-lost", G_CALLBACK(control_lost), this);
+        g_signal_connect(arv_camera_get_device (m_camera), "control-lost", G_CALLBACK(gv_control_lost_callback), this);
     }
 
     // get payload
@@ -69,7 +69,7 @@ camera::~camera()
     m_camera = nullptr;
 }
 
-void camera::control_lost(ArvGvDevice *gv_device, camera* self)
+void camera::gv_control_lost_callback(ArvGvDevice *gv_device, camera* self)
 {
     if (!self)
     {
@@ -165,7 +165,7 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
 
     // start the stream
 
-    m_stream = arv_camera_create_stream(m_camera, &camera::stream_callback, this, err);
+    m_stream = arv_camera_create_stream(m_camera, &camera::stream_event_callback, this, err);
 
     if (!ARV_IS_STREAM(m_stream))
     {
@@ -186,6 +186,10 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
     arv_camera_start_acquisition(m_camera, err);
 
     aravis_error::check_error(err);
+
+    // connect the new buffer callback
+    g_signal_connect (m_stream, "new-buffer", G_CALLBACK (stream_buffer_callback), this);
+    arv_stream_set_emit_signals (m_stream, true);
 
     bool no_timeout = true;
 
@@ -212,6 +216,8 @@ void camera::stream_stop()
     {
         return;
     }
+
+    arv_stream_set_emit_signals (m_stream, false); // stop the new buffer signal
 
     aravis_error err;
 
@@ -301,7 +307,7 @@ camera::timeout_result camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer *
     return no_timeout? timeout_result::success : timeout_result::timeout;
 }
 
-void camera::stream_callback(void *self_void_ptr, ArvStreamCallbackType type, ArvBuffer *buffer)
+void camera::stream_event_callback(void *self_void_ptr, ArvStreamCallbackType type, ArvBuffer *buffer)
 {
     auto self = static_cast<camera *>(self_void_ptr);
 
@@ -320,14 +326,16 @@ void camera::stream_callback(void *self_void_ptr, ArvStreamCallbackType type, Ar
         }
         self->m_stream_event.notify_one();
         break;
-    case ARV_STREAM_CALLBACK_TYPE_START_BUFFER:
+    case ARV_STREAM_CALLBACK_TYPE_EXIT:
+        self->m_callback_on_stream_stop();
+        /* Stream thread ended */
         break;
-    case ARV_STREAM_CALLBACK_TYPE_BUFFER_DONE:
+    }
+}
 
-        if (buffer != arv_stream_pop_buffer(self->m_stream) || buffer == nullptr)
-        {
-            return;
-        }
+void camera::stream_buffer_callback(ArvStream* stream, camera* self){
+        
+        ArvBuffer* buffer = arv_stream_pop_buffer(stream);
 
         if (arv_buffer_get_status(buffer) == ARV_BUFFER_STATUS_SUCCESS)
         {
@@ -338,7 +346,7 @@ void camera::stream_callback(void *self_void_ptr, ArvStreamCallbackType type, Ar
                 if (self->m_stream_buffers.full())
                 {
                     // move the element that is about to be overwritten into the input FIFO
-                    arv_stream_push_buffer(self->m_stream, self->m_stream_buffers.front());
+                    arv_stream_push_buffer(stream, self->m_stream_buffers.front());
                 }
 
                 // take the newly filled buffer and add it to the end of the circular buffer
@@ -349,6 +357,8 @@ void camera::stream_callback(void *self_void_ptr, ArvStreamCallbackType type, Ar
             self->m_stream_event.notify_one();
         }
         else{
+            // just push this buffer back into the device
+            arv_stream_push_buffer(stream, buffer);
             if(self->m_stream_max_sequential_errors >= 0){
                 self->m_stream_sequential_error_count++;
                 if(self->m_stream_sequential_error_count > self->m_stream_max_sequential_errors){
@@ -356,11 +366,4 @@ void camera::stream_callback(void *self_void_ptr, ArvStreamCallbackType type, Ar
                 }
             }
         }
-
-        break;
-    case ARV_STREAM_CALLBACK_TYPE_EXIT:
-        self->m_callback_on_stream_stop();
-        /* Stream thread ended */
-        break;
-    }
 }
