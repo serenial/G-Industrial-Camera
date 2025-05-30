@@ -23,7 +23,8 @@ namespace g_industrial_cam{
         void set_pixel_format(const std::string& pixel_format_utf8);
         void stream_start(uint16_t n_additional_buffers, signal_fn_t on_stream_start, signal_fn_t on_stream_stop);
         void stream_stop();
-        void stream_pop_buffer(int32_t timeout_ms, ArvBuffer** buffer_ptr, signal_fn_t on_stream_capture_success, signal_fn_t on_stream_capture_fail);
+        void stream_pop_buffer(int32_t timeout_ms, ArvBuffer** buffer_ptr, 
+            signal_fn_t on_stream_capture_success, signal_fn_t on_stream_capture_error, signal_fn_t on_stream_capture_timeout);
         private:
         camera(signal_fn_t on_disconnect);
         void connect(const std::string& identifier_utf8);

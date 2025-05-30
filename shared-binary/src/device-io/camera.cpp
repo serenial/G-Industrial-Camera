@@ -209,7 +209,8 @@ void camera::stream_stop()
     aravis_error::check_error(err);
 }
 
-void camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr, camera::signal_fn_t on_stream_capture_success, camera::signal_fn_t on_stream_capture_fail)
+void camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr, 
+    camera::signal_fn_t on_stream_capture_success, camera::signal_fn_t on_stream_capture_error, camera::signal_fn_t on_stream_capture_timeout)
 {
 
     if (!buffer_ptr)
@@ -222,7 +223,7 @@ void camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr, camer
         throw std::runtime_error("Camera Stream is not running.");
     }
 
-    std::thread([&, on_stream_capture_success, on_stream_capture_fail]
+    std::thread([&, on_stream_capture_success, on_stream_capture_error, on_stream_capture_timeout]
                 {
                     auto check_something_to_pop = [&]
                     { return !m_stream_buffers.empty() || m_stream == nullptr; };
@@ -278,13 +279,13 @@ void camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr, camer
                         on_stream_capture_success();
                     }
                     else{
-                        on_stream_capture_fail();
+                        on_stream_capture_timeout();
                     }
 
                     lk.unlock();
                 }
                 catch(...){
-                    on_stream_capture_fail();
+                    on_stream_capture_error();
                 } })
         .detach();
 }

@@ -161,12 +161,14 @@ extern "C"
         LV_EDVRReferencePtr_t buffer_ref_ptr,
         int32_t timeout_ms,
         LV_UserEventRefPtr_t on_success_event,
-        LV_UserEventRefPtr_t on_fail_event)
+        LV_UserEventRefPtr_t on_error_event,
+        LV_UserEventRefPtr_t on_timeout_event)
     {
         try
         {
             LV_UserEventRef_t success = *on_success_event;
-            LV_UserEventRef_t fail = *on_fail_event;
+            LV_UserEventRef_t error = *on_error_event;
+            LV_UserEventRef_t timeout = *on_timeout_event;
 
             camera_handle(camera_ref_ptr)->stream_pop_buffer(timeout_ms, lv_buffer(buffer_ref_ptr), [=]()
                                                              {
@@ -174,7 +176,10 @@ extern "C"
                 PostLVUserEvent(success,&data); }, [=]()
                                                              {
                 LV_Boolean_t data = false;
-                PostLVUserEvent(fail,&data); });
+                PostLVUserEvent(error,&data); }, [=]()
+                                                             {
+                LV_Boolean_t data = false;
+                PostLVUserEvent(timeout,&data); });
         }
         catch (...)
         {
