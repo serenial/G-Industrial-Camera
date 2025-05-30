@@ -23,7 +23,9 @@ namespace
 
 using namespace g_industrial_cam;
 
-camera::camera(camera::signal_fn_t on_disconnect) : m_on_disconnect(on_disconnect)
+camera::camera(camera::signal_fn_t on_disconnect) : 
+    m_callback_on_disconnect(on_disconnect),
+    m_stream(nullptr)
 {
     // nothing else to init;
 }
@@ -42,7 +44,7 @@ void camera::connect(const std::string &identifier_utf8)
     aravis_error::check_error(err);
 
     // connect on_disconnect caller
-    g_signal_connect(arv_camera_get_device (m_camera), "control-lost", G_CALLBACK(control_lost), this);
+    //g_signal_connect(arv_camera_get_device (m_camera), "control-lost", G_CALLBACK(control_lost), this);
 
     // get payload
     m_camera_payload = arv_camera_get_payload(m_camera, err);
@@ -75,7 +77,7 @@ void camera::control_lost(ArvGvDevice *gv_device, void* self_void_ptr){
         return;
     }
 
-    self->m_on_disconnect();
+    self->m_callback_on_disconnect();
 }
 
 void camera::get_avaliable_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const
@@ -157,8 +159,8 @@ void camera::stream_start(uint16_t n_additional_buffers, camera::signal_fn_t on_
 
     aravis_error::check_error(err);
 
-    m_on_stream_start = on_stream_start;
-    m_on_stream_stop = on_stream_stop;
+    m_callback_on_stream_start = on_stream_start;
+    m_callback_on_stream_stop = on_stream_stop;
 
     m_stream = arv_camera_create_stream(m_camera, &camera::stream_callback, this, err);
 
@@ -223,7 +225,11 @@ void camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr,
         throw std::runtime_error("Camera Stream is not running.");
     }
 
-    std::thread([&, on_stream_capture_success, on_stream_capture_error, on_stream_capture_timeout]
+    m_callback_on_stream_capture_ok = on_stream_capture_success;
+    m_callback_on_stream_capture_error = on_stream_capture_error;
+    m_callback_on_stream_capture_timeout = on_stream_capture_timeout;
+
+    std::thread([&,buffer_ptr]
                 {
                     auto check_something_to_pop = [&]
                     { return !m_stream_buffers.empty() || m_stream == nullptr; };
@@ -276,16 +282,16 @@ void camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr,
 
                         // push this new buffer onto the stream FIFO
                         arv_stream_push_buffer(m_stream, to_push_fifo);
-                        on_stream_capture_success();
+                        m_callback_on_stream_capture_ok();
                     }
                     else{
-                        on_stream_capture_timeout();
+                        m_callback_on_stream_capture_timeout();
                     }
 
                     lk.unlock();
                 }
                 catch(...){
-                    on_stream_capture_error();
+                    m_callback_on_stream_capture_error();
                 } })
         .detach();
 }
@@ -301,7 +307,7 @@ void camera::stream_callback(void *self_void_ptr, ArvStreamCallbackType type, Ar
     switch (type)
     {
     case ARV_STREAM_CALLBACK_TYPE_INIT:
-        self->m_on_stream_start();
+        self->m_callback_on_stream_start();
         break;
     case ARV_STREAM_CALLBACK_TYPE_START_BUFFER:
         break;
@@ -326,16 +332,15 @@ void camera::stream_callback(void *self_void_ptr, ArvStreamCallbackType type, Ar
 
                 // take the newly filled buffer and add it to the end of the circular buffer
                 self->m_stream_buffers.push_back(buffer);
-
                 // mutex'd work done
             }
-
+            self->m_callback_on_stream_capture_ok();
             self->m_stream_event.notify_one();
         }
 
         break;
     case ARV_STREAM_CALLBACK_TYPE_EXIT:
-        self->m_on_stream_stop();
+        self->m_callback_on_stream_stop();
         /* Stream thread ended */
         break;
     }

@@ -36,8 +36,11 @@ namespace g_industrial_cam{
         boost::circular_buffer<ArvBuffer*> m_stream_buffers;
         std::mutex m_stream_buffers_mtx;
         std::condition_variable m_stream_event;
-        signal_fn_t m_on_stream_start;
-        signal_fn_t m_on_stream_stop;
-        const signal_fn_t m_on_disconnect;
+        const signal_fn_t m_callback_on_disconnect;
+        signal_fn_t m_callback_on_stream_start;
+        signal_fn_t m_callback_on_stream_stop;
+        signal_fn_t m_callback_on_stream_capture_ok;
+        signal_fn_t m_callback_on_stream_capture_error;
+        signal_fn_t m_callback_on_stream_capture_timeout;
     };
 }
