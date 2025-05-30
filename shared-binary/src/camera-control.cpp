@@ -117,18 +117,20 @@ extern "C"
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr,
         uint16_t additional_buffers,
-        LV_UserEventRefPtr_t on_stream_start_event,
+        int32_t max_sequential_errors,
+        int32_t timeout_ms,
+        LV_UserEventRefPtr_t on_stream_error_event,
         LV_UserEventRefPtr_t on_stream_stop_event)
     {
         try
         {
-            LV_UserEventRef_t start = *on_stream_start_event;
+            LV_UserEventRef_t error = *on_stream_error_event;
             LV_UserEventRef_t stop = *on_stream_stop_event;
 
-            camera_handle(camera_ref_ptr)->stream_start(additional_buffers, [=]()
+            camera_handle(camera_ref_ptr)->stream_start(max_sequential_errors, additional_buffers, timeout_ms, [=]()
                                                         {
                 LV_Boolean_t data = false;
-                PostLVUserEvent(start,&data); }, [=]()
+                PostLVUserEvent(error,&data); }, [=]()
                                                         {
                 LV_Boolean_t data = false;
                 PostLVUserEvent(stop,&data); });
@@ -159,27 +161,15 @@ extern "C"
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr,
         LV_EDVRReferencePtr_t buffer_ref_ptr,
-        int32_t timeout_ms,
-        LV_UserEventRefPtr_t on_success_event,
-        LV_UserEventRefPtr_t on_error_event,
-        LV_UserEventRefPtr_t on_timeout_event)
+        int32_t timeout_ms)
     {
         try
         {
-            LV_UserEventRef_t success = *on_success_event;
-            LV_UserEventRef_t error = *on_error_event;
-            LV_UserEventRef_t timeout = *on_timeout_event;
+            auto result = camera_handle(camera_ref_ptr)->stream_pop_buffer(timeout_ms, lv_buffer(buffer_ref_ptr));
 
-            camera_handle(camera_ref_ptr)->stream_pop_buffer(timeout_ms, lv_buffer(buffer_ref_ptr), [=]()
-                                                             {
-                LV_Boolean_t data = false;
-                PostLVUserEvent(success,&data); }, [=]()
-                                                             {
-                LV_Boolean_t data = false;
-                PostLVUserEvent(error,&data); }, [=]()
-                                                             {
-                LV_Boolean_t data = false;
-                PostLVUserEvent(timeout,&data); });
+            if(result == camera::timeout_result::timeout){
+                throw std::system_error(56, std::iostream_category(), "A Timeout occured whilst waiting for a stream buffer.");
+            }
         }
         catch (...)
         {
