@@ -10,6 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     env:
       VCPKG_DEFAULT_TRIPLET: ${{ matrix.arch }}-${{ matrix.triplet_platform}}${{ matrix.arch == 'x64' && '-release' || '' }}
+      VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
     strategy:
       fail-fast: false
       matrix:
@@ -25,6 +26,12 @@ jobs:
           arch: x86
         
     steps:
+    - name: Restore vcpkg cache
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ github.workspace }}/vcpkg_cache
+        key: vcpkg-${{runner.os}}-${{runner.arch}}-${{ hashFiles('vcpkg.json') }}
+        restore-keys: vcpkg-${{runner.os}}-${{runner.arch}}-
     - uses: actions/checkout@v4
       with:
         submodules: true
@@ -49,3 +56,9 @@ jobs:
         path: |
          ${{ github.workspace }}/g_industrial_cam/bin
          ${{ github.workspace }}/build/vcpkg_installed/**/share
+
+    - name: Save vcpkg cache
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ github.workspace }}/vcpkg_cache
+        key: vcpkg-${{runner.os}}-${{runner.arch}}-${{ hashFiles('vcpkg.json') }}
