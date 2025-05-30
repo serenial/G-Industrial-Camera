@@ -65,7 +65,7 @@ camera::~camera()
     {
         // do nothing
     }
-    g_clear_object(&m_camera);
+    g_object_unref(m_camera);
     m_camera = nullptr;
 }
 
@@ -223,7 +223,7 @@ void camera::stream_stop()
 
     arv_camera_stop_acquisition(m_camera, err);
 
-    g_clear_object(&m_stream);
+    g_object_unref(m_stream);
     m_stream = nullptr;
 
     // cleanup any buffers in the circular buffer
