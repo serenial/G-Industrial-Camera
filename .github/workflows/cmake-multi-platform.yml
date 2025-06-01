@@ -30,8 +30,8 @@ jobs:
       uses: actions/cache/restore@v4
       with:
         path: ${{ github.workspace }}/vcpkg_cache
-        key: vcpkg-${{runner.os}}-${{runner.arch}}-${{ hashFiles('vcpkg.json') }}
-        restore-keys: vcpkg-${{runner.os}}-${{runner.arch}}-
+        key: vcpkg-${{ env.VCPKG_DEFAULT_TRIPLET }}-${{ hashFiles('vcpkg.json') }}
+        restore-keys: vcpkg-${{ env.VCPKG_DEFAULT_TRIPLET }}-
     - uses: actions/checkout@v4
       with:
         submodules: true
@@ -61,4 +61,4 @@ jobs:
       uses: actions/cache/save@v4
       with:
         path: ${{ github.workspace }}/vcpkg_cache
-        key: vcpkg-${{runner.os}}-${{runner.arch}}-${{ hashFiles('vcpkg.json') }}
+        key: vcpkg-${{ env.VCPKG_DEFAULT_TRIPLET }}-${{ hashFiles('vcpkg.json') }}

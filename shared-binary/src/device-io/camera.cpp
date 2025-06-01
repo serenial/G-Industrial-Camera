@@ -40,16 +40,17 @@ void camera::connect(const std::string &identifier_utf8)
 {
     aravis_error err;
     m_camera = arv_camera_new(identifier_utf8.c_str(), err);
-    aravis_error::check_error(err);
+    aravis_error::check(err);
 
     // connect on_disconnect caller for gige vision cameras
-    if(arv_camera_is_gv_device(m_camera)){
-        g_signal_connect(arv_camera_get_device (m_camera), "control-lost", G_CALLBACK(gv_control_lost_callback), this);
+    if (arv_camera_is_gv_device(m_camera))
+    {
+        g_signal_connect(arv_camera_get_device(m_camera), "control-lost", G_CALLBACK(gv_control_lost_callback), this);
     }
 
     // get payload
     m_camera_payload = arv_camera_get_payload(m_camera, err);
-    aravis_error::check_error(err);
+    aravis_error::check(err);
 }
 
 camera::~camera()
@@ -69,7 +70,7 @@ camera::~camera()
     m_camera = nullptr;
 }
 
-void camera::gv_control_lost_callback(ArvGvDevice *gv_device, camera* self)
+void camera::gv_control_lost_callback(ArvGvDevice *gv_device, camera *self)
 {
     if (!self)
     {
@@ -88,7 +89,7 @@ void camera::get_avaliable_pixel_formats(std::vector<std::string> &pixel_formats
     // is cleared - we own the container but not the data
     std::unique_ptr<const char *, ::g_pointer_deleter_t<const char **>> list(arv_camera_dup_available_pixel_formats_as_strings(m_camera, &n_formats, err));
 
-    aravis_error::check_error(err);
+    aravis_error::check(err);
 
     for (guint i = 0; i < n_formats; i++)
     {
@@ -117,7 +118,7 @@ ArvBuffer *camera::take_snapshot(int32_t timeout_ms) const
     /* Acquire a single buffer */
     ArvBuffer *buf = arv_camera_acquisition(m_camera, timeout_us, err);
 
-    aravis_error::check_error(err);
+    aravis_error::check(err);
 
     return buf;
 }
@@ -128,7 +129,7 @@ std::string camera::get_pixel_format() const
 
     auto format = std::string(arv_camera_get_pixel_format_as_string(m_camera, err));
 
-    aravis_error::check_error(err);
+    aravis_error::check(err);
 
     return format;
 }
@@ -140,7 +141,7 @@ void camera::set_pixel_format(const std::string &pixel_format_utf8)
 
     arv_camera_set_pixel_format_from_string(m_camera, pixel_format_utf8.c_str(), err);
 
-    aravis_error::check_error(err);
+    aravis_error::check(err);
 }
 
 camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint16_t n_additional_buffers, int32_t timeout_ms, camera::signal_fn_t on_stream_errors_exceeded, camera::signal_fn_t on_stream_stop)
@@ -155,7 +156,7 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
 
     arv_camera_set_acquisition_mode(m_camera, ARV_ACQUISITION_MODE_CONTINUOUS, err);
 
-    aravis_error::check_error(err);
+    aravis_error::check(err);
 
     // init internal class members to get ready to stream
     m_callback_on_stream_error_limit_exceeded = on_stream_errors_exceeded;
@@ -185,15 +186,16 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
 
     arv_camera_start_acquisition(m_camera, err);
 
-    aravis_error::check_error(err);
+    aravis_error::check(err);
 
     // connect the new buffer callback
-    g_signal_connect (m_stream, "new-buffer", G_CALLBACK (stream_buffer_callback), this);
-    arv_stream_set_emit_signals (m_stream, true);
+    g_signal_connect(m_stream, "new-buffer", G_CALLBACK(stream_buffer_callback), this);
+    arv_stream_set_emit_signals(m_stream, true);
 
     bool no_timeout = true;
 
-    auto started = [&](){ return m_stream_started;};
+    auto started = [&]()
+    { return m_stream_started; };
 
     std::unique_lock lk(m_stream_buffers_mtx);
 
@@ -206,7 +208,7 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
         no_timeout = m_stream_event.wait_for(lk, std::chrono::milliseconds(timeout_ms), started);
     }
 
-    return no_timeout? camera::timeout_result::success : camera::timeout_result::timeout;
+    return no_timeout ? camera::timeout_result::success : camera::timeout_result::timeout;
 }
 
 void camera::stream_stop()
@@ -217,7 +219,7 @@ void camera::stream_stop()
         return;
     }
 
-    arv_stream_set_emit_signals (m_stream, false); // stop the new buffer signal
+    arv_stream_set_emit_signals(m_stream, false); // stop the new buffer signal
 
     aravis_error err;
 
@@ -234,7 +236,7 @@ void camera::stream_stop()
 
     m_stream_buffers.clear();
 
-    aravis_error::check_error(err);
+    aravis_error::check(err);
 }
 
 camera::timeout_result camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr)
@@ -252,7 +254,7 @@ camera::timeout_result camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer *
 
     auto check_something_to_pop = [&]
     { return !m_stream_buffers.empty() || m_stream == nullptr; };
-    
+
     bool no_timeout = true;
 
     std::unique_lock lk(m_stream_buffers_mtx);
@@ -304,7 +306,7 @@ camera::timeout_result camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer *
 
     lk.unlock();
 
-    return no_timeout? timeout_result::success : timeout_result::timeout;
+    return no_timeout ? timeout_result::success : timeout_result::timeout;
 }
 
 void camera::stream_event_callback(void *self_void_ptr, ArvStreamCallbackType type, ArvBuffer *buffer)
@@ -319,11 +321,11 @@ void camera::stream_event_callback(void *self_void_ptr, ArvStreamCallbackType ty
     switch (type)
     {
     case ARV_STREAM_CALLBACK_TYPE_INIT:
-        {   
-            std::lock_guard lk(self->m_stream_buffers_mtx);
-            self->m_stream_sequential_error_count = 0;
-            self->m_stream_started = true;
-        }
+    {
+        std::lock_guard lk(self->m_stream_buffers_mtx);
+        self->m_stream_sequential_error_count = 0;
+        self->m_stream_started = true;
+    }
         self->m_stream_event.notify_one();
         break;
     case ARV_STREAM_CALLBACK_TYPE_EXIT:
@@ -333,37 +335,63 @@ void camera::stream_event_callback(void *self_void_ptr, ArvStreamCallbackType ty
     }
 }
 
-void camera::stream_buffer_callback(ArvStream* stream, camera* self){
-        
-        ArvBuffer* buffer = arv_stream_pop_buffer(stream);
+void camera::stream_buffer_callback(ArvStream *stream, camera *self)
+{
 
-        if (arv_buffer_get_status(buffer) == ARV_BUFFER_STATUS_SUCCESS)
+    ArvBuffer *buffer = arv_stream_pop_buffer(stream);
+
+    if (arv_buffer_get_status(buffer) == ARV_BUFFER_STATUS_SUCCESS)
+    {
+
         {
+            std::lock_guard lk(self->m_stream_buffers_mtx);
 
+            if (self->m_stream_buffers.full())
             {
-                std::lock_guard lk(self->m_stream_buffers_mtx);
-
-                if (self->m_stream_buffers.full())
-                {
-                    // move the element that is about to be overwritten into the input FIFO
-                    arv_stream_push_buffer(stream, self->m_stream_buffers.front());
-                }
-
-                // take the newly filled buffer and add it to the end of the circular buffer
-                self->m_stream_buffers.push_back(buffer);
-                self->m_stream_sequential_error_count = 0;
-                // mutex'd work done
+                // move the element that is about to be overwritten into the input FIFO
+                arv_stream_push_buffer(stream, self->m_stream_buffers.front());
             }
-            self->m_stream_event.notify_one();
+
+            // take the newly filled buffer and add it to the end of the circular buffer
+            self->m_stream_buffers.push_back(buffer);
+            self->m_stream_sequential_error_count = 0;
+            // mutex'd work done
         }
-        else{
-            // just push this buffer back into the device
-            arv_stream_push_buffer(stream, buffer);
-            if(self->m_stream_max_sequential_errors >= 0){
-                self->m_stream_sequential_error_count++;
-                if(self->m_stream_sequential_error_count > self->m_stream_max_sequential_errors){
-                    self->m_callback_on_stream_error_limit_exceeded();
-                }
+        self->m_stream_event.notify_one();
+    }
+    else
+    {
+        // just push this buffer back into the device
+        arv_stream_push_buffer(stream, buffer);
+        if (self->m_stream_max_sequential_errors >= 0)
+        {
+            self->m_stream_sequential_error_count++;
+            if (self->m_stream_sequential_error_count > self->m_stream_max_sequential_errors)
+            {
+                self->m_callback_on_stream_error_limit_exceeded();
             }
         }
+    }
+}
+
+void camera::clear_triggers()
+{
+    aravis_error err;
+    arv_camera_clear_triggers(m_camera, err);
+    aravis_error::check(err);
+}
+
+void camera::available_black_levels(std::vector<std::string>& black_levels_utf8){
+    
+    guint n_selectors = 0;
+    aravis_error err;
+
+    std::unique_ptr<const char *, ::g_pointer_deleter_t<const char **>> list(arv_camera_dup_available_pixel_formats_as_strings(m_camera, &n_selectors, err));
+
+    aravis_error::check(err);
+
+    for (guint i = 0; i < n_selectors; i++)
+    {
+        black_levels_utf8.emplace_back(list.get()[i]);
+    }
 }

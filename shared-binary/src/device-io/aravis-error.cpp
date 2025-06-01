@@ -31,7 +31,7 @@ int32_t aravis_error::code() const{
     return 0;
 }
 
-void aravis_error::check_error(const aravis_error& e){
+void aravis_error::check(const aravis_error& e){
     if(e.m_err){
         throw aravis_error_exception(e);
     }

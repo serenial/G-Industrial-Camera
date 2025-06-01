@@ -14,7 +14,7 @@ namespace g_industrial_cam
         aravis_error();
         ~aravis_error();
         operator GError **();
-        static void check_error(const aravis_error &err);
+        static void check(const aravis_error &err);
         std::string message() const;
         int32_t code() const;
 
