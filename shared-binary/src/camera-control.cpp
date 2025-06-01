@@ -50,7 +50,7 @@ extern "C"
         try
         {
             std::vector<std::string> formats;
-            camera_handle(edvr_ref_ptr)->get_avaliable_pixel_formats(formats);
+            camera_handle(edvr_ref_ptr)->avaliable_pixel_formats(formats);
 
             formats_handle.copy_element_by_element_from(formats, [](auto from, auto to)
                                                         { to->copy_from_utf8(from); });

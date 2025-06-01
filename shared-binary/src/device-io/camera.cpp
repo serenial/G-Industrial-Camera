@@ -79,24 +79,6 @@ void camera::gv_control_lost_callback(ArvGvDevice *gv_device, camera *self)
     self->m_callback_on_disconnect();
 }
 
-void camera::get_avaliable_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const
-{
-
-    guint n_formats = 0;
-    aravis_error err;
-
-    // use a unique_ptr to ensure the const char** "container" returned by arv_camera_dup_avaliable_pixel_formats_as_strings
-    // is cleared - we own the container but not the data
-    std::unique_ptr<const char *, ::g_pointer_deleter_t<const char **>> list(arv_camera_dup_available_pixel_formats_as_strings(m_camera, &n_formats, err));
-
-    aravis_error::check(err);
-
-    for (guint i = 0; i < n_formats; i++)
-    {
-        pixel_formats_utf8.emplace_back(list.get()[i]);
-    }
-}
-
 ArvBuffer *camera::take_snapshot(int32_t timeout_ms) const
 {
     aravis_error err;
@@ -121,27 +103,6 @@ ArvBuffer *camera::take_snapshot(int32_t timeout_ms) const
     aravis_error::check(err);
 
     return buf;
-}
-
-std::string camera::get_pixel_format() const
-{
-    aravis_error err;
-
-    auto format = std::string(arv_camera_get_pixel_format_as_string(m_camera, err));
-
-    aravis_error::check(err);
-
-    return format;
-}
-
-void camera::set_pixel_format(const std::string &pixel_format_utf8)
-{
-
-    aravis_error err;
-
-    arv_camera_set_pixel_format_from_string(m_camera, pixel_format_utf8.c_str(), err);
-
-    aravis_error::check(err);
 }
 
 camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint16_t n_additional_buffers, int32_t timeout_ms, camera::signal_fn_t on_stream_errors_exceeded, camera::signal_fn_t on_stream_stop)
@@ -374,6 +335,27 @@ void camera::stream_buffer_callback(ArvStream *stream, camera *self)
     }
 }
 
+std::string camera::get_pixel_format() const
+{
+    aravis_error err;
+
+    auto format = std::string(arv_camera_get_pixel_format_as_string(m_camera, err));
+
+    aravis_error::check(err);
+
+    return format;
+}
+
+void camera::set_pixel_format(const std::string &pixel_format_utf8)
+{
+
+    aravis_error err;
+
+    arv_camera_set_pixel_format_from_string(m_camera, pixel_format_utf8.c_str(), err);
+
+    aravis_error::check(err);
+}
+
 void camera::clear_triggers()
 {
     aravis_error err;
@@ -381,17 +363,63 @@ void camera::clear_triggers()
     aravis_error::check(err);
 }
 
-void camera::available_black_levels(std::vector<std::string>& black_levels_utf8){
-    
-    guint n_selectors = 0;
+void camera::available_black_levels(std::vector<std::string> &black_levels_utf8) const
+{
+    populate_list_with_fn(black_levels_utf8, arv_camera_dup_available_pixel_formats_as_strings);
+}
+
+void camera::available_components(std::vector<std::string> &components_utf8) const
+{
+    populate_list_with_fn(components_utf8, arv_camera_dup_available_pixel_formats_as_strings);
+}
+
+void camera::available_enumerations(std::vector<std::string> &enums_utf8, std::string feature_utf) const
+{
+    guint n_elements = 0;
     aravis_error err;
 
-    std::unique_ptr<const char *, ::g_pointer_deleter_t<const char **>> list(arv_camera_dup_available_pixel_formats_as_strings(m_camera, &n_selectors, err));
+    std::unique_ptr<const char *, ::g_pointer_deleter_t<const char **>> result(arv_camera_dup_available_enumerations_as_strings(m_camera, feature_utf.c_str(), &n_elements, err));
 
     aravis_error::check(err);
 
-    for (guint i = 0; i < n_selectors; i++)
+    for (guint i = 0; i < n_elements; i++)
     {
-        black_levels_utf8.emplace_back(list.get()[i]);
+        enums_utf8.emplace_back(result.get()[i]);
+    }
+}
+
+void camera::available_gains(std::vector<std::string> &gains_utf8) const
+{
+    populate_list_with_fn(gains_utf8, arv_camera_dup_available_gains);
+}
+
+void camera::available_trigger_sources(std::vector<std::string>& trigger_sources_utf8) const
+{
+    populate_list_with_fn(trigger_sources_utf8, arv_camera_dup_available_trigger_sources);
+}
+
+void camera::avaliable_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const
+{
+    populate_list_with_fn(pixel_formats_utf8, arv_camera_dup_available_pixel_formats_as_strings);
+}
+
+void camera::available_triggers(std::vector<std::string>& triggers_utf8) const{
+    populate_list_with_fn(triggers_utf8, arv_camera_dup_available_triggers);
+}
+
+///////////////////////////////////////////////////////////////////////
+
+void camera::populate_list_with_fn(std::vector<std::string> &list, std::function<const char **(ArvCamera *, guint *, GError **)> fn) const
+{
+    guint n_elements = 0;
+    aravis_error err;
+
+    std::unique_ptr<const char *, ::g_pointer_deleter_t<const char **>> result(fn(m_camera, &n_elements, err));
+
+    aravis_error::check(err);
+
+    for (guint i = 0; i < n_elements; i++)
+    {
+        list.emplace_back(result.get()[i]);
     }
 }

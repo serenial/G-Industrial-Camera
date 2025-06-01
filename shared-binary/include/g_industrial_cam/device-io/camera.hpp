@@ -23,18 +23,20 @@ namespace g_industrial_cam{
         static camera* create(const std::string& identifier_utf8, signal_fn_t on_disconnect);
         ~camera();
         ArvBuffer* take_snapshot(int32_t timeout) const;
-        void get_avaliable_pixel_formats(std::vector<std::string>& pixel_formats_utf8) const;
         std::string get_pixel_format() const;
         void set_pixel_format(const std::string& pixel_format_utf8);
         timeout_result stream_start(int32_t max_sequential_errors, uint16_t n_additional_buffers,int32_t timeout_ms, signal_fn_t on_stream_error, signal_fn_t on_stream_stop);
         void stream_stop();
         timeout_result stream_pop_buffer(int32_t timeout_ms, ArvBuffer** buffer_ptr);
         void clear_triggers();
-        void available_black_levels(std::vector<std::string>& black_levels_utf8);
-// dup_available_components
-// dup_available_enumerations_as_strings
-// dup_available_gains
-// dup_available_trigger_sources
+        void available_black_levels(std::vector<std::string>& black_levels_utf8) const;
+        void available_components(std::vector<std::string>& components_utf8) const;
+        void available_enumerations(std::vector<std::string>& enums_utf8, std::string feature_utf) const;
+        void available_gains(std::vector<std::string>& gains_utf8) const;
+        void available_trigger_sources(std::vector<std::string>& trigger_sources_utf8) const;
+        void avaliable_pixel_formats(std::vector<std::string>& pixel_formats_utf8) const;
+        void available_triggers(std::vector<std::string>& triggers_utf8) const;
+
 // dup_available_triggers
 // dup_register
 // execute_command
@@ -131,6 +133,7 @@ namespace g_industrial_cam{
         static void stream_event_callback(void* self, ArvStreamCallbackType type, ArvBuffer *buffer_ptr);
         static void stream_buffer_callback(ArvStream* stream, camera* self);
         static void gv_control_lost_callback(ArvGvDevice *gv_device, camera* self);
+        void populate_list_with_fn(std::vector<std::string>&list,std::function<const char**(ArvCamera*, guint*, GError**)> fn) const;
         ArvCamera *m_camera;
         ArvStream *m_stream;
         size_t m_camera_payload;
