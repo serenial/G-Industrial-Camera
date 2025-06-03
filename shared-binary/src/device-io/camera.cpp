@@ -12,7 +12,7 @@
 namespace
 {
     template <class T>
-    struct g_pointer_deleter_t
+    struct deleter_for_g_pointer
     {
         void operator()(T ptr)
         {
@@ -337,89 +337,117 @@ void camera::stream_buffer_callback(ArvStream *stream, camera *self)
 
 std::string camera::get_pixel_format() const
 {
-    aravis_error err;
-
-    auto format = std::string(arv_camera_get_pixel_format_as_string(m_camera, err));
-
-    aravis_error::check(err);
-
-    return format;
+    call_camera_fn_with_string_return(arv_camera_get_pixel_format_as_string);
 }
 
 void camera::set_pixel_format(const std::string &pixel_format_utf8)
 {
-
-    aravis_error err;
-
-    arv_camera_set_pixel_format_from_string(m_camera, pixel_format_utf8.c_str(), err);
-
-    aravis_error::check(err);
+    call_camera_fn_with_no_return(arv_camera_set_pixel_format_from_string, pixel_format_utf8.c_str());
 }
 
 void camera::clear_triggers()
 {
-    aravis_error err;
-    arv_camera_clear_triggers(m_camera, err);
-    aravis_error::check(err);
+    call_camera_fn_with_no_return(arv_camera_clear_triggers);
 }
 
 void camera::available_black_levels(std::vector<std::string> &black_levels_utf8) const
 {
-    populate_list_with_fn(black_levels_utf8, arv_camera_dup_available_pixel_formats_as_strings);
+    call_camera_fn_to_populate_list(arv_camera_dup_available_pixel_formats_as_strings, black_levels_utf8);
 }
 
 void camera::available_components(std::vector<std::string> &components_utf8) const
 {
-    populate_list_with_fn(components_utf8, arv_camera_dup_available_pixel_formats_as_strings);
+    call_camera_fn_to_populate_list(arv_camera_dup_available_pixel_formats_as_strings, components_utf8);
 }
 
-void camera::available_enumerations(std::vector<std::string> &enums_utf8, std::string feature_utf) const
+void camera::available_enumerations(std::vector<std::string> &enums_utf8, const std::string &feature_utf) const
 {
-    guint n_elements = 0;
-    aravis_error err;
-
-    std::unique_ptr<const char *, ::g_pointer_deleter_t<const char **>> result(arv_camera_dup_available_enumerations_as_strings(m_camera, feature_utf.c_str(), &n_elements, err));
-
-    aravis_error::check(err);
-
-    for (guint i = 0; i < n_elements; i++)
-    {
-        enums_utf8.emplace_back(result.get()[i]);
-    }
+    call_camera_fn_to_populate_list(arv_camera_dup_available_enumerations_as_strings, enums_utf8, feature_utf.c_str());
 }
 
 void camera::available_gains(std::vector<std::string> &gains_utf8) const
 {
-    populate_list_with_fn(gains_utf8, arv_camera_dup_available_gains);
+    call_camera_fn_to_populate_list(arv_camera_dup_available_gains, gains_utf8);
 }
 
-void camera::available_trigger_sources(std::vector<std::string>& trigger_sources_utf8) const
+void camera::available_trigger_sources(std::vector<std::string> &trigger_sources_utf8) const
 {
-    populate_list_with_fn(trigger_sources_utf8, arv_camera_dup_available_trigger_sources);
+    call_camera_fn_to_populate_list(arv_camera_dup_available_trigger_sources, trigger_sources_utf8);
 }
 
 void camera::avaliable_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const
 {
-    populate_list_with_fn(pixel_formats_utf8, arv_camera_dup_available_pixel_formats_as_strings);
+    call_camera_fn_to_populate_list(arv_camera_dup_available_pixel_formats_as_strings, pixel_formats_utf8);
 }
 
-void camera::available_triggers(std::vector<std::string>& triggers_utf8) const{
-    populate_list_with_fn(triggers_utf8, arv_camera_dup_available_triggers);
-}
-
-///////////////////////////////////////////////////////////////////////
-
-void camera::populate_list_with_fn(std::vector<std::string> &list, std::function<const char **(ArvCamera *, guint *, GError **)> fn) const
+void camera::available_triggers(std::vector<std::string> &triggers_utf8) const
 {
-    guint n_elements = 0;
+    call_camera_fn_to_populate_list(arv_camera_dup_available_triggers, triggers_utf8);
+}
+
+void camera::read_register(std::vector<std::byte> &bytes, const std::string &register_utf8) const
+{
+    guint64 n_bytes = 0;
     aravis_error err;
+    std::unique_ptr<void, ::deleter_for_g_pointer<void *>> result(arv_camera_dup_register(m_camera, register_utf8.c_str(), &n_bytes, err));
 
-    std::unique_ptr<const char *, ::g_pointer_deleter_t<const char **>> result(fn(m_camera, &n_elements, err));
+    bytes.resize(n_bytes);
 
-    aravis_error::check(err);
+    std::memcpy(bytes.data(), result.get(), n_bytes);
+}
 
-    for (guint i = 0; i < n_elements; i++)
-    {
-        list.emplace_back(result.get()[i]);
-    }
+void camera::execute_command(const std::string &feature_utf8) const
+{
+    call_camera_fn_with_no_return(arv_camera_execute_command, feature_utf8.c_str());
+}
+
+bool camera::get_boolean(const std::string &feature_utf8) const
+{
+    return call_camera_fn_with_bool_return(arv_camera_get_boolean, feature_utf8.c_str());
+}
+
+std::string camera::get_trigger_source() const
+{
+    return call_camera_fn_with_string_return(arv_camera_get_trigger_source);
+}
+
+bool camera::is_enumeration_entry_available(const std::string &feature_utf8, const std::string &entry_utf8) const
+{
+    return call_camera_fn_with_bool_return(arv_camera_is_enumeration_entry_available, feature_utf8.c_str(), entry_utf8.c_str());
+}
+
+bool camera::is_feature_available(const std::string &feature_utf8) const
+{
+    return call_camera_fn_with_bool_return(arv_camera_is_feature_available, feature_utf8.c_str());
+}
+
+bool camera::is_feature_implemented(const std::string &feature_utf8) const
+{
+    return call_camera_fn_with_bool_return(arv_camera_is_feature_implemented, feature_utf8.c_str());
+}
+
+bool camera::is_software_trigger_supported() const
+{
+    return call_camera_fn_with_bool_return(arv_camera_is_software_trigger_supported);
+}
+
+void camera::set_boolean(const std::string &feature_utf8, bool value) const
+{
+
+    call_camera_fn_with_no_return(arv_camera_set_boolean, feature_utf8.c_str(), value);
+}
+
+void camera::set_trigger(const std::string &source_utf8) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_trigger, source_utf8.c_str());
+}
+
+void camera::set_trigger_source(const std::string &source_utf8) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_trigger_source, source_utf8.c_str());
+}
+
+void camera::software_trigger(const std::string &source_utf8) const
+{
+    call_camera_fn_with_no_return(arv_camera_software_trigger);
 }
