@@ -337,7 +337,7 @@ void camera::stream_buffer_callback(ArvStream *stream, camera *self)
 
 std::string camera::get_pixel_format() const
 {
-    call_camera_fn_with_string_return(arv_camera_get_pixel_format_as_string);
+    return call_camera_fn_with_string_return(arv_camera_get_pixel_format_as_string);
 }
 
 void camera::set_pixel_format(const std::string &pixel_format_utf8)
@@ -447,7 +447,17 @@ void camera::set_trigger_source(const std::string &source_utf8) const
     call_camera_fn_with_no_return(arv_camera_set_trigger_source, source_utf8.c_str());
 }
 
-void camera::software_trigger(const std::string &source_utf8) const
+void camera::software_trigger() const
 {
     call_camera_fn_with_no_return(arv_camera_software_trigger);
+}
+
+std::string camera::get_string(const std::string& feature_utf8) const
+{
+    return call_camera_fn_with_string_return(arv_camera_get_string, feature_utf8.c_str());
+}
+
+void camera::set_string(const std::string& feature_utf8, const std::string& value_utf8) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_string, feature_utf8.c_str(), value_utf8.c_str());
 }

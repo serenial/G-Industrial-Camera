@@ -80,7 +80,7 @@ namespace g_industrial_cam
         // get_model_name
         // get_region
         // get_sensor_size
-        // get_string
+        std::string get_string(const std::string& feature_utf8) const;
 
         std::string get_trigger_source() const;
 
@@ -140,10 +140,10 @@ namespace g_industrial_cam
         // set_region
         // set_register
         // set_register_cache_policy
-        // set_string
+        void set_string(const std::string &feature_utf8, const std::string &value_utf8) const;
         void set_trigger(const std::string &source_utf8) const;
         void set_trigger_source(const std::string &source_utf8) const;
-        void software_trigger(const std::string &source_utf8) const;
+        void software_trigger() const;
 
     private:
         camera(signal_fn_t on_disconnect);

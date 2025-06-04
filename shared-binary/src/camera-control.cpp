@@ -167,9 +167,168 @@ extern "C"
         {
             auto result = camera_handle(camera_ref_ptr)->stream_pop_buffer(timeout_ms, lv_buffer(buffer_ref_ptr));
 
-            if(result == camera::timeout_result::timeout){
+            if (result == camera::timeout_result::timeout)
+            {
                 throw std::system_error(56, std::iostream_category(), "A Timeout occured whilst waiting for a stream buffer.");
             }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_clear_triggers(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr)
+    {
+        try
+        {
+            camera_handle(camera_ref_ptr)->clear_triggers();
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_trigger_sources(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_1DArrayHandle_t<LV_StringHandle_t> sources_handle)
+    {
+        try
+        {
+            std::vector<std::string> sources_utf8;
+            camera_handle(camera_ref_ptr)->available_trigger_sources(sources_utf8);
+
+            sources_handle.size_to_fit(sources_utf8.size());
+
+            auto s = sources_handle.begin();
+
+            for (const auto &source : sources_utf8)
+            {
+                s->copy_from_utf8(source);
+                s++;
+            }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_trigger_source(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_StringHandle_t source_handle)
+    {
+        try
+        {
+            source_handle.copy_from_utf8(camera_handle(camera_ref_ptr)->get_trigger_source());
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_is_software_trigger_supported(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_BooleanPtr_t is_supported)
+    {
+        try
+        {
+            *is_supported = camera_handle(camera_ref_ptr)->is_software_trigger_supported();
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_boolean_value(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_StringHandle_t name_handle,
+        LV_BooleanPtr_t value,
+        LV_BooleanPtr_t set)
+    {
+        try
+        {
+            if(*set){
+                camera_handle(camera_ref_ptr)->set_boolean(name_handle.to_utf8_string(), *value);
+            }
+            else{
+                *value = camera_handle(camera_ref_ptr)->get_boolean(name_handle.to_utf8_string());
+            }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_string_value(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_StringHandle_t name_handle,
+        LV_StringHandle_t value_handle,
+        LV_BooleanPtr_t set)
+    {
+        try
+        {
+            if(*set){
+                camera_handle(camera_ref_ptr)->set_string(name_handle.to_utf8_string(), value_handle.to_utf8_string());
+            }
+            else{
+                value_handle.copy_from_utf8(camera_handle(camera_ref_ptr)->get_string(name_handle.to_utf8_string()));
+            }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_trigger_source(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_StringHandle_t source_handle,
+        LV_BooleanPtr_t set_and_validate
+    )
+    {
+        try
+        {
+            if(*set_and_validate){
+                camera_handle(camera_ref_ptr)->set_trigger_source(source_handle.to_utf8_string());
+            }
+            else{
+                camera_handle(camera_ref_ptr)->set_trigger(source_handle.to_utf8_string());
+            }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_software_trigger(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr)
+    {
+        try
+        {
+            camera_handle(camera_ref_ptr)->software_trigger();
         }
         catch (...)
         {
