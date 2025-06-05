@@ -262,10 +262,12 @@ extern "C"
     {
         try
         {
-            if(*set){
+            if (*set)
+            {
                 camera_handle(camera_ref_ptr)->set_boolean(name_handle.to_utf8_string(), *value);
             }
-            else{
+            else
+            {
                 *value = camera_handle(camera_ref_ptr)->get_boolean(name_handle.to_utf8_string());
             }
         }
@@ -285,10 +287,12 @@ extern "C"
     {
         try
         {
-            if(*set){
+            if (*set)
+            {
                 camera_handle(camera_ref_ptr)->set_string(name_handle.to_utf8_string(), value_handle.to_utf8_string());
             }
-            else{
+            else
+            {
                 value_handle.copy_from_utf8(camera_handle(camera_ref_ptr)->get_string(name_handle.to_utf8_string()));
             }
         }
@@ -302,18 +306,12 @@ extern "C"
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_trigger_source(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr,
-        LV_StringHandle_t source_handle,
-        LV_BooleanPtr_t set_and_validate
+        LV_StringHandle_t source_handle
     )
     {
         try
         {
-            if(*set_and_validate){
-                camera_handle(camera_ref_ptr)->set_trigger_source(source_handle.to_utf8_string());
-            }
-            else{
-                camera_handle(camera_ref_ptr)->set_trigger(source_handle.to_utf8_string());
-            }
+            camera_handle(camera_ref_ptr)->set_trigger(source_handle.to_utf8_string());
         }
         catch (...)
         {

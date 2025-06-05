@@ -165,7 +165,7 @@
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_postActionVIID" Type="Ref">/My Computer/build-tools/Post-Build Action.vi</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{07AFE07D-8547-43CA-867C-EBA2948D8BBF}</Property>
-				<Property Name="Bld_version.build" Type="Int">9</Property>
+				<Property Name="Bld_version.build" Type="Int">10</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">Destination Directory</Property>
 				<Property Name="Destination[0].path" Type="Path">../build/source-distribution</Property>
@@ -179,7 +179,7 @@
 				<Property Name="Destination[3].destName" Type="Str">root</Property>
 				<Property Name="Destination[3].path" Type="Path">../build/source-distribution</Property>
 				<Property Name="DestinationCount" Type="Int">4</Property>
-				<Property Name="Source[0].itemID" Type="Str">{BD3FF1FB-273A-448F-BFBB-B409E8FEC817}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{349763A0-C918-4581-97A7-3DBD146146D6}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].Container.applyInclusion" Type="Bool">true</Property>
 				<Property Name="Source[1].Container.applyPrefix" Type="Bool">true</Property>
@@ -189,6 +189,10 @@
 				<Property Name="Source[1].newName" Type="Str">lib</Property>
 				<Property Name="Source[1].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[1].type" Type="Str">Container</Property>
+				<Property Name="Source[10].destinationIndex" Type="Int">0</Property>
+				<Property Name="Source[10].itemID" Type="Ref">/My Computer/Test-Trigger.vi</Property>
+				<Property Name="Source[10].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="Source[10].type" Type="Str">VI</Property>
 				<Property Name="Source[2].Container.applyInclusion" Type="Bool">true</Property>
 				<Property Name="Source[2].Container.depDestIndex" Type="Int">0</Property>
 				<Property Name="Source[2].destinationIndex" Type="Int">0</Property>
@@ -218,7 +222,7 @@
 				<Property Name="Source[9].itemID" Type="Ref">/My Computer/Test-Streaming.vi</Property>
 				<Property Name="Source[9].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[9].type" Type="Str">VI</Property>
-				<Property Name="SourceCount" Type="Int">10</Property>
+				<Property Name="SourceCount" Type="Int">11</Property>
 			</Item>
 		</Item>
 	</Item>
