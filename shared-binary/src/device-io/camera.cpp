@@ -386,11 +386,6 @@ void camera::set_trigger(const std::string &source_utf8) const
     call_camera_fn_with_no_return(arv_camera_set_trigger, source_utf8.c_str());
 }
 
-void camera::set_trigger_source(const std::string &source_utf8) const
-{
-    call_camera_fn_with_no_return(arv_camera_set_trigger_source, source_utf8.c_str());
-}
-
 void camera::software_trigger() const
 {
     call_camera_fn_with_no_return(arv_camera_software_trigger);

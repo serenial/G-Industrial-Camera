@@ -77,8 +77,6 @@ namespace g_industrial_cam
         uint64_t stream_get_error_count() const;
         uint64_t stream_get_frame_count() const;
 
-        void set_pixel_format(const std::string &pixel_format_utf8);
-        void clear_triggers();
         void available_black_levels(std::vector<std::string> &black_levels_utf8) const;
         void available_components(std::vector<std::string> &components_utf8) const;
         void available_enumerations(std::vector<std::string> &enums_utf8, const std::string &feature_utf) const;
@@ -86,6 +84,7 @@ namespace g_industrial_cam
         void available_trigger_sources(std::vector<std::string> &trigger_sources_utf8) const;
         void available_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const;
         void available_triggers(std::vector<std::string> &triggers_utf8) const;
+        void clear_triggers();
         void read_register(const std::string &register_utf8, std::vector<std::byte> &bytes) const;
         void execute_command(const std::string &feature_utf8) const;
         bool get_boolean(const std::string &feature_utf8) const;
@@ -141,11 +140,11 @@ namespace g_industrial_cam
         void set_gain(double gain) const;
         void set_gain_auto(auto_mode mode) const;
         void set_integer(const std::string &feature_utf8, int64_t value) const;
+        void set_pixel_format(const std::string &pixel_format_utf8);
         void set_region(const region_t& region) const;
         void set_register(const std::string &register_utf8, const std::vector<std::byte> &bytes) const;
         void set_string(const std::string &feature_utf8, const std::string &value_utf8) const;
         void set_trigger(const std::string &source_utf8) const;
-        void set_trigger_source(const std::string &source_utf8) const;
         void software_trigger() const;
         uint64_t get_stream_frame_count() const;
         uint64_t get_stream_error_count() const;
