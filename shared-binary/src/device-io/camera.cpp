@@ -2,6 +2,7 @@
 #include <functional>
 #include <utility>
 #include <thread>
+#include <type_traits>
 
 #include <arv.h>
 
@@ -105,7 +106,7 @@ ArvBuffer *camera::take_snapshot(int32_t timeout_ms) const
     return buf;
 }
 
-camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint16_t n_additional_buffers, int32_t timeout_ms, camera::signal_fn_t on_stream_errors_exceeded, camera::signal_fn_t on_stream_stop)
+camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint16_t n_additional_buffers, int32_t timeout_ms, bool fixed_num_frames, camera::signal_fn_t on_stream_errors_exceeded, camera::signal_fn_t on_stream_stop)
 {
 
     if (m_stream != nullptr)
@@ -115,7 +116,7 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
 
     aravis_error err;
 
-    arv_camera_set_acquisition_mode(m_camera, ARV_ACQUISITION_MODE_CONTINUOUS, err);
+    arv_camera_set_acquisition_mode(m_camera, fixed_num_frames ? ARV_ACQUISITION_MODE_MULTI_FRAME : ARV_ACQUISITION_MODE_CONTINUOUS, err);
 
     aravis_error::check(err);
 
@@ -286,6 +287,8 @@ void camera::stream_event_callback(void *self_void_ptr, ArvStreamCallbackType ty
         std::lock_guard lk(self->m_stream_buffers_mtx);
         self->m_stream_sequential_error_count = 0;
         self->m_stream_started = true;
+        self->m_stream_frames_error_count = 0;
+        self->m_stream_frames_count = 0;
     }
         self->m_stream_event.notify_one();
         break;
@@ -300,6 +303,7 @@ void camera::stream_buffer_callback(ArvStream *stream, camera *self)
 {
 
     ArvBuffer *buffer = arv_stream_pop_buffer(stream);
+    self->m_stream_frames_count++;
 
     if (arv_buffer_get_status(buffer) == ARV_BUFFER_STATUS_SUCCESS)
     {
@@ -324,6 +328,7 @@ void camera::stream_buffer_callback(ArvStream *stream, camera *self)
     {
         // just push this buffer back into the device
         arv_stream_push_buffer(stream, buffer);
+        self->m_stream_frames_error_count++;
         if (self->m_stream_max_sequential_errors >= 0)
         {
             self->m_stream_sequential_error_count++;
@@ -335,11 +340,6 @@ void camera::stream_buffer_callback(ArvStream *stream, camera *self)
     }
 }
 
-std::string camera::get_pixel_format() const
-{
-    return call_camera_fn_with_string_return(arv_camera_get_pixel_format_as_string);
-}
-
 void camera::set_pixel_format(const std::string &pixel_format_utf8)
 {
     call_camera_fn_with_no_return(arv_camera_set_pixel_format_from_string, pixel_format_utf8.c_str());
@@ -348,6 +348,62 @@ void camera::set_pixel_format(const std::string &pixel_format_utf8)
 void camera::clear_triggers()
 {
     call_camera_fn_with_no_return(arv_camera_clear_triggers);
+}
+
+std::string camera::get_trigger_source() const
+{
+    return call_camera_fn(arv_camera_get_trigger_source);
+}
+
+bool camera::is_enumeration_entry_available(const std::string &feature_utf8, const std::string &entry_utf8) const
+{
+    return call_camera_fn(arv_camera_is_enumeration_entry_available, feature_utf8.c_str(), entry_utf8.c_str());
+}
+
+bool camera::is_feature_available(const std::string &feature_utf8) const
+{
+    return call_camera_fn(arv_camera_is_feature_available, feature_utf8.c_str());
+}
+
+bool camera::is_feature_implemented(const std::string &feature_utf8) const
+{
+    return call_camera_fn(arv_camera_is_feature_implemented, feature_utf8.c_str());
+}
+
+bool camera::is_software_trigger_supported() const
+{
+    return call_camera_fn(arv_camera_is_software_trigger_supported);
+}
+
+void camera::set_boolean(const std::string &feature_utf8, bool value) const
+{
+
+    call_camera_fn_with_no_return(arv_camera_set_boolean, feature_utf8.c_str(), value);
+}
+
+void camera::set_trigger(const std::string &source_utf8) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_trigger, source_utf8.c_str());
+}
+
+void camera::set_trigger_source(const std::string &source_utf8) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_trigger_source, source_utf8.c_str());
+}
+
+void camera::software_trigger() const
+{
+    call_camera_fn_with_no_return(arv_camera_software_trigger);
+}
+
+std::string camera::get_string(const std::string &feature_utf8) const
+{
+    return call_camera_fn(arv_camera_get_string, feature_utf8.c_str());
+}
+
+void camera::set_string(const std::string &feature_utf8, const std::string &value_utf8) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_string, feature_utf8.c_str(), value_utf8.c_str());
 }
 
 void camera::available_black_levels(std::vector<std::string> &black_levels_utf8) const
@@ -375,7 +431,7 @@ void camera::available_trigger_sources(std::vector<std::string> &trigger_sources
     call_camera_fn_to_populate_list(arv_camera_dup_available_trigger_sources, trigger_sources_utf8);
 }
 
-void camera::avaliable_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const
+void camera::available_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const
 {
     call_camera_fn_to_populate_list(arv_camera_dup_available_pixel_formats_as_strings, pixel_formats_utf8);
 }
@@ -385,7 +441,7 @@ void camera::available_triggers(std::vector<std::string> &triggers_utf8) const
     call_camera_fn_to_populate_list(arv_camera_dup_available_triggers, triggers_utf8);
 }
 
-void camera::read_register(std::vector<std::byte> &bytes, const std::string &register_utf8) const
+void camera::read_register(const std::string &register_utf8, std::vector<std::byte> &bytes) const
 {
     guint64 n_bytes = 0;
     aravis_error err;
@@ -403,61 +459,254 @@ void camera::execute_command(const std::string &feature_utf8) const
 
 bool camera::get_boolean(const std::string &feature_utf8) const
 {
-    return call_camera_fn_with_bool_return(arv_camera_get_boolean, feature_utf8.c_str());
+    return call_camera_fn(arv_camera_get_boolean, feature_utf8.c_str());
 }
 
-std::string camera::get_trigger_source() const
+double camera::get_exposure_time() const
 {
-    return call_camera_fn_with_string_return(arv_camera_get_trigger_source);
+    return call_camera_fn(arv_camera_get_exposure_time);
 }
 
-bool camera::is_enumeration_entry_available(const std::string &feature_utf8, const std::string &entry_utf8) const
+camera::auto_mode camera::get_exposure_time_auto() const
 {
-    return call_camera_fn_with_bool_return(arv_camera_is_enumeration_entry_available, feature_utf8.c_str(), entry_utf8.c_str());
+    return static_cast<auto_mode>(call_camera_fn(arv_camera_get_exposure_time_auto));
 }
 
-bool camera::is_feature_available(const std::string &feature_utf8) const
+camera::bounds_t<double> camera::get_exposure_time_bounds() const
 {
-    return call_camera_fn_with_bool_return(arv_camera_is_feature_available, feature_utf8.c_str());
+    return call_camera_fn_to_get_bounds<double>(arv_camera_get_exposure_time_bounds);
 }
 
-bool camera::is_feature_implemented(const std::string &feature_utf8) const
+camera::representation camera::get_exposure_time_representation() const
 {
-    return call_camera_fn_with_bool_return(arv_camera_is_feature_implemented, feature_utf8.c_str());
+    return static_cast<representation>(arv_camera_get_exposure_time_representation(m_camera));
 }
 
-bool camera::is_software_trigger_supported() const
+double camera::get_float(const std::string &feature_utf8) const
 {
-    return call_camera_fn_with_bool_return(arv_camera_is_software_trigger_supported);
+    return call_camera_fn(arv_camera_get_float, feature_utf8.c_str());
 }
 
-void camera::set_boolean(const std::string &feature_utf8, bool value) const
+camera::bounds_t<double> camera::get_float_bounds(const std::string &feature_utf8) const
 {
-
-    call_camera_fn_with_no_return(arv_camera_set_boolean, feature_utf8.c_str(), value);
+    return call_camera_fn_to_get_bounds<double>(arv_camera_get_float_bounds, feature_utf8.c_str());
 }
 
-void camera::set_trigger(const std::string &source_utf8) const
+double camera::get_float_increment(const std::string &feature_utf8) const
 {
-    call_camera_fn_with_no_return(arv_camera_set_trigger, source_utf8.c_str());
+    return call_camera_fn(arv_camera_get_float_increment, feature_utf8.c_str());
 }
 
-void camera::set_trigger_source(const std::string &source_utf8) const
+double camera::get_frame_rate() const
 {
-    call_camera_fn_with_no_return(arv_camera_set_trigger_source, source_utf8.c_str());
+    return call_camera_fn(arv_camera_get_frame_rate);
 }
 
-void camera::software_trigger() const
+camera::bounds_t<double> camera::get_frame_rate_bounds() const
 {
-    call_camera_fn_with_no_return(arv_camera_software_trigger);
+    return call_camera_fn_to_get_bounds<double>(arv_camera_get_frame_rate_bounds);
 }
 
-std::string camera::get_string(const std::string& feature_utf8) const
+bool camera::get_frame_rate_enable() const
 {
-    return call_camera_fn_with_string_return(arv_camera_get_string, feature_utf8.c_str());
+    return call_camera_fn(arv_camera_get_frame_rate_enable);
 }
 
-void camera::set_string(const std::string& feature_utf8, const std::string& value_utf8) const
+double camera::get_gain() const
 {
-    call_camera_fn_with_no_return(arv_camera_set_string, feature_utf8.c_str(), value_utf8.c_str());
+    return call_camera_fn(arv_camera_get_gain);
+}
+
+camera::auto_mode camera::get_gain_auto() const
+{
+    return static_cast<auto_mode>(call_camera_fn(arv_camera_get_gain_auto));
+}
+
+camera::bounds_t<double> camera::get_gain_bounds() const
+{
+    return call_camera_fn_to_get_bounds<double>(arv_camera_get_gain_bounds);
+}
+
+camera::representation camera::get_gain_representation() const
+{
+    return static_cast<representation>(arv_camera_get_gain_representation(m_camera));
+}
+
+camera::bounds_t<int32_t> camera::get_height_bounds() const
+{
+    return call_camera_fn_to_get_bounds<int32_t>(arv_camera_get_height_bounds);
+}
+
+int32_t camera::get_height_increment() const
+{
+    return call_camera_fn(arv_camera_get_height_increment);
+}
+
+int64_t camera::get_integer(const std::string &feature_utf8) const
+{
+    return call_camera_fn(arv_camera_get_integer, feature_utf8.c_str());
+}
+
+camera::bounds_t<int64_t> camera::get_integer_bounds(const std::string &feature_utf8) const
+{
+    return call_camera_fn_to_get_bounds<int64_t>(arv_camera_get_integer_bounds, feature_utf8.c_str());
+}
+
+int64_t camera::get_integer_increment(const std::string &feature_utf8) const
+{
+    return call_camera_fn(arv_camera_get_integer_increment, feature_utf8.c_str());
+}
+
+std::string camera::get_pixel_format() const
+{
+    return call_camera_fn(arv_camera_get_pixel_format_as_string);
+}
+
+camera::region_t camera::get_region() const
+{
+    region_t region;
+    call_camera_fn_with_no_return(arv_camera_get_region, &region.offset.x, &region.offset.y, &region.size.width, &region.size.height);
+    return region;
+}
+
+camera::rect_size_t camera::get_sensor_size() const
+{
+    rect_size_t rect_size;
+    call_camera_fn_with_no_return(arv_camera_get_sensor_size, &rect_size.width, &rect_size.height);
+    return rect_size;
+}
+
+camera::bounds_t<int32_t> camera::get_width_bounds() const
+{
+    return call_camera_fn_to_get_bounds<int32_t>(arv_camera_get_width_bounds);
+}
+
+int32_t camera::get_width_increment() const
+{
+    return call_camera_fn(arv_camera_get_width_increment);
+}
+
+camera::bounds_t<int32_t> camera::get_x_offset_bounds() const
+{
+    return call_camera_fn_to_get_bounds<int32_t>(arv_camera_get_x_offset_bounds);
+}
+
+int32_t camera::get_x_offset_increment() const
+{
+    return call_camera_fn(arv_camera_get_x_offset_increment);
+}
+
+camera::bounds_t<int32_t> camera::get_y_offset_bounds() const
+{
+    return call_camera_fn_to_get_bounds<int32_t>(arv_camera_get_y_offset_bounds);
+}
+
+int32_t camera::get_y_offset_increment() const
+{
+    return call_camera_fn(arv_camera_get_y_offset_increment);
+}
+
+bool camera::is_exposure_auto_available() const
+{
+    return call_camera_fn(arv_camera_is_exposure_auto_available);
+}
+
+bool camera::is_exposure_time_available() const
+{
+    return call_camera_fn(arv_camera_is_exposure_time_available);
+}
+
+bool camera::is_frame_rate_available() const
+{
+    return call_camera_fn(arv_camera_is_frame_rate_available);
+}
+
+bool camera::is_gain_auto_available() const
+{
+    return call_camera_fn(arv_camera_is_gain_auto_available);
+}
+
+bool camera::is_gain_available() const
+{
+    return call_camera_fn(arv_camera_is_gain_available);
+}
+
+bool camera::is_region_offset_available() const
+{
+    return call_camera_fn(arv_camera_is_region_offset_available);
+}
+
+void camera::select_gain(const std::string &selector_utf8) const
+{
+    call_camera_fn_with_no_return(arv_camera_select_gain, selector_utf8.c_str());
+}
+
+void camera::set_exposure_mode(camera::exposure_mode mode) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_exposure_mode, static_cast<ArvExposureMode>(mode));
+}
+
+void camera::set_exposure_time(double time_us) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_exposure_time, time_us);
+}
+
+void camera::set_exposure_time_auto(camera::auto_mode mode) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_exposure_time_auto, static_cast<ArvAuto>(mode));
+}
+
+void camera::set_float(const std::string &feature_utf8, double value) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_float, feature_utf8.c_str(), value);
+}
+
+void camera::set_frame_count(int64_t count) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_frame_count, count);
+}
+
+void camera::set_frame_rate(double rate) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_frame_rate, rate);
+}
+
+void camera::set_frame_rate_enable(bool enable) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_frame_rate_enable, enable);
+}
+
+void camera::set_gain(double gain) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_gain, gain);
+}
+
+void camera::set_gain_auto(auto_mode mode) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_gain_auto, static_cast<ArvAuto>(mode));
+}
+
+void camera::set_integer(const std::string &feature_utf8, int64_t value) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_integer, feature_utf8.c_str(), value);
+}
+
+void camera::set_region(const camera::region_t &region) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_region, region.offset.x, region.offset.y, region.size.width, region.size.height);
+}
+
+void camera::set_register(const std::string &register_utf8, const std::vector<std::byte> &bytes) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_register, register_utf8.c_str(), bytes.size(), const_cast<void*>(reinterpret_cast<const void*>(bytes.data())));
+}
+
+uint64_t camera::get_stream_frame_count() const
+{
+    return m_stream_frames_count;
+}
+
+uint64_t camera::get_stream_error_count() const
+{
+    return m_stream_frames_error_count;
 }

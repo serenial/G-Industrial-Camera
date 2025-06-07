@@ -19,131 +19,136 @@ namespace g_industrial_cam
     {
     public:
         using signal_fn_t = std::function<void()>;
-        enum class timeout_result
+        enum class timeout_result : uint8_t
         {
             success,
             timeout
         };
-        // two stage intializer as LabVIEW aborts on a failed constructor
+
+        enum class auto_mode : uint8_t{
+            off,
+            once,
+            continuous
+        };
+
+        template<class T>
+        struct bounds_t{
+            T min, max;
+        };
+
+        enum class representation : uint8_t{
+            undefined,
+            linear,
+            logarithmic,
+            boolean,
+            pure_number,
+            hex_number,
+            ip_address,
+            mac_address
+        };
+
+        struct rect_size_t{
+            int32_t width, height;
+        };
+
+        struct offset_t{
+            int32_t x,y;
+        };
+
+        struct region_t{
+            offset_t offset;
+            rect_size_t size;
+        };
+
+        enum class exposure_mode : uint8_t{
+            off,
+            timed,
+            trigger_width,
+            trigger_controller
+        };
+
+        // two stage initializer as LabVIEW aborts on a failed constructor
         static camera *create(const std::string &identifier_utf8, signal_fn_t on_disconnect);
         ~camera();
         ArvBuffer *take_snapshot(int32_t timeout) const;
-
-        std::string get_pixel_format() const;
-        void set_pixel_format(const std::string &pixel_format_utf8);
-
-        timeout_result stream_start(int32_t max_sequential_errors, uint16_t n_additional_buffers, int32_t timeout_ms, signal_fn_t on_stream_error, signal_fn_t on_stream_stop);
+        timeout_result stream_start(int32_t max_sequential_errors, uint16_t n_additional_buffers, int32_t timeout_ms, bool fixed_num_frames, signal_fn_t on_stream_error, signal_fn_t on_stream_stop);
         void stream_stop();
         timeout_result stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr);
+        uint64_t stream_get_error_count() const;
+        uint64_t stream_get_frame_count() const;
+
+        void set_pixel_format(const std::string &pixel_format_utf8);
         void clear_triggers();
         void available_black_levels(std::vector<std::string> &black_levels_utf8) const;
         void available_components(std::vector<std::string> &components_utf8) const;
         void available_enumerations(std::vector<std::string> &enums_utf8, const std::string &feature_utf) const;
         void available_gains(std::vector<std::string> &gains_utf8) const;
         void available_trigger_sources(std::vector<std::string> &trigger_sources_utf8) const;
-        void avaliable_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const;
+        void available_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const;
         void available_triggers(std::vector<std::string> &triggers_utf8) const;
-        void read_register(std::vector<std::byte> &bytes, const std::string &register_utf8) const;
+        void read_register(const std::string &register_utf8, std::vector<std::byte> &bytes) const;
         void execute_command(const std::string &feature_utf8) const;
-
-        // get_acquisition_mode
-        // get_binning
-        // get_black_level
-        // get_black_level_auto
-        // get_black_level_bounds
-
         bool get_boolean(const std::string &feature_utf8) const;
-
-        // get_boolean_gi
-        // get_exposure_time
-        // get_exposure_time_auto
-        // get_exposure_time_bounds
-        // get_exposure_time_representation
-        // get_feature_representation
-        // get_float
-        // get_float_bounds
-        // get_float_increment
-        // get_frame_count
-        // get_frame_count_bounds
-        // get_frame_rate
-        // get_frame_rate_bounds
-        // get_frame_rate_enable
-        // get_gain
-        // get_gain_auto
-        // get_gain_bounds
-        // get_gain_representation
-        // get_height_bounds
-        // get_height_increment
-        // get_integer
-        // get_integer_bounds
-        // get_integer_increment
-        // get_model_name
-        // get_region
-        // get_sensor_size
+        double get_exposure_time() const;
+        auto_mode get_exposure_time_auto() const;
+        bounds_t<double> get_exposure_time_bounds() const;
+        representation get_exposure_time_representation() const;
+        double get_float(const std::string& feature_utf8) const;
+        bounds_t<double> get_float_bounds(const std::string& feature_utf8) const;
+        double get_float_increment(const std::string& feature_utf8) const;
+        double get_frame_rate() const;
+        bounds_t<double> get_frame_rate_bounds() const;
+        bool get_frame_rate_enable() const;
+        double get_gain() const;
+        auto_mode get_gain_auto() const;
+        bounds_t<double> get_gain_bounds() const;
+        representation get_gain_representation() const;
+        bounds_t<int32_t> get_height_bounds() const;
+        int32_t get_height_increment() const;
+        int64_t get_integer(const std::string& feature_utf8) const;
+        bounds_t<int64_t> get_integer_bounds(const std::string& feature_utf8) const;
+        int64_t get_integer_increment(const std::string& feature_utf8) const;
+        std::string get_pixel_format() const;
+        region_t get_region() const;
+        rect_size_t get_sensor_size() const;
         std::string get_string(const std::string& feature_utf8) const;
-
         std::string get_trigger_source() const;
-
-        // get_width_bounds
-        // get_width_increment
-        // get_x_binning_bounds
-        // get_x_binning_increment
-        // get_x_offset_bounds
-        // get_x_offset_increment
-        // get_y_binning_bounds
-        // get_y_binning_increment
-        // get_y_offset_bounds
-        // get_y_offset_increment
-        // is_binning_available
-        // is_black_level_auto_available
-        // is_black_level_available
-        // is_component_available
-
+        bounds_t<int32_t> get_width_bounds() const;
+        int32_t get_width_increment() const;
+        bounds_t<int32_t> get_x_offset_bounds() const;
+        int32_t get_x_offset_increment() const;
+        bounds_t<int32_t> get_y_offset_bounds() const;
+        int32_t get_y_offset_increment() const;
         bool is_enumeration_entry_available(const std::string &feature_utf8, const std::string &entry_utf8) const;
-
-        // is_exposure_auto_available
-        // is_exposure_time_available
-
+        bool is_exposure_auto_available() const;
+        bool is_exposure_time_available() const;
         bool is_feature_available(const std::string &feature_utf8) const;
         bool is_feature_implemented(const std::string &feature_utf8) const;
-
-        // is_frame_rate_available
-        // is_gain_auto_available
-        // is_gain_available
-        // is_region_offset_available
-
+        bool is_frame_rate_available() const;
+        bool is_gain_auto_available() const;
+        bool is_gain_available() const;
+        bool is_region_offset_available() const;
+        void select_gain(const std::string& selector_utf8) const;
         bool is_software_trigger_supported() const;
-
-        // select_and_enable_component
-        // select_black_level
-        // select_component
-        // select_gain
-        // set_access_check_policy
-        // set_acquisition_mode
-        // set_binning
-        // set_black_level
-        // set_black_level_auto
-
         void set_boolean(const std::string &feature_utf8, bool value) const;
-
-        // set_exposure_mode
-        // set_exposure_time
-        // set_exposure_time_auto
-        // set_float
-        // set_frame_count
-        // set_frame_rate
-        // set_frame_rate_enable
-        // set_gain
-        // set_gain_auto
-        // set_integer
-        // set_range_check_policy
-        // set_region
-        // set_register
-        // set_register_cache_policy
+        void set_exposure_mode(exposure_mode mode) const;
+        void set_exposure_time(double time_us) const;
+        void set_exposure_time_auto(auto_mode mode) const;
+        void set_float(const std::string &feature_utf8, double value) const;
+        void set_frame_count(int64_t count) const;
+        void set_frame_rate(double rate) const;
+        void set_frame_rate_enable(bool enable) const;
+        void set_gain(double gain) const;
+        void set_gain_auto(auto_mode mode) const;
+        void set_integer(const std::string &feature_utf8, int64_t value) const;
+        void set_region(const region_t& region) const;
+        void set_register(const std::string &register_utf8, const std::vector<std::byte> &bytes) const;
         void set_string(const std::string &feature_utf8, const std::string &value_utf8) const;
         void set_trigger(const std::string &source_utf8) const;
         void set_trigger_source(const std::string &source_utf8) const;
         void software_trigger() const;
+        uint64_t get_stream_frame_count() const;
+        uint64_t get_stream_error_count() const;
 
     private:
         camera(signal_fn_t on_disconnect);
@@ -164,6 +169,8 @@ namespace g_industrial_cam
         signal_fn_t m_callback_on_stream_error_limit_exceeded;
         int32_t m_stream_max_sequential_errors;
         int32_t m_stream_sequential_error_count;
+        uint64_t m_stream_frames_error_count;
+        uint64_t m_stream_frames_count;
 
         template <class T>
         struct deleter_for_g_pointer
@@ -184,21 +191,10 @@ namespace g_industrial_cam
         }
 
         template <typename fn_t, typename... args_t>
-        bool call_camera_fn_with_bool_return(fn_t fn, args_t... args) const{
+        auto call_camera_fn(fn_t fn, args_t... args) const{
             aravis_error err;
 
-            gboolean result = fn(m_camera, args..., err);
-
-            aravis_error::check(err);
-
-            return result;
-        }
-
-        template <typename fn_t, typename... args_t>
-        std::string call_camera_fn_with_string_return(fn_t fn, args_t... args) const{
-            aravis_error err;
-
-            std::string result(fn(m_camera, args..., err));
+            auto result = fn(m_camera, args..., err);
 
             aravis_error::check(err);
 
@@ -220,6 +216,40 @@ namespace g_industrial_cam
                 list.emplace_back(result.get()[i]);
             }
         }
+
+        template <typename bnds_t, typename fn_t, typename ...args_t>
+        bounds_t<bnds_t> call_camera_fn_to_get_bounds(fn_t fn, args_t... args) const{
+            bounds_t<bnds_t> b;
+            call_camera_fn_with_no_return(fn, args..., &b.min, &b.max);
+            return b;
+        }
         
     };
 }
+
+// --------------------------------
+// additional aravis camera methods to consider
+    // get_acquisition_mode
+    // get_binning
+    // get_black_level
+    // get_black_level_auto
+    // get_black_level_bounds
+    // get_feature_representation
+    // get_feature_representation
+    // select_and_enable_component
+    // select_black_level
+    // select_component
+    // set_access_check_policy
+    // set_acquisition_mode
+    // set_binning
+    // set_black_level
+    // set_black_level_auto
+    // set_range_check_policy
+    // get_x_binning_bounds
+    // get_x_binning_increment
+    // get_y_binning_bounds
+    // get_y_binning_increment
+    // is_binning_available
+    // is_black_level_auto_available
+    // is_black_level_available
+    // is_component_available

@@ -42,7 +42,7 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_avaliable_pixel_formats(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_available_pixel_formats(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
         LV_1DArrayHandle_t<LV_StringHandle_t> formats_handle)
@@ -50,7 +50,7 @@ extern "C"
         try
         {
             std::vector<std::string> formats;
-            camera_handle(edvr_ref_ptr)->avaliable_pixel_formats(formats);
+            camera_handle(edvr_ref_ptr)->available_pixel_formats(formats);
 
             formats_handle.copy_element_by_element_from(formats, [](auto from, auto to)
                                                         { to->copy_from_utf8(from); });
@@ -119,6 +119,7 @@ extern "C"
         uint16_t additional_buffers,
         int32_t max_sequential_errors,
         int32_t timeout_ms,
+        LV_BooleanPtr_t fixed_frame_count,
         LV_UserEventRefPtr_t on_stream_error_event,
         LV_UserEventRefPtr_t on_stream_stop_event)
     {
@@ -127,7 +128,7 @@ extern "C"
             LV_UserEventRef_t error = *on_stream_error_event;
             LV_UserEventRef_t stop = *on_stream_stop_event;
 
-            camera_handle(camera_ref_ptr)->stream_start(max_sequential_errors, additional_buffers, timeout_ms, [=]()
+            camera_handle(camera_ref_ptr)->stream_start(max_sequential_errors, additional_buffers, timeout_ms, *fixed_frame_count,  [=]()
                                                         {
                 LV_Boolean_t data = false;
                 PostLVUserEvent(error,&data); }, [=]()
