@@ -46,7 +46,8 @@ extern "C"
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_available_pixel_formats(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        LV_1DStringArrayHandle_t formats_handle)
+        LV_1DStringArrayHandle_t formats_handle
+    )
     {
         try
         {
@@ -54,38 +55,6 @@ extern "C"
             camera_handle(edvr_ref_ptr)->available_pixel_formats(formats);
 
             formats_handle.copy_from_utf8(formats);
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_pixel_format(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr,
-        LV_StringHandle_t format_handle)
-    {
-        try
-        {
-            format_handle.copy_from_utf8(camera_handle(edvr_ref_ptr)->get_pixel_format());
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_pixel_format(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr,
-        LV_StringHandle_t format_handle)
-    {
-        try
-        {
-            camera_handle(edvr_ref_ptr)->set_pixel_format(format_handle.to_utf8_string());
         }
         catch (...)
         {
@@ -220,14 +189,21 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_trigger_source(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_trigger(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr,
-        LV_StringHandle_t source_handle)
+        LV_StringHandle_t source_handle,
+        LV_BooleanPtr_t set
+    )
     {
         try
         {
-            source_handle.copy_from_utf8(camera_handle(camera_ref_ptr)->get_trigger_source());
+            if(*set){
+                camera_handle(camera_ref_ptr)->set_trigger(source_handle.to_utf8_string());
+            }
+            else{
+                source_handle.copy_from_utf8(camera_handle(camera_ref_ptr)->get_trigger_source());
+            }
         }
         catch (...)
         {
@@ -335,53 +311,16 @@ extern "C"
 
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_available_black_levels(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_1DStringArrayHandle_t levels_handle
+    )
     {
         try
         {
-            void available_black_levels(std::vector<std::string> & black_levels_utf8) const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_available_components(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            void available_components(std::vector<std::string> & components_utf8) const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_available_enumerations(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            void available_enumerations(std::vector<std::string> & enums_utf8, const std::string &feature_utf) const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_available_gains(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            void available_gains(std::vector<std::string> & gains_utf8) const
+            std::vector<std::string> levels_utf8;
+            camera_handle(edvr_ref_ptr)->available_black_levels(levels_utf8);
+
+            levels_handle.copy_from_utf8(levels_utf8);
         }
         catch (...)
         {
@@ -390,13 +329,19 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_read_register(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_available_components(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_1DStringArrayHandle_t components
+    )
     {
         try
         {
-            void read_register(const std::string &register_utf8, std::vector<std::byte> &bytes) const
+            std::vector<std::string> components_utf8;
+
+            camera_handle(edvr_ref_ptr)->available_components(components_utf8);
+
+            components.copy_from_utf8(components_utf8);
         }
         catch (...)
         {
@@ -404,13 +349,54 @@ extern "C"
         }
         return LV_ERR_noError;
     }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_available_enumerations(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_StringHandle_t feature_handle,
+        LV_1DStringArrayHandle_t enum_handle
+    )
+    {
+        try
+        {
+            std::vector<std::string> enums_utf8;
+            camera_handle(edvr_ref_ptr)->available_enumerations(feature_handle.to_utf8_string(),enums_utf8);
+            enum_handle.copy_from_utf8(enums_utf8);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_available_gains(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_1DStringArrayHandle_t gains_handle
+    )
+    {
+        try
+        {
+            std::vector<std::string> gains_utf8;
+            camera_handle(edvr_ref_ptr)->available_gains(gains_utf8);
+            gains_handle.copy_from_utf8(gains_utf8);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_execute_command(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_StringHandle_t command_handle)
     {
         try
         {
-            void execute_command(const std::string &feature_utf8) const
+            camera_handle(edvr_ref_ptr)->execute_command(command_handle.to_utf8_string());
         }
         catch (...)
         {
@@ -418,55 +404,18 @@ extern "C"
         }
         return LV_ERR_noError;
     }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_boolean(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            bool get_boolean(const std::string &feature_utf8) const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_exposure_time(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            double get_exposure_time() const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_exposure_time_auto(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            auto_mode get_exposure_time_auto() const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_exposure_time_bounds(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        double *min,
+        double *max)
     {
         try
         {
-            bounds_t<double> get_exposure_time_bounds() const
+            auto b = camera_handle(edvr_ref_ptr)->get_exposure_time_bounds();
+            *min = b.min;
+            *max = b.max;
         }
         catch (...)
         {
@@ -474,13 +423,15 @@ extern "C"
         }
         return LV_ERR_noError;
     }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_exposure_time_representation(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        uint8_t *representation)
     {
         try
         {
-            representation get_exposure_time_representation() const
+            *representation = static_cast<uint8_t>(camera_handle(edvr_ref_ptr)->get_exposure_time_representation());
         }
         catch (...)
         {
@@ -488,27 +439,19 @@ extern "C"
         }
         return LV_ERR_noError;
     }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_float(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            double get_float(const std::string &feature_utf8) const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_float_bounds(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_StringHandle_t feature_handle,
+        double *min,
+        double *max)
     {
         try
         {
-            bounds_t<double> get_float_bounds(const std::string &feature_utf8) const
+            auto b = camera_handle(edvr_ref_ptr)->get_float_bounds(feature_handle.to_utf8_string());
+            *min = b.min;
+            *max = b.max;
         }
         catch (...)
         {
@@ -516,13 +459,16 @@ extern "C"
         }
         return LV_ERR_noError;
     }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_float_increment(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_StringHandle_t feature_handle,
+        double *increment)
     {
         try
         {
-            double get_float_increment(const std::string &feature_utf8) const
+            *increment = camera_handle(edvr_ref_ptr)->get_float_increment(feature_handle.to_utf8_string());
         }
         catch (...)
         {
@@ -530,27 +476,18 @@ extern "C"
         }
         return LV_ERR_noError;
     }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_frame_rate(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            double get_frame_rate() const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_frame_rate_bounds(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        double *min,
+        double *max)
     {
         try
         {
-            bounds_t<double> get_frame_rate_bounds() const
+            auto b = camera_handle(edvr_ref_ptr)->get_frame_rate_bounds();
+            *min = b.min;
+            *max = b.max;
         }
         catch (...)
         {
@@ -558,55 +495,18 @@ extern "C"
         }
         return LV_ERR_noError;
     }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_frame_rate_enable(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            bool get_frame_rate_enable() const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_gain(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            double get_gain() const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_gain_auto(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
-    {
-        try
-        {
-            auto_mode get_gain_auto() const
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_gain_bounds(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        double *min,
+        double *max)
     {
         try
         {
-            bounds_t<double> get_gain_bounds() const
+            auto b = camera_handle(edvr_ref_ptr)->get_gain_bounds();
+            *min = b.min;
+            *max = b.max;
         }
         catch (...)
         {
@@ -614,13 +514,15 @@ extern "C"
         }
         return LV_ERR_noError;
     }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_gain_representation(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        uint8_t *representation)
     {
         try
         {
-            representation get_gain_representation() const
+            *representation = static_cast<uint8_t>(camera_handle(edvr_ref_ptr)->get_gain_representation());
         }
         catch (...)
         {
@@ -628,13 +530,18 @@ extern "C"
         }
         return LV_ERR_noError;
     }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_height_bounds(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        int32_t *min,
+        int32_t *max)
     {
         try
         {
-            bounds_t<int32_t> get_height_bounds() const
+            auto b = camera_handle(edvr_ref_ptr)->get_height_bounds();
+            *min = b.min;
+            *max = b.max;
         }
         catch (...)
         {
@@ -642,13 +549,15 @@ extern "C"
         }
         return LV_ERR_noError;
     }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_height_increment(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        int32_t increment)
     {
         try
         {
-            int32_t get_height_increment() const
+            increment = camera_handle(edvr_ref_ptr)->get_height_increment();
         }
         catch (...)
         {
@@ -659,11 +568,16 @@ extern "C"
 
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_integer_bounds(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_StringHandle_t feature_handle,
+        int64_t *min,
+        int64_t *max)
     {
         try
         {
-            bounds_t<int64_t> get_integer_bounds(const std::string &feature_utf8) const
+            auto b = camera_handle(edvr_ref_ptr)->get_integer_bounds(feature_handle.to_utf8_string());
+            *min = b.min;
+            *max = b.max;
         }
         catch (...)
         {
@@ -671,14 +585,16 @@ extern "C"
         }
         return LV_ERR_noError;
     }
-    
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_integer_increment(
         LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr)
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_StringHandle_t feature_handle,
+        int64_t *increment)
     {
         try
         {
-            int64_t get_integer_increment(const std::string &feature_utf8) const
+            *increment = camera_handle(edvr_ref_ptr)->get_integer_increment(feature_handle.to_utf8_string());
         }
         catch (...)
         {
@@ -690,11 +606,10 @@ extern "C"
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_region(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        int32_t* x,
-        int32_t* y,
-        int32_t* width,
-        int32_t* height
-    )
+        int32_t *x,
+        int32_t *y,
+        int32_t *width,
+        int32_t *height)
     {
         try
         {
@@ -703,7 +618,6 @@ extern "C"
             *y = r.offset.y;
             *width = r.size.width;
             *height = r.size.height;
-
         }
         catch (...)
         {
@@ -715,13 +629,12 @@ extern "C"
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_sensor_size(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        int32_t* width,
-        int32_t* height
-    )
+        int32_t *width,
+        int32_t *height)
     {
         try
         {
-            auto s =  camera_handle(edvr_ref_ptr)->get_sensor_size();
+            auto s = camera_handle(edvr_ref_ptr)->get_sensor_size();
             *width = s.width;
             *height = s.height;
         }
@@ -1017,14 +930,22 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_exposure_time(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_exposure_time(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        double time_us)
+        double *time_us,
+        LV_BooleanPtr_t set)
     {
         try
         {
-            camera_handle(edvr_ref_ptr)->set_exposure_time(time_us);
+            if (*set)
+            {
+                camera_handle(edvr_ref_ptr)->set_exposure_time(*time_us);
+            }
+            else
+            {
+                *time_us = camera_handle(edvr_ref_ptr)->get_exposure_time();
+            }
         }
         catch (...)
         {
@@ -1033,14 +954,22 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_exposure_time_auto(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_exposure_time_auto(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        uint8_t mode)
+        uint8_t *mode,
+        LV_BooleanPtr_t set)
     {
         try
         {
-            camera_handle(edvr_ref_ptr)->set_exposure_time_auto(static_cast<camera::auto_mode>(mode));
+            if (*set)
+            {
+                camera_handle(edvr_ref_ptr)->set_exposure_time_auto(static_cast<camera::auto_mode>(*mode));
+            }
+            else
+            {
+                *mode = static_cast<uint8_t>(camera_handle(edvr_ref_ptr)->get_exposure_time_auto());
+            }
         }
         catch (...)
         {
@@ -1092,14 +1021,22 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_frame_rate(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_frame_rate(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        double rate)
+        double *rate,
+        LV_BooleanPtr_t set)
     {
         try
         {
-            camera_handle(edvr_ref_ptr)->set_frame_rate(rate);
+            if (*set)
+            {
+                camera_handle(edvr_ref_ptr)->set_frame_rate(*rate);
+            }
+            else
+            {
+                *rate = camera_handle(edvr_ref_ptr)->get_frame_rate();
+            }
         }
         catch (...)
         {
@@ -1108,14 +1045,22 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_frame_rate_enable(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_frame_rate_enable(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        LV_BooleanPtr_t enable)
+        LV_BooleanPtr_t enable,
+        LV_BooleanPtr_t set)
     {
         try
         {
-            camera_handle(edvr_ref_ptr)->set_frame_rate_enable(*enable);
+            if (*set)
+            {
+                camera_handle(edvr_ref_ptr)->set_frame_rate_enable(*enable);
+            }
+            else
+            {
+                *enable = camera_handle(edvr_ref_ptr)->get_frame_rate_enable();
+            }
         }
         catch (...)
         {
@@ -1124,14 +1069,22 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_gain(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_gain(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        double gain)
+        double *gain,
+        LV_BooleanPtr_t set)
     {
         try
         {
-            camera_handle(edvr_ref_ptr)->set_gain(gain);
+            if (*set)
+            {
+                camera_handle(edvr_ref_ptr)->set_gain(*gain);
+            }
+            else
+            {
+                *gain = camera_handle(edvr_ref_ptr)->get_gain();
+            }
         }
         catch (...)
         {
@@ -1140,19 +1093,22 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_gain_auto(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_gain_auto(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        uint8_t mode)
+        uint8_t *mode,
+        LV_BooleanPtr_t set)
     {
         try
         {
-            camera::auto_mode modes[] = {
-                camera::auto_mode::off,
-                camera::auto_mode::once,
-                camera::auto_mode::continuous};
-
-            camera_handle(edvr_ref_ptr)->set_gain_auto(modes[mode]);
+            if (*set)
+            {
+                camera_handle(edvr_ref_ptr)->set_gain_auto(static_cast<camera::auto_mode>(*mode));
+            }
+            else
+            {
+                *mode = static_cast<uint8_t>(camera_handle(edvr_ref_ptr)->get_gain_auto());
+            }
         }
         catch (...)
         {
@@ -1188,6 +1144,28 @@ extern "C"
         return LV_ERR_noError;
     }
 
+        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_pixel_format(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_StringHandle_t format_handle,
+        LV_BooleanPtr_t set
+    )
+    {
+        try
+        {
+            if(*set){
+               camera_handle(edvr_ref_ptr)->set_pixel_format(format_handle.to_utf8_string());
+            }{
+                format_handle.copy_from_utf8(camera_handle(edvr_ref_ptr)->get_pixel_format());
+            }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_region(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
@@ -1207,20 +1185,33 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_register(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_register(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
         LV_StringHandle_t register_handle,
-        LV_StringHandle_t bytes_handle)
+        LV_StringHandle_t bytes_handle,
+        LV_BooleanPtr_t set)
     {
         try
         {
             std::vector<std::byte> bytes;
-            bytes.resize(bytes_handle.size());
 
-            std::memcpy(bytes.data(), bytes_handle.begin(), bytes_handle.size());
+            if (*set)
+            {
+                bytes.resize(bytes_handle.size());
 
-            camera_handle(edvr_ref_ptr)->set_register(register_handle.to_utf8_string(), bytes);
+                std::memcpy(bytes.data(), bytes_handle.begin(), bytes_handle.size());
+
+                camera_handle(edvr_ref_ptr)->set_register(register_handle.to_utf8_string(), bytes);
+            }
+            else
+            {
+                camera_handle(edvr_ref_ptr)->read_register(register_handle.to_utf8_string(), bytes);
+
+                bytes_handle.size_to_fit(bytes.size());
+
+                std::memcpy(bytes_handle.begin(), bytes.data(), bytes.size());
+            }
         }
         catch (...)
         {

@@ -403,15 +403,15 @@ void camera::set_string(const std::string &feature_utf8, const std::string &valu
 
 void camera::available_black_levels(std::vector<std::string> &black_levels_utf8) const
 {
-    call_camera_fn_to_populate_list(arv_camera_dup_available_pixel_formats_as_strings, black_levels_utf8);
+    call_camera_fn_to_populate_list(arv_camera_dup_available_black_levels, black_levels_utf8);
 }
 
 void camera::available_components(std::vector<std::string> &components_utf8) const
 {
-    call_camera_fn_to_populate_list(arv_camera_dup_available_pixel_formats_as_strings, components_utf8);
+    call_camera_fn_to_populate_list(arv_camera_dup_available_components, components_utf8);
 }
 
-void camera::available_enumerations(std::vector<std::string> &enums_utf8, const std::string &feature_utf) const
+void camera::available_enumerations(const std::string &feature_utf,std::vector<std::string> &enums_utf8) const
 {
     call_camera_fn_to_populate_list(arv_camera_dup_available_enumerations_as_strings, enums_utf8, feature_utf.c_str());
 }
@@ -447,9 +447,9 @@ void camera::read_register(const std::string &register_utf8, std::vector<std::by
     std::memcpy(bytes.data(), result.get(), n_bytes);
 }
 
-void camera::execute_command(const std::string &feature_utf8) const
+void camera::execute_command(const std::string &command_utf8) const
 {
-    call_camera_fn_with_no_return(arv_camera_execute_command, feature_utf8.c_str());
+    call_camera_fn_with_no_return(arv_camera_execute_command, command_utf8.c_str());
 }
 
 bool camera::get_boolean(const std::string &feature_utf8) const

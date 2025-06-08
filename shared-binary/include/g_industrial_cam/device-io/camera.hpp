@@ -79,14 +79,14 @@ namespace g_industrial_cam
 
         void available_black_levels(std::vector<std::string> &black_levels_utf8) const;
         void available_components(std::vector<std::string> &components_utf8) const;
-        void available_enumerations(std::vector<std::string> &enums_utf8, const std::string &feature_utf) const;
+        void available_enumerations(const std::string &feature_utf, std::vector<std::string> &enums_utf8) const;
         void available_gains(std::vector<std::string> &gains_utf8) const;
         void available_trigger_sources(std::vector<std::string> &trigger_sources_utf8) const;
         void available_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const;
         void available_triggers(std::vector<std::string> &triggers_utf8) const;
         void clear_triggers();
         void read_register(const std::string &register_utf8, std::vector<std::byte> &bytes) const;
-        void execute_command(const std::string &feature_utf8) const;
+        void execute_command(const std::string &command_utf8) const;
         bool get_boolean(const std::string &feature_utf8) const;
         double get_exposure_time() const;
         auto_mode get_exposure_time_auto() const;
