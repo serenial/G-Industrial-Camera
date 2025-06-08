@@ -67,6 +67,10 @@ namespace g_industrial_cam
             trigger_controller
         };
 
+        struct binning_t{
+            int32_t dx, dy;
+        };
+
         // two stage initializer as LabVIEW aborts on a failed constructor
         static camera *create(const std::string &identifier_utf8, signal_fn_t on_disconnect);
         ~camera();
@@ -118,9 +122,15 @@ namespace g_industrial_cam
         int32_t get_x_offset_increment() const;
         bounds_t<int32_t> get_y_offset_bounds() const;
         int32_t get_y_offset_increment() const;
+        binning_t get_binning() const;
+        bounds_t<int32_t> get_x_binning_bounds() const;
+        bounds_t<int32_t> get_y_binning_bounds() const;
+        int32_t get_x_binning_increment() const;
+        int32_t get_y_binning_increment() const;
         bool is_enumeration_entry_available(const std::string &feature_utf8, const std::string &entry_utf8) const;
         bool is_exposure_auto_available() const;
         bool is_exposure_time_available() const;
+        bool is_binning_available() const;
         bool is_feature_available(const std::string &feature_utf8) const;
         bool is_feature_implemented(const std::string &feature_utf8) const;
         bool is_frame_rate_available() const;
@@ -129,6 +139,7 @@ namespace g_industrial_cam
         bool is_region_offset_available() const;
         void select_gain(const std::string& selector_utf8) const;
         bool is_software_trigger_supported() const;
+        void set_binning(const binning_t& binning) const;
         void set_boolean(const std::string &feature_utf8, bool value) const;
         void set_exposure_mode(exposure_mode mode) const;
         void set_exposure_time(double time_us) const;

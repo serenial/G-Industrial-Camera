@@ -817,6 +817,22 @@ extern "C"
         return LV_ERR_noError;
     }
 
+        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_is_binning_available(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_BooleanPtr_t is_available)
+    {
+        try
+        {
+            *is_available = camera_handle(edvr_ref_ptr)->is_binning_available();
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_is_feature_implemented(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
@@ -1245,6 +1261,32 @@ extern "C"
         {
 
             *count = camera_handle(edvr_ref_ptr)->get_stream_error_count();
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_binning(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        int32_t* dx,
+        int32_t* dy,
+        LV_BooleanPtr_t set
+    )
+    {
+        try
+        {
+            if(*set){
+                camera_handle(edvr_ref_ptr)->set_binning(camera::binning_t{*dx, *dy});
+            }
+            else{
+                auto b = camera_handle(edvr_ref_ptr)->get_binning();
+                *dx = b.dx;
+                *dy = b.dy;
+            }
         }
         catch (...)
         {

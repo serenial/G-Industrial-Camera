@@ -705,3 +705,37 @@ uint64_t camera::get_stream_error_count() const
 {
     return m_stream_frames_error_count;
 }
+
+camera::binning_t camera::get_binning() const {
+    binning_t b;
+    call_camera_fn_with_no_return(arv_camera_get_binning, &b.dx, &b.dy);
+    return b;
+}
+
+camera::bounds_t<int32_t> camera::get_x_binning_bounds() const {
+    bounds_t<int32_t> b;
+    call_camera_fn_with_no_return(arv_camera_get_x_binning_bounds,&b.min, &b.max);
+    return b;
+}
+
+camera::bounds_t<int32_t> camera::get_y_binning_bounds() const {
+    bounds_t<int32_t> b;
+    call_camera_fn_with_no_return(arv_camera_get_y_binning_bounds,&b.min, &b.max);
+    return b;
+}
+
+void camera::set_binning(const binning_t& binning) const {
+    call_camera_fn_with_no_return(arv_camera_set_binning, binning.dx, binning.dy);
+}
+
+bool camera::is_binning_available() const {
+    return call_camera_fn(arv_camera_is_binning_available);
+}
+
+int32_t camera::get_x_binning_increment() const{
+    return call_camera_fn(arv_camera_get_x_binning_increment);
+}
+
+int32_t camera::get_y_binning_increment() const{
+    return call_camera_fn(arv_camera_get_y_binning_increment);
+}
