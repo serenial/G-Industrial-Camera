@@ -43,7 +43,7 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_available_pixel_formats(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_available_pixel_formats(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
         LV_1DStringArrayHandle_t formats_handle
