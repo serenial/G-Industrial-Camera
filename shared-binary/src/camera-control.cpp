@@ -43,7 +43,7 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_available_pixel_formats(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_available_pixel_formats(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
         LV_1DStringArrayHandle_t formats_handle
@@ -181,6 +181,25 @@ extern "C"
             camera_handle(camera_ref_ptr)->available_trigger_sources(sources_utf8);
 
             sources_handle.copy_from_utf8(sources_utf8);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_available_triggers(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_1DStringArrayHandle_t triggers_handle)
+    {
+        try
+        {
+            std::vector<std::string> triggers_utf8;
+            camera_handle(camera_ref_ptr)->available_triggers(triggers_utf8);
+
+            triggers_handle.copy_from_utf8(triggers_utf8);
         }
         catch (...)
         {

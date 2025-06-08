@@ -2,7 +2,7 @@
 
 YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
-This library is intended to provide a simple LabVIEW driver for use with GenICam compatible cameras.
+This library is intended to provide a simple LabVIEW driver for use with `GenICam` compatible cameras.
 
 # Licence
 The LabVIEW source is distributed under the Zero-Clause BSD licence. The shared binary component of this toolkit is distributed under the LGPL-2.1 licence.
@@ -21,7 +21,7 @@ The LabVIEW code is written in LabVIEW 2020 SP1 and provides binaries for the fo
 | NI-LinuxRT ARM | ❌ |
 | MacOS (x86-64 or Apple Silicon) | ❌ |
 
-## Developement Setup
+## Development Setup
 
 The library consists of two components - LabVIEW code and a shared library built from C++ code. This repository does not include the pre-built binaries as these would ideally be built from source as this provides the option to enable the debugging symbols on the build.
 
@@ -41,9 +41,9 @@ This screenshot shows the recommended items to install for MSVC Build Tools
 * libudev-dev
 * #TODO
 
-### Cloning the Respository
+### Cloning the Repository
 
-This respository uses git submodules to manage build tooling. When cloning ensure you use
+This repository uses git submodules to manage build tooling. When cloning ensure you use
 
 ```bash
 git clone --recursive https://gitlab.com/serenial/g-industrial-camera.git
@@ -83,7 +83,7 @@ For example "Pylon" for Basler cameras.
 Windows doesn't always play nice with libusb so look at the resources section to see guides on how to make the OS use a libusb compatible driver. #TODO - explain this properly
 
 ## TODO
-- [ ] Dependency Licence Notices
+- [x] Dependency Licence Notices
 - [x] Enumerate Cameras
 - [x] Start Stream
 - [x] Stop Stream
