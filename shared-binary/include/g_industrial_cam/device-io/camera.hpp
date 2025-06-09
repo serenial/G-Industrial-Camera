@@ -92,6 +92,9 @@ namespace g_industrial_cam
         void read_register(const std::string &register_utf8, std::vector<std::byte> &bytes) const;
         void execute_command(const std::string &command_utf8) const;
         bool get_boolean(const std::string &feature_utf8) const;
+        double get_black_level() const;
+        auto_mode get_black_level_auto() const;
+        bounds_t<double> get_black_level_bounds() const;
         double get_exposure_time() const;
         auto_mode get_exposure_time_auto() const;
         bounds_t<double> get_exposure_time_bounds() const;
@@ -128,6 +131,8 @@ namespace g_industrial_cam
         bounds_t<int32_t> get_y_binning_bounds() const;
         int32_t get_x_binning_increment() const;
         int32_t get_y_binning_increment() const;
+        bool is_black_level_auto_available() const;
+        bool is_black_level_available() const;
         bool is_enumeration_entry_available(const std::string &feature_utf8, const std::string &entry_utf8) const;
         bool is_exposure_auto_available() const;
         bool is_exposure_time_available() const;
@@ -139,9 +144,12 @@ namespace g_industrial_cam
         bool is_gain_available() const;
         bool is_region_offset_available() const;
         void select_gain(const std::string& selector_utf8) const;
+        void select_black_level(const std::string& selector_utf8) const;
         bool is_software_trigger_supported() const;
         void set_binning(const binning_t& binning) const;
         void set_boolean(const std::string &feature_utf8, bool value) const;
+        void set_black_level(double gain) const;
+        void set_black_level_auto(auto_mode mode) const;
         void set_exposure_mode(exposure_mode mode) const;
         void set_exposure_time(double time_us) const;
         void set_exposure_time_auto(auto_mode mode) const;
@@ -241,27 +249,9 @@ namespace g_industrial_cam
 
 // --------------------------------
 // additional aravis camera methods to consider
-    // get_acquisition_mode
-    // get_binning
-    // get_black_level
-    // get_black_level_auto
-    // get_black_level_bounds
-    // get_feature_representation
-    // get_feature_representation
+
     // select_and_enable_component
-    // select_black_level
     // select_component
     // set_access_check_policy
-    // set_acquisition_mode
-    // set_binning
-    // set_black_level
-    // set_black_level_auto
     // set_range_check_policy
-    // get_x_binning_bounds
-    // get_x_binning_increment
-    // get_y_binning_bounds
-    // get_y_binning_increment
-    // is_binning_available
-    // is_black_level_auto_available
-    // is_black_level_available
     // is_component_available
