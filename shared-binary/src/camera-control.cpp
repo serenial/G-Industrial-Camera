@@ -208,7 +208,7 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_trigger(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_trigger_source(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr,
         LV_StringHandle_t source_handle,
@@ -218,11 +218,28 @@ extern "C"
         try
         {
             if(*set){
-                camera_handle(camera_ref_ptr)->set_trigger(source_handle.to_utf8_string());
+                camera_handle(camera_ref_ptr)->set_trigger_source(source_handle.to_utf8_string());
             }
             else{
                 source_handle.copy_from_utf8(camera_handle(camera_ref_ptr)->get_trigger_source());
             }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_configure_trigger(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_StringHandle_t source_handle
+    )
+    {
+        try
+        {
+            camera_handle(camera_ref_ptr)->set_trigger(source_handle.to_utf8_string());
         }
         catch (...)
         {
@@ -289,22 +306,6 @@ extern "C"
             {
                 value_handle.copy_from_utf8(camera_handle(camera_ref_ptr)->get_string(name_handle.to_utf8_string()));
             }
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_trigger_source(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t camera_ref_ptr,
-        LV_StringHandle_t source_handle)
-    {
-        try
-        {
-            camera_handle(camera_ref_ptr)->set_trigger(source_handle.to_utf8_string());
         }
         catch (...)
         {

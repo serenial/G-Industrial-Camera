@@ -156,6 +156,7 @@ namespace g_industrial_cam
         void set_register(const std::string &register_utf8, const std::vector<std::byte> &bytes) const;
         void set_string(const std::string &feature_utf8, const std::string &value_utf8) const;
         void set_trigger(const std::string &source_utf8) const;
+        void set_trigger_source(const std::string &source_utf8) const;
         void software_trigger() const;
         uint64_t get_stream_frame_count() const;
         uint64_t get_stream_error_count() const;
