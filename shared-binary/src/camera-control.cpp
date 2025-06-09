@@ -480,6 +480,23 @@ extern "C"
         return LV_ERR_noError;
     }
 
+        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_feature_representation(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_StringHandle_t feature_handle,
+        uint8_t *representation)
+    {
+        try
+        {
+            *representation = static_cast<uint8_t>(camera_handle(edvr_ref_ptr)->get_feature_representation(feature_handle.to_utf8_string()));
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_float_increment(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
@@ -623,21 +640,27 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_region(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_region(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
         int32_t *x,
         int32_t *y,
         int32_t *width,
-        int32_t *height)
+        int32_t *height,
+        LV_BooleanPtr_t set)
     {
         try
         {
-            auto r = camera_handle(edvr_ref_ptr)->get_region();
-            *x = r.offset.x;
-            *y = r.offset.y;
-            *width = r.size.width;
-            *height = r.size.height;
+            if(*set){
+                camera_handle(edvr_ref_ptr)->set_region(camera::region_t{*x, *y, *width, *height});
+            }
+            else{
+                auto r = camera_handle(edvr_ref_ptr)->get_region();
+                *x = r.offset.x;
+                *y = r.offset.y;
+                *width = r.size.width;
+                *height = r.size.height;
+            }
         }
         catch (...)
         {
@@ -1194,25 +1217,6 @@ extern "C"
             }{
                 format_handle.copy_from_utf8(camera_handle(edvr_ref_ptr)->get_pixel_format());
             }
-        }
-        catch (...)
-        {
-            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
-        }
-        return LV_ERR_noError;
-    }
-
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_region(
-        LV_ErrorClusterPtr_t error_cluster_ptr,
-        LV_EDVRReferencePtr_t edvr_ref_ptr,
-        int32_t x,
-        int32_t y,
-        int32_t width,
-        int32_t height)
-    {
-        try
-        {
-            camera_handle(edvr_ref_ptr)->set_region(camera::region_t{x, y, width, height});
         }
         catch (...)
         {

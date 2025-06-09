@@ -492,6 +492,11 @@ camera::bounds_t<double> camera::get_float_bounds(const std::string &feature_utf
     return call_camera_fn_to_get_bounds<double>(arv_camera_get_float_bounds, feature_utf8.c_str());
 }
 
+camera::representation camera::get_feature_representation(const std::string &feature_utf8) const
+{
+    return static_cast<representation>(arv_camera_get_feature_representation(m_camera,feature_utf8.c_str()));
+}
+
 double camera::get_float_increment(const std::string &feature_utf8) const
 {
     return call_camera_fn(arv_camera_get_float_increment, feature_utf8.c_str());

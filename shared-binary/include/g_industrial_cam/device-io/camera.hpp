@@ -98,6 +98,7 @@ namespace g_industrial_cam
         representation get_exposure_time_representation() const;
         double get_float(const std::string& feature_utf8) const;
         bounds_t<double> get_float_bounds(const std::string& feature_utf8) const;
+        representation get_feature_representation(const std::string& feature_utf8) const;
         double get_float_increment(const std::string& feature_utf8) const;
         double get_frame_rate() const;
         bounds_t<double> get_frame_rate_bounds() const;
