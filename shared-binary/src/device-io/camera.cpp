@@ -137,17 +137,15 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
     // get payload
     m_camera_payload = arv_camera_get_payload(m_camera, err);
 
+    for (int i = 0; i < n_additional_buffers + 2; i++)
+    {
+        // queue up the buffers into the stream - enough to fill the circular_buffer and one extra to load into the stream fifo
+        arv_stream_push_buffer(m_stream, arv_buffer_new_allocate(m_camera_payload));
+    }
+
     // we are going to use a circular buffer to automatically push buffers from the output stream FIFO
     // into the input stream FIFO
     m_stream_buffers.set_capacity(n_additional_buffers + 1);
-
-    for (int i = 0; i < n_additional_buffers + 1; i++)
-    {
-       m_stream_buffers.push_back(arv_buffer_new_allocate(m_camera_payload));
-    }
-
-    // load a buffer into the stream
-    arv_stream_push_buffer(m_stream, arv_buffer_new_allocate(m_camera_payload));
 
     arv_camera_start_acquisition(m_camera, err);
 
@@ -237,7 +235,7 @@ camera::timeout_result camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer *
     {
         // something to get from the circular buffer
 
-        ArvBuffer *to_push_fifo = *buffer_ptr;
+        ArvBuffer *to_push_into_stream = *buffer_ptr;
 
         // check buffer we were passed
         if (*buffer_ptr)
@@ -248,23 +246,23 @@ camera::timeout_result camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer *
             if (passed_buffer_size != m_camera_payload)
             {
                 g_object_unref(*buffer_ptr);
-                to_push_fifo = arv_buffer_new_allocate(m_camera_payload);
+                to_push_into_stream = arv_buffer_new_allocate(m_camera_payload);
             }
         }
         else
         {
             // null-buffer: create new
-            to_push_fifo = arv_buffer_new_allocate(m_camera_payload);
+            to_push_into_stream = arv_buffer_new_allocate(m_camera_payload);
         }
 
-        // collect an old buffer from the circular buffer;
-        *buffer_ptr = m_stream_buffers.front();
+        // collect the oldest buffer from the circular buffer;
+        *buffer_ptr = m_stream_buffers[0];
 
         // pop the front to remove the buffer we have just grabbed.
         m_stream_buffers.pop_front();
 
         // push this new buffer onto the stream FIFO
-        arv_stream_push_buffer(m_stream, to_push_fifo);
+        arv_stream_push_buffer(m_stream, to_push_into_stream);
     }
 
     lk.unlock();
