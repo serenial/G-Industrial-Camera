@@ -33,7 +33,7 @@
 		<Item Name="binary source notices" Type="Folder">
 			<Item Name="COPYING" Type="Document" URL="../../shared-binary/COPYING"/>
 		</Item>
-		<Item Name="Test.vi" Type="VI" URL="../Test.vi"/>
+		<Item Name="Test-Snapshot.vi" Type="VI" URL="../Test-Snapshot.vi"/>
 		<Item Name="Test-Streaming.vi" Type="VI" URL="../Test-Streaming.vi"/>
 		<Item Name="Test-Trigger.vi" Type="VI" URL="../Test-Trigger.vi"/>
 		<Item Name=".lvversion" Type="Document" URL="../.lvversion"/>
@@ -224,7 +224,7 @@
 				<Property Name="Source[6].itemID" Type="Ref">/My Computer/g_industrial_cam/Type Defs/Device Enumeration.ctl</Property>
 				<Property Name="Source[6].type" Type="Str">VI</Property>
 				<Property Name="Source[7].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[7].itemID" Type="Ref">/My Computer/Test.vi</Property>
+				<Property Name="Source[7].itemID" Type="Ref">/My Computer/Test-Snapshot.vi</Property>
 				<Property Name="Source[7].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[7].type" Type="Str">VI</Property>
 				<Property Name="Source[8].destinationIndex" Type="Int">3</Property>

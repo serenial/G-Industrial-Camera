@@ -49,8 +49,6 @@ void camera::connect(const std::string &identifier_utf8)
         g_signal_connect(arv_camera_get_device(m_camera), "control-lost", G_CALLBACK(gv_control_lost_callback), this);
     }
 
-    // get payload
-    m_camera_payload = arv_camera_get_payload(m_camera, err);
     aravis_error::check(err);
 }
 
@@ -136,15 +134,20 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
         throw std::runtime_error("Unable to create stream");
     }
 
-    for (int i = 0; i < n_additional_buffers + 2; i++)
-    {
-        // queue up the buffers into the stream - enough to fill the circular_buffer and one extra to load into the stream fifo
-        arv_stream_push_buffer(m_stream, arv_buffer_new_allocate(m_camera_payload));
-    }
+    // get payload
+    m_camera_payload = arv_camera_get_payload(m_camera, err);
 
     // we are going to use a circular buffer to automatically push buffers from the output stream FIFO
     // into the input stream FIFO
     m_stream_buffers.set_capacity(n_additional_buffers + 1);
+
+    for (int i = 0; i < n_additional_buffers + 1; i++)
+    {
+       m_stream_buffers.push_back(arv_buffer_new_allocate(m_camera_payload));
+    }
+
+    // load a buffer into the stream
+    arv_stream_push_buffer(m_stream, arv_buffer_new_allocate(m_camera_payload));
 
     arv_camera_start_acquisition(m_camera, err);
 
@@ -253,8 +256,6 @@ camera::timeout_result camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer *
             // null-buffer: create new
             to_push_fifo = arv_buffer_new_allocate(m_camera_payload);
         }
-
-        to_push_fifo = *buffer_ptr;
 
         // collect an old buffer from the circular buffer;
         *buffer_ptr = m_stream_buffers.front();

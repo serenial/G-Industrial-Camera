@@ -133,6 +133,7 @@ namespace g_industrial_cam
         int32_t get_y_binning_increment() const;
         bool is_black_level_auto_available() const;
         bool is_black_level_available() const;
+        bool is_component_available() const;
         bool is_enumeration_entry_available(const std::string &feature_utf8, const std::string &entry_utf8) const;
         bool is_exposure_auto_available() const;
         bool is_exposure_time_available() const;
@@ -254,4 +255,3 @@ namespace g_industrial_cam
     // select_component
     // set_access_check_policy
     // set_range_check_policy
-    // is_component_available

@@ -590,11 +590,11 @@ extern "C"
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_height_increment(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        int32_t increment)
+        int32_t *increment)
     {
         try
         {
-            increment = camera_handle(edvr_ref_ptr)->get_height_increment();
+            *increment = camera_handle(edvr_ref_ptr)->get_height_increment();
         }
         catch (...)
         {
@@ -1311,6 +1311,76 @@ extern "C"
                 *dx = b.dx;
                 *dy = b.dy;
             }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_x_binning_bounds(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        double *min,
+        double *max)
+    {
+        try
+        {
+            auto b = camera_handle(edvr_ref_ptr)->get_x_binning_bounds();
+            *min = b.min;
+            *max = b.max;
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+            G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_y_binning_bounds(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        double *min,
+        double *max)
+    {
+        try
+        {
+            auto b = camera_handle(edvr_ref_ptr)->get_y_binning_bounds();
+            *min = b.min;
+            *max = b.max;
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_x_binning_increment(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        int32_t *increment)
+    {
+        try
+        {
+            *increment = camera_handle(edvr_ref_ptr)->get_x_binning_increment();
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_y_binning_increment(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        int32_t *increment)
+    {
+        try
+        {
+            *increment = camera_handle(edvr_ref_ptr)->get_y_binning_increment();
         }
         catch (...)
         {
