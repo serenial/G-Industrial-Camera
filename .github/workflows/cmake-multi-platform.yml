@@ -38,7 +38,9 @@ jobs:
     - uses: lukka/get-cmake@latest
     - name: Install OS dependencies
       if: ${{ matrix.os == 'ubuntu-22.04' }}
-      run: sudo apt-get install -y build-essential g++ python3 zip unzip tar curl autoconf libudev-dev
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential g++ python3 zip unzip tar curl autoconf libudev-dev
     
     - name: Setup VCPKG
       uses: lukka/run-vcpkg@v11
