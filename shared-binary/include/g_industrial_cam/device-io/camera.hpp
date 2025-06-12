@@ -25,7 +25,7 @@ namespace g_industrial_cam
             timeout
         };
 
-        enum class auto_mode : uint8_t{
+        enum class auto_mode : uint8_t {
             off,
             once,
             continuous
@@ -36,9 +36,9 @@ namespace g_industrial_cam
             T min, max;
         };
 
-        enum class representation : uint8_t{
-            undefined,
-            linear,
+        enum class representation : int32_t{
+            undefined = -1,
+            linear = 0,
             logarithmic,
             boolean,
             pure_number,

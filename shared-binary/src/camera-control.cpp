@@ -451,7 +451,7 @@ extern "C"
     {
         try
         {
-            *representation = static_cast<uint8_t>(camera_handle(edvr_ref_ptr)->get_exposure_time_representation());
+            *representation = static_cast<uint8_t>(static_cast<int32_t>(camera_handle(edvr_ref_ptr)->get_exposure_time_representation())+1);
         }
         catch (...)
         {
@@ -488,7 +488,7 @@ extern "C"
     {
         try
         {
-            *representation = static_cast<uint8_t>(camera_handle(edvr_ref_ptr)->get_feature_representation(feature_handle.to_utf8_string()));
+            *representation = static_cast<uint8_t>(static_cast<int32_t>(camera_handle(edvr_ref_ptr)->get_feature_representation(feature_handle.to_utf8_string()))+1);
         }
         catch (...)
         {
@@ -559,7 +559,7 @@ extern "C"
     {
         try
         {
-            *representation = static_cast<uint8_t>(camera_handle(edvr_ref_ptr)->get_gain_representation());
+            *representation = static_cast<uint8_t>(static_cast<int32_t>(camera_handle(edvr_ref_ptr)->get_gain_representation())+1);
         }
         catch (...)
         {
