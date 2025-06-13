@@ -232,6 +232,19 @@ namespace g_industrial_cam
             {
                 return data->object;
             }
+
+            T* operator->() const
+            {
+                return data->object;
+            }
+
+            T& operator*() { 
+                return *data->object; 
+            }
+
+            T& operator*() const{ 
+                return *data->object; 
+            }
         };
     }
 }

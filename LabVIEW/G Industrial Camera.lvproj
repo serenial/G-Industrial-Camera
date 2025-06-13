@@ -34,9 +34,9 @@
 		<Item Name="binary source notices" Type="Folder">
 			<Item Name="COPYING" Type="Document" URL="../../shared-binary/COPYING"/>
 		</Item>
-		<Item Name="Test-Snapshot.vi" Type="VI" URL="../Test-Snapshot.vi"/>
-		<Item Name="Test-Streaming.vi" Type="VI" URL="../Test-Streaming.vi"/>
-		<Item Name="Test-Trigger.vi" Type="VI" URL="../Test-Trigger.vi"/>
+		<Item Name="Snapshot Example.vi" Type="VI" URL="../Snapshot Example.vi"/>
+		<Item Name="Streaming Example.vi" Type="VI" URL="../Streaming Example.vi"/>
+		<Item Name="Digital Input Read Example.vi" Type="VI" URL="../Digital Input Read Example.vi"/>
 		<Item Name=".lvversion" Type="Document" URL="../.lvversion"/>
 		<Item Name="Test.Camera.lvclass" Type="LVClass" URL="../tests/Test.Camera/Test.Camera.lvclass"/>
 		<Item Name="Dependencies" Type="Dependencies">
@@ -134,6 +134,7 @@
 				<Item Name="Test Suite.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Astemes/LUnit/Test Suite.lvclass"/>
 				<Item Name="Get LV Class Path.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/LVClass/Get LV Class Path.vi"/>
 				<Item Name="Enum to Array of Enums.vim" Type="VI" URL="/&lt;vilib&gt;/numeric/Enum to Array of Enums.vim"/>
+				<Item Name="Stall Data Flow.vim" Type="VI" URL="/&lt;vilib&gt;/Utility/Stall Data Flow.vim"/>
 			</Item>
 			<Item Name="mxLvErrorHandler.vi" Type="VI" URL="/&lt;resource&gt;/Framework/Providers/API/mxLvErrorHandler.vi"/>
 			<Item Name="mxLvDebugDisplayCaller.vi" Type="VI" URL="/&lt;resource&gt;/Framework/Providers/API/mxLvDebugDisplayCaller.vi"/>
@@ -211,7 +212,7 @@
 				<Property Name="Source[1].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[1].type" Type="Str">Container</Property>
 				<Property Name="Source[10].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[10].itemID" Type="Ref">/My Computer/Test-Trigger.vi</Property>
+				<Property Name="Source[10].itemID" Type="Ref">/My Computer/Digital Input Read Example.vi</Property>
 				<Property Name="Source[10].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[10].type" Type="Str">VI</Property>
 				<Property Name="Source[2].Container.applyInclusion" Type="Bool">true</Property>
@@ -233,14 +234,14 @@
 				<Property Name="Source[6].itemID" Type="Ref">/My Computer/g_industrial_cam/Type Defs/Device Enumeration.ctl</Property>
 				<Property Name="Source[6].type" Type="Str">VI</Property>
 				<Property Name="Source[7].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[7].itemID" Type="Ref">/My Computer/Test-Snapshot.vi</Property>
+				<Property Name="Source[7].itemID" Type="Ref">/My Computer/Snapshot Example.vi</Property>
 				<Property Name="Source[7].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[7].type" Type="Str">VI</Property>
 				<Property Name="Source[8].destinationIndex" Type="Int">3</Property>
 				<Property Name="Source[8].itemID" Type="Ref">/My Computer/binary source notices/COPYING</Property>
 				<Property Name="Source[8].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[9].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[9].itemID" Type="Ref">/My Computer/Test-Streaming.vi</Property>
+				<Property Name="Source[9].itemID" Type="Ref">/My Computer/Streaming Example.vi</Property>
 				<Property Name="Source[9].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[9].type" Type="Str">VI</Property>
 				<Property Name="SourceCount" Type="Int">11</Property>
