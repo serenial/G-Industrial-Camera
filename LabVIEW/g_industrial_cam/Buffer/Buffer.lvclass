@@ -104,4 +104,13 @@
 		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
 		<Property Name="NI.ClassItem.State" Type="Int">41943056</Property>
 	</Item>
+	<Item Name="Mono10 to U16.vi" Type="VI" URL="../Mono10 to U16.vi">
+		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!"]!!!!"1!&gt;1!9!&amp;H6O=WFH&lt;G6E)$%W9GFU)'FO&gt;'6H:8)!!"B!1!!"`````Q!!#F5R.C"1;8BF&lt;(-!!!V!"1!(4H6N:8*J9Q!;1%!!!@````]!!AR.&lt;WZP)$%Q)%2B&gt;'%!!"A!]!!#!!%!!Q)!!!A!!!E!!!!1!!!!!!%!"!!!!!!</Property>
+		<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+		<Property Name="NI.ClassItem.Flags" Type="Int">0</Property>
+		<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+		<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+		<Property Name="NI.ClassItem.State" Type="Int">1342710274</Property>
+	</Item>
 </LVClass>

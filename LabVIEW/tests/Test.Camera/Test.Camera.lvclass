@@ -40,13 +40,13 @@
 			<Property Name="NI.ClassItem.State" Type="Int">1342713858</Property>
 		</Item>
 		<Item Name="Get Alternative List Value.vim" Type="VI" URL="../../../g_industrial_cam/Camera/Get Alternative List Value.vim">
-			<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!#5!!!!"A!;1#%64X2I:8)A6G&amp;M&gt;75A18:B;7RB9GRF!"2!-0````],4X2I:8)A6G&amp;M&gt;75!%%!Q`````Q:4&gt;(*J&lt;G=!!"2!1!!"`````Q!#"URJ=X1A;7Y!&amp;E!Q`````QV$&gt;8*S:7ZU)&amp;:B&lt;(6F!#1!]!!%!!!!!1!$!!1$!!!I!!!*!!!!#1!!!"!!!!!1!!!!!!%!"1!!!!!</Property>
+			<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!#)!!!!"A!;1#%64X2I:8)A6G&amp;M&gt;75A18:B;7RB9GRF!""!5QN0&gt;'BF=C"797RV:1!31&amp;-.1X6S=G6O&gt;#"797RV:1!-1&amp;-(6G&amp;S;7&amp;O&gt;!!51%!!!@````]!!Q&gt;-;8.U)'FO!#1!]!!%!!!!!1!#!!1$!!!I!!!*!!!!#1!!!"!!!!%3!!!!!!%!"1!!!!!</Property>
 			<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
 			<Property Name="NI.ClassItem.Flags" Type="Int">16777216</Property>
 			<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
 			<Property Name="NI.ClassItem.MethodScope" Type="UInt">2</Property>
 			<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
-			<Property Name="NI.ClassItem.State" Type="Int">1074278416</Property>
+			<Property Name="NI.ClassItem.State" Type="Int">1115684882</Property>
 		</Item>
 		<Item Name="Get Alternative Enum Value.vim" Type="VI" URL="../Get Alternative Enum Value.vim">
 			<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!$#!!!!!Q"7!0%!!!!!!!!!!AZ$97VF=G%O&lt;(:D&lt;'&amp;T=QV"&gt;82P)%VP:'5O9X2M!$&amp;!&amp;1!$!U^G:A20&lt;G.F#E.P&lt;H2J&lt;H6P&gt;8-!%5&amp;M&gt;'6S&lt;G&amp;U;8:F)&amp;:B&lt;(6F!%Q!]1!!!!!!!!!#$E.B&lt;76S93ZM&gt;G.M98.T$5&amp;V&gt;']A47^E:3ZD&gt;'Q!*U!6!!-$4W:G"%^O9W5+1W^O&gt;'FO&gt;7^V=Q!(27ZV&lt;3"*&lt;A!9!0!!!A!!!!%$!!!)!!!*!!!!%!!!!!!"!!)!!!!!</Property>
@@ -129,5 +129,14 @@
 		<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
 		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
 		<Property Name="NI.ClassItem.State" Type="Int">1082139152</Property>
+	</Item>
+	<Item Name="Region.vi" Type="VI" URL="../Region.vi">
+		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!%#!!!!#!!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!#R!=!!?!!!6%V2F=X1O1W&amp;N:8*B,GRW9WRB=X-!$62F=X1A1W&amp;T:3"0&gt;81!,%"Q!"Y!!"546'6T&gt;#Z$97VF=G%O&lt;(:D&lt;'&amp;T=Q!-6'6T&gt;#"$98.F)%FO!!"B!0!!$!!$!!1!"!!&amp;!!1!"!!%!!1!"!!%!!1!"A-!!(A!!!E!!!!!!!!!!!!!!!U,!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!%A!!$1!!!!Q!!!!!!!!!!!!!!1!(!!!!!!</Property>
+		<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+		<Property Name="NI.ClassItem.Flags" Type="Int">2</Property>
+		<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+		<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+		<Property Name="NI.ClassItem.State" Type="Int">1074541072</Property>
 	</Item>
 </LVClass>
