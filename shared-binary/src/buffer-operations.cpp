@@ -11,16 +11,17 @@
 using namespace g_industrial_cam;
 using namespace lv_interop;
 
-namespace{
+namespace
+{
 
-    #include "g_industrial_cam/lv_interop/set_packing.hpp"
+#include "g_industrial_cam/lv_interop/set_packing.hpp"
 
-    struct LV_BufferImageDimensions_t{
+    struct LV_BufferImageDimensions_t
+    {
         uint16_t width, height;
     };
 
-
-    #include "g_industrial_cam/lv_interop/reset_packing.hpp"
+#include "g_industrial_cam/lv_interop/reset_packing.hpp"
 }
 
 extern "C"
@@ -28,8 +29,7 @@ extern "C"
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_buffer_get_image_dimensions(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        LV_Ptr_t<LV_BufferImageDimensions_t> dims_ptr
-    )
+        LV_Ptr_t<LV_BufferImageDimensions_t> dims_ptr)
     {
         try
         {
@@ -45,11 +45,28 @@ extern "C"
         return LV_ERR_noError;
     }
 
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_buffer_get_size_in_bytes(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        int32_t *size)
+    {
+        try
+        {
+            lv_buffer buffer(edvr_ref_ptr);
+
+            *size = static_cast<int32_t>(buffer.size());
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_buffer_create_empty(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t edvr_ref_ptr,
-        LV_Ptr_t<LV_BufferImageDimensions_t> dims_ptr
-    )
+        LV_Ptr_t<LV_BufferImageDimensions_t> dims_ptr)
     {
         try
         {
