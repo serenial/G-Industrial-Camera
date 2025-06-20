@@ -1342,8 +1342,8 @@ extern "C"
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_x_binning_bounds(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr,
-        double *min,
-        double *max)
+        int32_t *min,
+        int32_t *max)
     {
         try
         {
@@ -1361,8 +1361,8 @@ extern "C"
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_y_binning_bounds(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr,
-        double *min,
-        double *max)
+        int32_t *min,
+        int32_t *max)
     {
         try
         {
