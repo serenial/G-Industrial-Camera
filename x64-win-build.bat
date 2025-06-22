@@ -1,5 +1,5 @@
 set SCRIPT_DIR="%~dp0."
-echo off
+::REM echo off
 set BUILD_TYPE=release
 SET VCPKG_DEFAULT_TRIPLET=x64-windows-static
 
@@ -14,9 +14,11 @@ if "%1" == "debug" (
 
 cd %SCRIPT_DIR%
 
+call .\vcpkg\bootstrap-vcpkg.bat
+
 ::REM vcpkg can create a cmd context with all the settings we need but we cannot interact with 
 ::REM it from a batch file so echo out all the variables and then set them in this cmd context
 
-FOR /F "tokens=*" %%I in ('vcpkg/vcpkg env --triplet %VCPKG_DEFAULT_TRIPLET% set') DO @SET %%I
+FOR /F "tokens=*" %%I in ('.\vcpkg\vcpkg env --triplet %VCPKG_DEFAULT_TRIPLET% set') DO @SET %%I
 
-cmake --preset=windows-%BUILD_TYPE% && cmake --build --preset=windows-%BUILD_TYPE%-build
+cmake --clean-first --preset=windows-%BUILD_TYPE% && cmake --build --preset=windows-%BUILD_TYPE%-build --clean-first

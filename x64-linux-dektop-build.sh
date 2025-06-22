@@ -3,7 +3,6 @@ cd "$(dirname "$0")"
 
 BUILD_TYPE="release"
 
-
 if [ $# -eq 0 ];
   then
      echo "*** Building release ***"
@@ -13,5 +12,7 @@ elif [[ "$1" -eq "debug" ]];
     echo "** Building debug ***"
     BUILD_TYPE="debug"
 fi
+
+vcpkg/bootstrap-vcpkg.sh
 
 cmake --preset=linux-desktop-$BUILD_TYPE && cmake --build --preset=linux-desktop-$BUILD_TYPE-build

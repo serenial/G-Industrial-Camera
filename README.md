@@ -1,49 +1,56 @@
-# G Industrial Camera
+# G Industrial Camera (Work in Progress)
 
 YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
 This library is intended to provide a simple LabVIEW driver for use with `GenICam` compatible cameras.
 
-# Licence
-The LabVIEW source is distributed under the Zero-Clause BSD licence. The shared binary component of this toolkit is distributed under the LGPL-2.1 licence.
+The library is created with LabVIEW 2020 and is suitable for Windows x86/x64 platforms, Linux x64. NI-LinuxRT support is planned. 
 
-A licence file which contains the list of dependencies to provide to end users is under construction 
+## Licence
+The LabVIEW source is distributed under the Zero-Clause BSD licence. The shared binary component of this toolkit is distributed under the LGPL-2.1 licence - see [COPYING](LabVIEW/COPYING) for the full text of the licence (including dependency licences).
 
-## Supported Platforms
-The LabVIEW code is written in LabVIEW 2020 SP1 and provides binaries for the following platforms:
+## Getting Started
 
-| Platform | Supported |
-|----------|-----------|
-| Windows x86 | 🚧 |
-| Windows x64 | 🚧 |
-| Linux x64 | 🚧 |
-| NI-LinuxRT x64 | 🚧❔ |
-| NI-LinuxRT ARM | ❌ |
-| MacOS (x86-64 or Apple Silicon) | ❌ |
+This library is a work in progress so there aren't any releases yet.
 
-## Development Setup
+If you want to try this library before then, up-to-date binaries are (probably) available [as github build artifacts](https://github.com/serenial/G-Industrial-Camera/actions/workflows/cmake-multi-platform.yml) - you must be logged into your github account to view them.
 
-The library consists of two components - LabVIEW code and a shared library built from C++ code. This repository does not include the pre-built binaries as these would ideally be built from source as this provides the option to enable the debugging symbols on the build.
+Extract the build-artifact and copy the `.dll` or `.so` file in `g_industrial_cam\bin` into `LabVIEW\g_industrial_cam\bin`.
 
-### Building for Windows Dependencies
+If you require a build of the shared-binaries with debug symbols then please see the instructions to build from source.
 
-Install the following:
+### Camera Setup
 
-* [Build Tools for Windows 2022 - MSVC C++ Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022) (Newer versions should work but you will have to update the build scripts later)
-* CMake 3.27 or later (This can be installed as part of the MSVC Build Tools)
-* (Ninja Build)[https://github.com/ninja-build/ninja/releases] (accessible on the System's Path)
+#### Manufacturer Software Requirements
+It is recommended that you install the drivers and utilities provided by the Camera's manufacturer - this will allow you to verify the connection of your camera and ensure that drivers are present on the system.
 
-This screenshot shows the recommended items to install for MSVC Build Tools
-![Build Tools for Visual Studio 2022](./img/msvc_installer.png)
+#### Network/Firewall Configuration with GigE Cameras
+Ensure that LabVIEW or your built application isn't blocked by a firewall for GigE Cameras. Windows may classify static-IP attached devices as a "private network" which might cause traffic to be blocked. Check Windows Defender to ensure LabVIEW or your executable aren't blocked.
 
-### Building for Linux Dependencies
-* autoconf
+#### USBVision Drivers on Windows
+Some USBVision devices will not be detected by the library (like Basler devices) without modifying the USB driver that the Windows OS associates with them. A walkthough of the configuration process (using `zadig`) and its reversal are a work in progress but they loosely follow the steps outlined here [Swapping USB3 Device Driver on Windows to use `libsub`](https://github.com/AravisProject/aravis/issues/431#issuecomment-1092243935)
+
+### Development Setup
+
+If you want to develop the library then you require the following (C++ development tools only required if you want to build the C++ source)
+
+#### LabVIEW
+* LabVIEW 2020 or LV2024 Q3 onwards (to preserve the source version to 2020)
+* LUnit (from VIPM.io)
+
+#### C++ Development (Windows x86/x64)
+[Build Tools for Windows 2022 - MSVC C++ Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022) or newer
+
+#### C++ Development (Linux x64)
+* Yours system's build tools (g++, make, nasm, autoconf etc)
+* cmake 3.27 or greater
 * libudev-dev
-* #TODO
 
 ### Cloning the Repository
 
-This repository uses git submodules to manage build tooling. When cloning ensure you use
+Please ensure you are cloning this repo from [GitLab](https://gitlab.com/serenial/g-industrial-camera.git). Any issues should also be raised there! The GitHub mirror is only used for the unlimited build minutes.
+
+When cloning ensure you use `recursive` clone
 
 ```bash
 git clone --recursive https://gitlab.com/serenial/g-industrial-camera.git
@@ -54,33 +61,30 @@ If you already have cloned the top-level repo then use
 git submodule update --init --recursive
 ```
 
-#### Bootstrapping `vcpkg`
+This will ensure that the `vcpkg` submodule is setup as required.
 
-Open a command prompt at the root of this repository and run either `vcpkg/bootstrap-vcpkg.bat` if you are on Windows or `vcpkg/bootstrap-vcpkg.sh` on Linux platforms.
+### Building the Shared Binaries from Source
 
-### Building Shared Binaries
+If you only want the binaries for LabVIEW development then you might find it easier to use the provided `x86-win-build.bat`, `x64-win-build.bat` or `x64-linux-dektop-build.sh`. These should setup `vcpkg`, build the dependencies and then build and install the `.dll` or `.so` into the `LabVIEW/g_industrial_cam/bin` directory.
 
-If you use `VSCode` with the `C++` and `CMake` extensions installed then you can use the CMake Integration to select and build either the `release` or `debug` configurations. If you are using `VScode` on Windows, ensure you launch it by entering `code` into the `Visual Studio Developer Command Prompt` (choose the `x86` or `x64` prompt depending on if you want to build for 32 or 64 bit).
+### VSCode Setup
 
-Example build scripts are provided to allow for easy building without VSCode:
+**When using VSCode on Windows ensure you launch it from the `x86 Native Tools Command Prompt` or the `x64 Native Tools Command Prompt`** (depending on your required bitness). The command `code` should launch VSCode.
 
-Windows users should copy the `x<Arch>-win-build.bat-example` files and update the extension to `.bat`. If you are using a different version of MSVC then you will have to update the `call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat` path to the location for your MSVC `vcvars` setups scripts on your system.
+#### VSCode Extensions
+* C/C++ (Microsoft)
+* CMake Tools (Microsoft)
 
-Linux users can run `x64-linux-dektop-build.sh ` but might need to make the file executable using `chmod +x` first.
+#### VSCode Configuration
+Launch Files which setup a debugging launch task are included in example `.vscode-example-<platform>` directories
 
-The binary build will take some time as all the dependencies are built from source. The binaries will be copied into `LabVIEW/g_industrial_cam/bin` when done.
+#### Build Using CMake and CMakePresets.json
+VSCode should read the `CMakePresets.json` file and provide a `debug` and `release` configuration and build preset. These can be launched from the [CMake Tooling](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/cmake-presets.md) 
+
+Check the build output for any errors. **You will have to close LabVIEW for the build and "install" to succeed**
 
 ## Contributions
-Open to contributions - please open an issue to discuss
-
-## Usage
-
-**ENSURE YOU HAVE INSTALED THE DRIVERS FOR THE DEVICE ON YOUR SYSTEM**
-
-For example "Pylon" for Basler cameras.
-
-### Windows libusb setup
-Windows doesn't always play nice with libusb so look at the resources section to see guides on how to make the OS use a libusb compatible driver. #TODO - explain this properly
+Open to contributions - please open an issue _on GitLab_ to discuss
 
 ## TODO
 - [x] Dependency Licence Notices
@@ -92,6 +96,3 @@ Windows doesn't always play nice with libusb so look at the resources section to
 - [ ] Distribution Packages
 - [ ] Walk Camera Config
 - [ ] Modify Camera Config
-
-## Resources
-* [Swapping USB3 Device Driver on Windows to use `libsub`](https://github.com/AravisProject/aravis/issues/431#issuecomment-1092243935) - note: Use Windows Device Manager to swap back to the original driver to see the Basler Device in Pylon again.
