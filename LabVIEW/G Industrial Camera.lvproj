@@ -21,7 +21,6 @@
 			<Item Name="Enumerate Devices.vi" Type="VI" URL="../g_industrial_cam/Enumerate Devices.vi"/>
 			<Item Name="Buffer.lvclass" Type="LVClass" URL="../g_industrial_cam/Buffer/Buffer.lvclass"/>
 			<Item Name="Camera.lvclass" Type="LVClass" URL="../g_industrial_cam/Camera/Camera.lvclass"/>
-			<Item Name=".lvversion" Type="Document" URL="../.lvversion"/>
 		</Item>
 		<Item Name="utility" Type="Folder" URL="../utility">
 			<Property Name="NI.DISK" Type="Bool">true</Property>
@@ -40,6 +39,7 @@
 		<Item Name="Digital Input Read Example.vi" Type="VI" URL="../Digital Input Read Example.vi"/>
 		<Item Name="Test.Camera.lvclass" Type="LVClass" URL="../tests/Test.Camera/Test.Camera.lvclass"/>
 		<Item Name="COPYING" Type="Document" URL="../COPYING"/>
+		<Item Name=".lvversion" Type="Document" URL="../.lvversion"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="Error Cluster From Error Code.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Error Cluster From Error Code.vi"/>

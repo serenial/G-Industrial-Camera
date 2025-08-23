@@ -131,6 +131,7 @@ namespace g_industrial_cam
         bounds_t<int32_t> get_y_binning_bounds() const;
         int32_t get_x_binning_increment() const;
         int32_t get_y_binning_increment() const;
+        std::string_view get_genicam_xml() const;
         bool is_black_level_auto_available() const;
         bool is_black_level_available() const;
         bool is_component_available() const;

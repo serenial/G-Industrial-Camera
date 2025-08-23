@@ -748,3 +748,52 @@ int32_t camera::get_x_binning_increment() const{
 int32_t camera::get_y_binning_increment() const{
     return call_camera_fn(arv_camera_get_y_binning_increment);
 }
+
+std::string_view camera::get_genicam_xml() const{
+
+    size_t length;
+
+    auto char_ptr = arv_device_get_genicam_xml(arv_camera_get_device(m_camera), &length);
+
+    return std::string_view{char_ptr, length};
+}
+
+double camera::get_black_level() const
+{
+    return call_camera_fn(arv_camera_get_black_level);
+}
+
+camera::auto_mode camera::get_black_level_auto() const
+{
+    return static_cast<auto_mode>(call_camera_fn(arv_camera_get_black_level_auto));
+}
+
+camera::bounds_t<double> camera::get_black_level_bounds() const
+{
+    return call_camera_fn_to_get_bounds<double>(arv_camera_get_black_level_bounds);
+}
+
+bool camera::is_black_level_auto_available() const
+{
+    return call_camera_fn(arv_camera_is_black_level_auto_available);
+}
+
+void camera::set_black_level(double level) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_black_level, level);
+}
+
+void camera::set_black_level_auto(camera::auto_mode mode) const
+{
+    call_camera_fn_with_no_return(arv_camera_set_black_level_auto, static_cast<ArvAuto>(mode));
+}
+
+void camera::select_black_level(const std::string &selector_utf8) const
+{
+    call_camera_fn_with_no_return(arv_camera_select_black_level, selector_utf8.c_str());
+}
+
+bool camera::is_black_level_available() const
+{
+    return call_camera_fn(arv_camera_is_black_level_available);
+}
