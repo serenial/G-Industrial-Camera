@@ -58,6 +58,7 @@ jobs:
         path: |
          ${{ github.workspace }}/g_industrial_cam/bin
          ${{ github.workspace }}/build/vcpkg_installed/**/share
+         ${{ github.workspace }}/build/vcpkg_installed/**/tools/aravis
 
     - name: Save vcpkg cache
       uses: actions/cache/save@v4

@@ -19,8 +19,13 @@
 				<Item Name="Device Enumeration.ctl" Type="VI" URL="../g_industrial_cam/Device Enumeration.ctl"/>
 			</Item>
 			<Item Name="Enumerate Devices.vi" Type="VI" URL="../g_industrial_cam/Enumerate Devices.vi"/>
-			<Item Name="Buffer.lvclass" Type="LVClass" URL="../g_industrial_cam/Buffer/Buffer.lvclass"/>
 			<Item Name="Camera.lvclass" Type="LVClass" URL="../g_industrial_cam/Camera/Camera.lvclass"/>
+			<Item Name="Buffer.lvclass" Type="LVClass" URL="../g_industrial_cam/Buffer/Buffer.lvclass"/>
+		</Item>
+		<Item Name="examples" Type="Folder">
+			<Item Name="Snapshot Example.vi" Type="VI" URL="../examples/Snapshot Example.vi"/>
+			<Item Name="Streaming Example.vi" Type="VI" URL="../examples/Streaming Example.vi"/>
+			<Item Name="Digital Input Read Example.vi" Type="VI" URL="../examples/Digital Input Read Example.vi"/>
 		</Item>
 		<Item Name="utility" Type="Folder" URL="../utility">
 			<Property Name="NI.DISK" Type="Bool">true</Property>
@@ -34,9 +39,6 @@
 		<Item Name="imaq" Type="Folder" URL="../imaq">
 			<Property Name="NI.DISK" Type="Bool">true</Property>
 		</Item>
-		<Item Name="Snapshot Example.vi" Type="VI" URL="../Snapshot Example.vi"/>
-		<Item Name="Streaming Example.vi" Type="VI" URL="../Streaming Example.vi"/>
-		<Item Name="Digital Input Read Example.vi" Type="VI" URL="../Digital Input Read Example.vi"/>
 		<Item Name="Test.Camera.lvclass" Type="LVClass" URL="../tests/Test.Camera/Test.Camera.lvclass"/>
 		<Item Name="COPYING" Type="Document" URL="../COPYING"/>
 		<Item Name=".lvversion" Type="Document" URL="../.lvversion"/>
@@ -201,7 +203,7 @@
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_postActionVIID" Type="Ref">/My Computer/build-tools/Post-Build Action.vi</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{07AFE07D-8547-43CA-867C-EBA2948D8BBF}</Property>
-				<Property Name="Bld_version.build" Type="Int">11</Property>
+				<Property Name="Bld_version.build" Type="Int">13</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">Destination Directory</Property>
 				<Property Name="Destination[0].path" Type="Path">../build/source-distribution</Property>
@@ -214,11 +216,14 @@
 				<Property Name="Destination[2].preserveHierarchy" Type="Bool">true</Property>
 				<Property Name="Destination[3].destName" Type="Str">root</Property>
 				<Property Name="Destination[3].path" Type="Path">../build/source-distribution</Property>
-				<Property Name="DestinationCount" Type="Int">4</Property>
-				<Property Name="Source[0].itemID" Type="Str">{A7327E35-BB9C-499F-8701-9C69DB7D4C7C}</Property>
+				<Property Name="Destination[4].destName" Type="Str">g_industrial_cam_examples</Property>
+				<Property Name="Destination[4].libraryName" Type="Str">g_industrial_cam_examples.lvlib</Property>
+				<Property Name="Destination[4].path" Type="Path">../build/source-distribution/g_industrial_cam_examples</Property>
+				<Property Name="Destination[4].preserveHierarchy" Type="Bool">true</Property>
+				<Property Name="DestinationCount" Type="Int">5</Property>
+				<Property Name="Source[0].itemID" Type="Str">{E5F39CBA-1457-4666-A2EF-7CCD4EFB9183}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].Container.applyInclusion" Type="Bool">true</Property>
-				<Property Name="Source[1].Container.applyPrefix" Type="Bool">true</Property>
 				<Property Name="Source[1].Container.depDestIndex" Type="Int">0</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/bin</Property>
@@ -246,16 +251,16 @@
 				<Property Name="Source[6].destinationIndex" Type="Int">2</Property>
 				<Property Name="Source[6].itemID" Type="Ref">/My Computer/g_industrial_cam/Type Defs/Device Enumeration.ctl</Property>
 				<Property Name="Source[6].type" Type="Str">VI</Property>
-				<Property Name="Source[7].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[7].itemID" Type="Ref">/My Computer/Snapshot Example.vi</Property>
+				<Property Name="Source[7].destinationIndex" Type="Int">4</Property>
+				<Property Name="Source[7].itemID" Type="Ref">/My Computer/examples/Snapshot Example.vi</Property>
 				<Property Name="Source[7].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[7].type" Type="Str">VI</Property>
-				<Property Name="Source[8].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[8].itemID" Type="Ref">/My Computer/Streaming Example.vi</Property>
+				<Property Name="Source[8].destinationIndex" Type="Int">4</Property>
+				<Property Name="Source[8].itemID" Type="Ref">/My Computer/examples/Streaming Example.vi</Property>
 				<Property Name="Source[8].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[8].type" Type="Str">VI</Property>
-				<Property Name="Source[9].destinationIndex" Type="Int">0</Property>
-				<Property Name="Source[9].itemID" Type="Ref">/My Computer/Digital Input Read Example.vi</Property>
+				<Property Name="Source[9].destinationIndex" Type="Int">4</Property>
+				<Property Name="Source[9].itemID" Type="Ref">/My Computer/examples/Digital Input Read Example.vi</Property>
 				<Property Name="Source[9].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[9].type" Type="Str">VI</Property>
 				<Property Name="SourceCount" Type="Int">11</Property>
