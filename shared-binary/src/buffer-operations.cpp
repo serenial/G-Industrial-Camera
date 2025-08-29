@@ -98,24 +98,139 @@ extern "C"
 
             array_handle.size_to_fit({buffer.height(), buffer.width()});
 
-            auto next_output_pixel = array_handle.begin();
-            auto next_input_byte = buffer.begin();
+            auto output_pixel = array_handle.begin();
+            auto input_byte = buffer.begin();
 
             // process in 5 input bytes to give 3 output pixels
 
-            while (next_output_pixel < array_handle.end() - 3 && next_input_byte < buffer.end() - 5)
+            while (output_pixel < array_handle.end() && input_byte < buffer.end())
             {
 
-                auto b0 = *next_input_byte++;
-                auto b1 = *next_input_byte++;
-                auto b2 = *next_input_byte++;
-                auto b3 = *next_input_byte++;
-                auto b4 = *next_input_byte++;
+                auto b0 = *input_byte++;
+                auto b1 = *input_byte++;
+                auto b2 = *input_byte++;
+                auto b3 = *input_byte++;
+                auto b4 = *input_byte++;
 
-                *next_output_pixel++ = static_cast<uint16_t>(b0 & 0b1111'1111) >> 0 | static_cast<uint16_t>(b1 & 0b0000'0011) << 8;
-                *next_output_pixel++ = static_cast<uint16_t>(b1 & 0b1111'1100) >> 2 | static_cast<uint16_t>(b2 & 0b0000'1111) << 6;
-                *next_output_pixel++ = static_cast<uint16_t>(b2 & 0b1111'0000) >> 4 | static_cast<uint16_t>(b3 & 0b0011'1111) << 4;
-                *next_output_pixel++ = static_cast<uint16_t>(b3 & 0b1100'0000) >> 6 | static_cast<uint16_t>(b4 & 0b1111'1111) << 2;
+                *output_pixel++ = static_cast<uint16_t>(b0 & 0b1111'1111) >> 0 | static_cast<uint16_t>(b1 & 0b0000'0011) << 8;
+                *output_pixel++ = static_cast<uint16_t>(b1 & 0b1111'1100) >> 2 | static_cast<uint16_t>(b2 & 0b0000'1111) << 6;
+                *output_pixel++ = static_cast<uint16_t>(b2 & 0b1111'0000) >> 4 | static_cast<uint16_t>(b3 & 0b0011'1111) << 4;
+                *output_pixel++ = static_cast<uint16_t>(b3 & 0b1100'0000) >> 6 | static_cast<uint16_t>(b4 & 0b1111'1111) << 2;
+            }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_buffer_get_mono12_packed_image(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_2DArrayHandle_t<uint16_t> array_handle)
+    {
+        try
+        {
+            lv_buffer buffer(edvr_ref_ptr);
+
+            array_handle.size_to_fit({buffer.height(), buffer.width()});
+
+            auto output_pixel = array_handle.begin();
+            auto input_byte = buffer.begin();
+
+            // process in 3 input bytes to give 2 output pixels
+
+            while (output_pixel < array_handle.end() && input_byte < buffer.end())
+            {
+
+                auto b0 = *input_byte++;
+                auto b1 = *input_byte++;
+                auto b2 = *input_byte++;
+
+                *output_pixel++ = static_cast<uint16_t>(b0 & 0b1111'1111) >> 0 | static_cast<uint16_t>(b1 & 0b0000'1111) << 8;
+                *output_pixel++ = static_cast<uint16_t>(b1 & 0b1111'0000) >> 4 | static_cast<uint16_t>(b2 & 0b1111'1111) << 4;
+            }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_buffer_get_mono14_packed_image(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_2DArrayHandle_t<uint16_t> array_handle)
+    {
+        try
+        {
+            lv_buffer buffer(edvr_ref_ptr);
+
+            array_handle.size_to_fit({buffer.height(), buffer.width()});
+
+            auto output_pixel = array_handle.begin();
+            auto input_byte = buffer.begin();
+
+            // process in 6 input bytes to give 4 output pixels
+
+            while (output_pixel < array_handle.end() && input_byte < buffer.end())
+            {
+
+                auto b0 = *input_byte++;
+                auto b1 = *input_byte++;
+                auto b2 = *input_byte++;
+                auto b3 = *input_byte++;
+                auto b4 = *input_byte++;
+                auto b5 = *input_byte++;
+                auto b6 = *input_byte++;
+
+                *output_pixel++ = static_cast<uint16_t>(b0 & 0b1111'1111) >> 0 | static_cast<uint16_t>(b1 & 0b0011'1111) << 8;
+                *output_pixel++ = static_cast<uint16_t>(b1 & 0b1100'0000) >> 6 | static_cast<uint16_t>(b2 & 0b1111'1111) << 2 | static_cast<uint16_t>(b3 & 0b0000'1111) << 10;
+                *output_pixel++ = static_cast<uint16_t>(b3 & 0b1111'0000) >> 4 | static_cast<uint16_t>(b4 & 0b1111'1111) << 4 | static_cast<uint16_t>(b5 & 0b0000'0011) << 12;
+                *output_pixel++ = static_cast<uint16_t>(b5 & 0b1111'1100) >> 2 | static_cast<uint16_t>(b6 & 0b1111'1111) << 6 ;
+            }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+        G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_buffer_get_rgb8_image(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_BooleanPtr_t flip_rb_channels,
+        uint8_t alpha_channel_value,
+        LV_2DArrayHandle_t<uint32_t> array_handle)
+    {
+        try
+        {
+            lv_buffer buffer(edvr_ref_ptr);
+
+            array_handle.size_to_fit({buffer.height(), buffer.width()});
+
+            auto output_pixel = array_handle.begin();
+            auto input_byte = buffer.begin();
+
+            // process in 3 input bytes to give 1 output pixel
+
+            while (output_pixel < array_handle.end() && input_byte < buffer.end())
+            {
+
+                auto red = *input_byte++; // r
+                auto green = *input_byte++; // g
+                auto blue = *input_byte++; // b
+
+                if(*flip_rb_channels){
+                    *output_pixel = alpha_channel_value << 24 | static_cast<uint32_t>(blue) << 16 | static_cast<uint32_t>(green) << 8 | static_cast<uint32_t>(red); 
+                }
+                else{
+                    *output_pixel = alpha_channel_value << 24 | static_cast<uint32_t>(red) << 16 | static_cast<uint32_t>(green) << 8 | static_cast<uint32_t>(blue); 
+                }
+               
             }
         }
         catch (...)
