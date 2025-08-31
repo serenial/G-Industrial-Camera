@@ -23,7 +23,27 @@ namespace
         uint16_t width, height;
     };
 
+    struct LV_MappedBufferInfo_t
+    {
+        int32_t res_x, res_y;
+        uint64_t number_of_bytes;
+    };
+
+
 #include "g_industrial_cam/lv_interop/reset_packing.hpp"
+
+
+class mapped_buffer
+{
+public:
+    mapped_buffer(LV_EDVRReferencePtr_t);
+    ~mapped_buffer();
+    void get_info(LV_MappedBufferInfo_t*) const;
+
+private:
+    const std::unique_ptr<lv_buffer> m_buff_ptr;
+};
+
 }
 
 extern "C"
@@ -273,4 +293,43 @@ extern "C"
         }
         return LV_ERR_noError;
     }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_buffer_map_buffer(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t edvr_ref_ptr,
+        LV_EDVRReferencePtr_t mapped_lifetime_edvr_ref_ptr,
+        LV_Ptr_t<LV_MappedBufferInfo_t> mapped_info_ptr
+    )
+    {
+        try
+        {
+            EDVRManagedObject<mapped_buffer> mapped(mapped_lifetime_edvr_ref_ptr, new mapped_buffer(edvr_ref_ptr));
+
+            mapped->get_info(mapped_info_ptr);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+
+        return LV_ERR_noError;
+    }
+}
+
+mapped_buffer::mapped_buffer(LV_EDVRReferencePtr_t edvr_ref_ptr)
+    : m_buff_ptr(std::make_unique<lv_buffer>(edvr_ref_ptr))
+{
+    m_buff_ptr->upgrade_to_mapped();
+}
+
+mapped_buffer::~mapped_buffer()
+{
+    m_buff_ptr->downgrade_from_mapped();
+}
+
+void mapped_buffer::get_info(LV_MappedBufferInfo_t* info) const
+{
+    info->res_x = m_buff_ptr->width();
+    info->res_y = m_buff_ptr->height();
+    info->number_of_bytes = m_buff_ptr->size();
 }

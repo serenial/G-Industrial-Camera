@@ -67,5 +67,4 @@ namespace g_industrial_cam
         static LV_MgErr_t on_labview_unlock(LV_EDVRDataPtr_t ptr);
         static void on_labview_delete(LV_EDVRDataPtr_t ptr);
     };
-
 }
