@@ -415,7 +415,7 @@ void camera::available_components(std::vector<std::string> &components_utf8) con
     call_camera_fn_to_populate_list(arv_camera_dup_available_components, components_utf8);
 }
 
-void camera::available_enumerations(const std::string &feature_utf,std::vector<std::string> &enums_utf8) const
+void camera::available_enumerations(const std::string &feature_utf, std::vector<std::string> &enums_utf8) const
 {
     call_camera_fn_to_populate_list(arv_camera_dup_available_enumerations_as_strings, enums_utf8, feature_utf.c_str());
 }
@@ -493,7 +493,7 @@ camera::bounds_t<double> camera::get_float_bounds(const std::string &feature_utf
 
 camera::representation camera::get_feature_representation(const std::string &feature_utf8) const
 {
-    return static_cast<representation>(arv_camera_get_feature_representation(m_camera,feature_utf8.c_str()));
+    return static_cast<representation>(arv_camera_get_feature_representation(m_camera, feature_utf8.c_str()));
 }
 
 double camera::get_float_increment(const std::string &feature_utf8) const
@@ -702,7 +702,7 @@ void camera::set_region(const camera::region_t &region) const
 
 void camera::set_register(const std::string &register_utf8, const std::vector<std::byte> &bytes) const
 {
-    call_camera_fn_with_no_return(arv_camera_set_register, register_utf8.c_str(), bytes.size(), const_cast<void*>(reinterpret_cast<const void*>(bytes.data())));
+    call_camera_fn_with_no_return(arv_camera_set_register, register_utf8.c_str(), bytes.size(), const_cast<void *>(reinterpret_cast<const void *>(bytes.data())));
 }
 
 uint64_t camera::get_stream_frame_count() const
@@ -715,41 +715,45 @@ uint64_t camera::get_stream_error_count() const
     return m_stream_frames_error_count;
 }
 
-camera::binning_t camera::get_binning() const {
+camera::binning_t camera::get_binning() const
+{
     binning_t b;
     call_camera_fn_with_no_return(arv_camera_get_binning, &b.dx, &b.dy);
     return b;
 }
 
-camera::bounds_t<int32_t> camera::get_x_binning_bounds() const {
-    bounds_t<int32_t> b;
-    call_camera_fn_with_no_return(arv_camera_get_x_binning_bounds,&b.min, &b.max);
-    return b;
+camera::bounds_t<int32_t> camera::get_x_binning_bounds() const
+{
+    return call_camera_fn_to_get_bounds<int32_t>(arv_camera_get_x_binning_bounds);
 }
 
-camera::bounds_t<int32_t> camera::get_y_binning_bounds() const {
-    bounds_t<int32_t> b;
-    call_camera_fn_with_no_return(arv_camera_get_y_binning_bounds,&b.min, &b.max);
-    return b;
+camera::bounds_t<int32_t> camera::get_y_binning_bounds() const
+{
+    return call_camera_fn_to_get_bounds<int32_t>(arv_camera_get_y_binning_bounds);
 }
 
-void camera::set_binning(const binning_t& binning) const {
+void camera::set_binning(const binning_t &binning) const
+{
     call_camera_fn_with_no_return(arv_camera_set_binning, binning.dx, binning.dy);
 }
 
-bool camera::is_binning_available() const {
+bool camera::is_binning_available() const
+{
     return call_camera_fn(arv_camera_is_binning_available);
 }
 
-int32_t camera::get_x_binning_increment() const{
+int32_t camera::get_x_binning_increment() const
+{
     return call_camera_fn(arv_camera_get_x_binning_increment);
 }
 
-int32_t camera::get_y_binning_increment() const{
+int32_t camera::get_y_binning_increment() const
+{
     return call_camera_fn(arv_camera_get_y_binning_increment);
 }
 
-std::string_view camera::get_genicam_xml() const{
+std::string_view camera::get_genicam_xml() const
+{
 
     size_t length;
 
@@ -796,4 +800,56 @@ void camera::select_black_level(const std::string &selector_utf8) const
 bool camera::is_black_level_available() const
 {
     return call_camera_fn(arv_camera_is_black_level_available);
+}
+
+void camera::set_access_mode_policy(bool enable) const
+{
+    arv_camera_set_access_check_policy(m_camera,
+                                       enable ? ARV_ACCESS_CHECK_POLICY_ENABLE : ARV_ACCESS_CHECK_POLICY_DISABLE);
+}
+
+void camera::set_range_mode_policy(bool enable) const
+{
+    arv_camera_set_range_check_policy(m_camera,
+                                      enable ? ARV_RANGE_CHECK_POLICY_ENABLE : ARV_RANGE_CHECK_POLICY_DISABLE);
+}
+
+bool camera::select_component(const std::string &component_utf8, const component_selection_flag flag, uint32_t *component_id) const
+{
+    ArvComponentSelectionFlags f;
+    switch (flag)
+    {
+    case component_selection_flag::none:
+        f = ARV_COMPONENT_SELECTION_FLAGS_NONE;
+        break;
+    case component_selection_flag::enable:
+        f = ARV_COMPONENT_SELECTION_FLAGS_ENABLE;
+        break;
+    case component_selection_flag::disable:
+        f = ARV_COMPONENT_SELECTION_FLAGS_DISABLE;
+        break;
+    case component_selection_flag::enable_all:
+        f = ARV_COMPONENT_SELECTION_FLAGS_ENABLE_ALL;
+        break;
+    case component_selection_flag::exclusive_enable:
+        f = ARV_COMPONENT_SELECTION_FLAGS_EXCLUSIVE_ENABLE;
+        break;
+    };
+
+    return call_camera_fn(arv_camera_select_component, component_utf8.c_str(), f, component_id);
+}
+
+void camera::select_and_enable_component(const std::string &component_utf8, bool disable_others) const
+{
+    call_camera_fn_with_no_return(arv_camera_select_and_enable_component, component_utf8.c_str(), disable_others);
+}
+
+int64_t camera::get_frame_count() const
+{
+    return call_camera_fn(arv_camera_get_frame_count);
+}
+
+camera::bounds_t<int64_t> camera::get_frame_count_bounds() const
+{
+    return call_camera_fn_to_get_bounds<int64_t>(arv_camera_get_frame_count_bounds);
 }

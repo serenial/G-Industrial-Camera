@@ -31,6 +31,14 @@ namespace g_industrial_cam
             continuous
         };
 
+        enum class component_selection_flag : uint8_t {
+            none,
+            enable,
+            disable,
+            exclusive_enable,
+            enable_all
+        };
+
         template<class T>
         struct bounds_t{
             T min, max;
@@ -106,6 +114,8 @@ namespace g_industrial_cam
         double get_frame_rate() const;
         bounds_t<double> get_frame_rate_bounds() const;
         bool get_frame_rate_enable() const;
+        int64_t get_frame_count() const;
+        bounds_t<int64_t> get_frame_count_bounds() const;
         double get_gain() const;
         auto_mode get_gain_auto() const;
         bounds_t<double> get_gain_bounds() const;
@@ -147,7 +157,11 @@ namespace g_industrial_cam
         bool is_region_offset_available() const;
         void select_gain(const std::string& selector_utf8) const;
         void select_black_level(const std::string& selector_utf8) const;
+        bool select_component(const std::string& component_utf8, const component_selection_flag flag, uint32_t* component_id) const;
+        void select_and_enable_component(const std::string& component_utf8, bool disable_others) const;
         bool is_software_trigger_supported() const;
+        void set_access_mode_policy(bool enable) const;
+        void set_range_mode_policy(bool enable) const;
         void set_binning(const binning_t& binning) const;
         void set_boolean(const std::string &feature_utf8, bool value) const;
         void set_black_level(double gain) const;
@@ -248,11 +262,3 @@ namespace g_industrial_cam
         
     };
 }
-
-// --------------------------------
-// additional aravis camera methods to consider
-
-    // select_and_enable_component
-    // select_component
-    // set_access_check_policy
-    // set_range_check_policy
