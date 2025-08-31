@@ -1099,14 +1099,22 @@ extern "C"
         return LV_ERR_noError;
     }
 
-    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_frame_count(
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_get_set_frame_count(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr,
-        int64_t count)
+        int64_t *count,
+        LV_BooleanPtr_t set)
     {
         try
         {
-            (*camera_handle(camera_ref_ptr))->set_frame_count(count);
+            if (*set)
+            {
+                (*camera_handle(camera_ref_ptr))->set_frame_count(*count);
+            }
+            else
+            {
+                *count = (*camera_handle(camera_ref_ptr))->get_frame_count();
+            }
         }
         catch (...)
         {
@@ -1531,6 +1539,74 @@ extern "C"
         try
         {
             *is_available = (*camera_handle(camera_ref_ptr))->is_black_level_available();
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_access_mode_policy(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_BooleanPtr_t enable)
+    {
+        try
+        {
+            (*camera_handle(camera_ref_ptr))->set_access_mode_policy(*enable);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_set_range_mode_policy(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_BooleanPtr_t enable)
+    {
+        try
+        {
+            (*camera_handle(camera_ref_ptr))->set_range_mode_policy(*enable);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_select_and_enable_component(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_StringHandle_t component,
+        LV_BooleanPtr_t disable_others)
+    {
+        try
+        {
+            (*camera_handle(camera_ref_ptr))->select_and_enable_component(component.to_utf8_string(), *disable_others);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_select_component(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_StringHandle_t component,
+        uint8_t flag,
+        LV_BooleanPtr_t enabled,
+        uint32_t *component_id)
+    {
+        try
+        {
+            *enabled = (*camera_handle(camera_ref_ptr))->select_component(component.to_utf8_string(), static_cast<camera::component_selection_flag>(flag), component_id);
         }
         catch (...)
         {
