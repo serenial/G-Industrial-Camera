@@ -1,93 +1,98 @@
-# G Industrial Camera
+# G Industrial Camera (Work in Progress)
 
+YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
+This library is intended to provide a simple LabVIEW driver for use with `GenICam` compatible cameras.
 
-## Getting started
+The library is created with LabVIEW 2020 and is suitable for Windows x86/x64 platforms, Linux x64. NI-LinuxRT support is planned. 
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Licence
+The LabVIEW source is distributed under the Zero-Clause BSD licence. The shared binary component of this toolkit is distributed under the LGPL-2.1 licence - see [COPYING](LabVIEW/COPYING) for the full text of the licence (including dependency licences).
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Getting Started
 
-## Add your files
+This library is a work in progress so there aren't any releases yet.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+If you want to try this library before then, up-to-date binaries are (probably) available [as github build artifacts](https://github.com/serenial/G-Industrial-Camera/actions/workflows/cmake-multi-platform.yml) - you must be logged into your github account to view them.
 
+Extract the build-artifact and copy the `.dll` or `.so` file in `g_industrial_cam\bin` into `LabVIEW\g_industrial_cam\bin`.
+
+If you require a build of the shared-binaries with debug symbols then please see the instructions to build from source.
+
+### Camera Setup
+
+#### Manufacturer Software Requirements
+It is recommended that you install the drivers and utilities provided by the Camera's manufacturer - this will allow you to verify the connection of your camera and ensure that drivers are present on the system.
+
+#### Network/Firewall Configuration with GigE Cameras
+Ensure that LabVIEW or your built application isn't blocked by a firewall for GigE Cameras. Windows may classify static-IP attached devices as a "private network" which might cause traffic to be blocked. Check Windows Defender to ensure LabVIEW or your executable aren't blocked.
+
+#### USBVision Drivers on Windows
+Some USBVision devices will not be detected by the library (like Basler devices) without modifying the USB driver that the Windows OS associates with them. A walkthough of the configuration process (using `zadig`) and its reversal are a work in progress but they loosely follow the steps outlined here [Swapping USB3 Device Driver on Windows to use `libsub`](https://github.com/AravisProject/aravis/issues/431#issuecomment-1092243935)
+
+### Development Setup
+
+If you want to develop the library then you require the following (C++ development tools only required if you want to build the C++ source)
+
+#### LabVIEW
+* LabVIEW 2020 or LV2024 Q3 onwards (to preserve the source version to 2020)
+* LUnit (from VIPM.io)
+
+#### C++ Development (Windows x86/x64)
+[Build Tools for Windows 2022 - MSVC C++ Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022) or newer
+
+#### C++ Development (Linux x64)
+* Yours system's build tools (g++, make, nasm, autoconf etc)
+* cmake 3.27 or greater
+* libudev-dev
+
+### Cloning the Repository
+
+Please ensure you are cloning this repo from [GitLab](https://gitlab.com/serenial/g-industrial-camera.git). Any issues should also be raised there! The GitHub mirror is only used for the unlimited build minutes.
+
+When cloning ensure you use `recursive` clone
+
+```bash
+git clone --recursive https://gitlab.com/serenial/g-industrial-camera.git
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/serenial/g-industrial-camera.git
-git branch -M main
-git push -uf origin main
+
+If you already have cloned the top-level repo then use
+```bash
+git submodule update --init --recursive
 ```
 
-## Integrate with your tools
+This will ensure that the `vcpkg` submodule is setup as required.
 
-- [ ] [Set up project integrations](https://gitlab.com/serenial/g-industrial-camera/-/settings/integrations)
+### Building the Shared Binaries from Source
 
-## Collaborate with your team
+If you only want the binaries for LabVIEW development then you might find it easier to use the provided `x86-win-build.bat`, `x64-win-build.bat` or `x64-linux-dektop-build.sh`. These should setup `vcpkg`, build the dependencies and then build and install the `.dll` or `.so` into the `LabVIEW/g_industrial_cam/bin` directory.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### VSCode Setup
 
-## Test and Deploy
+**When using VSCode on Windows ensure you launch it from the `x86 Native Tools Command Prompt` or the `x64 Native Tools Command Prompt`** (depending on your required bitness). The command `code` should launch VSCode.
 
-Use the built-in continuous integration in GitLab.
+#### VSCode Extensions
+* C/C++ (Microsoft)
+* CMake Tools (Microsoft)
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+#### VSCode Configuration
+Launch Files which setup a debugging launch task are included in example `.vscode-example-<platform>` directories
 
-***
+#### Build Using CMake and CMakePresets.json
+VSCode should read the `CMakePresets.json` file and provide a `debug` and `release` configuration and build preset. These can be launched from the [CMake Tooling](https://github.com/microsoft/vscode-cmake-tools/blob/main/docs/cmake-presets.md) 
 
-# Editing this README
+Check the build output for any errors. **You will have to close LabVIEW for the build and "install" to succeed**
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## Contributions
+Open to contributions - please open an issue _on GitLab_ to discuss
 
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+## TODO
+- [x] Dependency Licence Notices
+- [x] Enumerate Cameras
+- [x] Start Stream
+- [x] Stop Stream
+- [x] Capture Frame
+- [ ] Documentation
+- [ ] Distribution Packages
+- [ ] Walk Camera Config
+- [ ] Modify Camera Config

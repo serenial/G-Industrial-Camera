@@ -1,0 +1,67 @@
+# This starter workflow is for a CMake project running on multiple platforms. There is a different starter workflow if you just want a single platform.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-single-platform.yml
+name: CMake on multiple platforms
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    env:
+      VCPKG_DEFAULT_TRIPLET: ${{ matrix.arch }}-${{ matrix.triplet_platform}}${{ matrix.arch == 'x64' && '-release' || '' }}
+      VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, windows-latest]
+        arch: [x86, x64]
+        include:
+          - os: windows-latest
+            triplet_platform: windows-static # Windows static-release triplets have incorrect Run Time Linkage so just use static
+          - os: ubuntu-22.04
+            triplet_platform: linux
+        exclude:
+        - os: ubuntu-22.04
+          arch: x86
+        
+    steps:
+    - name: Restore vcpkg cache
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ github.workspace }}/vcpkg_cache
+        key: vcpkg-${{ env.VCPKG_DEFAULT_TRIPLET }}-${{ hashFiles('vcpkg.json') }}
+        restore-keys: vcpkg-${{ env.VCPKG_DEFAULT_TRIPLET }}-
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    - uses: lukka/get-cmake@latest
+    - name: Install OS dependencies
+      if: ${{ matrix.os == 'ubuntu-22.04' }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential g++ python3 zip unzip tar curl autoconf libudev-dev
+    
+    - name: Setup VCPKG
+      uses: lukka/run-vcpkg@v11
+
+    - name: Run CMake consuming CMakePreset.json and run vcpkg to build packages
+      uses: lukka/run-cmake@v10
+      with:
+          configurePreset: ci
+          buildPreset: ci-build
+
+    - name: Store Build Output
+      uses: actions/upload-artifact@v4
+      with:
+        name: g_industrial_cam_${{ env.VCPKG_DEFAULT_TRIPLET }}
+        path: |
+         ${{ github.workspace }}/g_industrial_cam/bin
+         ${{ github.workspace }}/build/vcpkg_installed/**/share
+         ${{ github.workspace }}/build/vcpkg_installed/**/tools/aravis
+
+    - name: Save vcpkg cache
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ github.workspace }}/vcpkg_cache
+        key: vcpkg-${{ env.VCPKG_DEFAULT_TRIPLET }}-${{ hashFiles('vcpkg.json') }}
