@@ -1,0 +1,23 @@
+cmake_minimum_required(VERSION 3.27)
+
+# SET the toolchain file to the one in the VCPKG git-submodule
+SET(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake")
+
+# Specify Project
+project(g_industrial_cam VERSION 1.0.0 LANGUAGES C CXX)
+
+# export a json file with the compile commands
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+  # set to use Multithreaded Static Runtime
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
+  # vcpkg has some issues with not loading the static libs
+  # so manually fix the MSVC runtime components used
+  string(REPLACE "/MD" "/MT" CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS})
+  string(REPLACE "/MD" "/MT" CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG})
+  string(REPLACE "/MD" "/MT" CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE})
+endif()
+
+add_subdirectory(${CMAKE_CURRENT_LIST_DIR}/shared-binary)
