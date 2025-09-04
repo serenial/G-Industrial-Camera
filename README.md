@@ -1,13 +1,13 @@
-# G Industrial Camera (Work in Progress)
+# G Industrial Camera
 
 YOU get an industrial camera driver for LabVIEW and YOU get an industrial camera driver for LabVIEW.
 
-This library is intended to provide a simple LabVIEW driver for use with `GenICam` compatible cameras.
+This library is intended to provide a simple LabVIEW driver for use with `GenICam` compatible cameras and is built on the incredible [Aravis](https://github.com/AravisProject/aravis) library.
 
 The library is created with LabVIEW 2020 and is suitable for Windows x86/x64 platforms, Linux x64. NI-LinuxRT support is planned. 
 
 ## Licence
-The LabVIEW source is distributed under the Zero-Clause BSD licence. The shared binary component of this toolkit is distributed under the LGPL-2.1 licence - see [COPYING](LabVIEW/COPYING) for the full text of the licence (including dependency licences).
+The LabVIEW source is distributed under the Zero-Clause BSD licence. The shared binary component of this toolkit is distributed under the LGPL-2.1 licence - see [COPYING](LabVIEW/g_industrial_cam/bin/COPYING) for the full text of the licence (including dependency licences).
 
 ## Getting Started
 
@@ -93,6 +93,16 @@ Open to contributions - please open an issue _on GitLab_ to discuss
 - [x] Stop Stream
 - [x] Capture Frame
 - [ ] Documentation
-- [ ] Distribution Packages
+- [x] Distribution Packages
 - [ ] Walk Camera Config
 - [ ] Modify Camera Config
+
+## Support
+The development of this library is in-part thanks to the generous support from:
+
+<div style="display:flex;justify-content:left;">
+<a href="https://ssdc.co.uk/"><img src="img/ssdc-logo.png" width="260"/></a>
+<a href="https://controlsoftwaresolutions.com/"><img src="img/css-logo.png" style="padding-top:20%"></a>
+</div>
+
+(❤️)
