@@ -525,9 +525,11 @@ extern "C"
 
             size_t mask_row_length = 0, mask_bytes_length = 0;
 
-            if (is_greyscale && output_width % 2 != 0)
+            auto width_is_even = output_width % 2 == 0;
+
+            if (is_greyscale && !width_is_even)
             {
-                output_width++;
+                ++output_width;
             }
 
             size_t image_bytes_length;
@@ -567,17 +569,113 @@ extern "C"
             auto dst_data_ptr = lv_str_handle.begin() + SIZEOF_LV_FLATTENED_PICTURE_OP_HEADER_BYTES;
 
             if(is_greyscale){
-            //     op_header_ptr->length = image_bytes_length + 22 + lv_picture::greyscale_lookup_length + mask_bytes_length;
+                op_header_ptr->length = image_bytes_length + 22 + lv_picture::greyscale_lookup_length + mask_bytes_length;
 
-            //     // copy the greyscale colour-table into string
-            //     std::memcpy(dst_data_ptr, lv_picture::greyscale_lookup, lv_picture::greyscale_lookup_length);
+                // copy the greyscale colour-table into string
+                std::memcpy(dst_data_ptr, lv_picture::greyscale_lookup, lv_picture::greyscale_lookup_length);
 
-            //     dst_data_ptr += lv_picture::greyscale_lookup_length;
+                dst_data_ptr += lv_picture::greyscale_lookup_length;
+                
+                size_t pixel = 0;
+                auto src_data_ptr = buffer.begin();
 
-            //     cv::Mat dst(dst_size, CV_8UC1, dst_data_ptr);
+                auto check_and_handle_odd_width = [&](){
+                    ++pixel;
+                    if(!width_is_even && pixel == buffer.width()){
+                                ++dst_data_ptr; // jump extra pixel at end of row
+                                pixel = 0;
+                    }
+                };
 
-            //     cv::Mat src_sized_dst = dst(cv::Rect(cv::Point(0, 0), src.size()));
-            //     src.copyTo(src_sized_dst);
+                switch(format){
+                    case pixel_formats::mono8 :
+                        if(width_is_even){
+                            //direct copy
+                            std::memcpy(dst_data_ptr, src_data_ptr, buffer.size());
+                        }
+                        else{
+                            // line-by-line copy
+
+                            while(src_data_ptr < buffer.end()){
+                                std::memcpy(dst_data_ptr,src_data_ptr, buffer.width());
+                                src_data_ptr += buffer.width();
+                                dst_data_ptr += buffer.width() + 1; // jump over the extra pixel
+                            }
+                        }
+                    break;
+                    case pixel_formats::mono10 :
+                        // pixel by pixel copy
+                        while(src_data_ptr < buffer.end()){
+                            // combine 8 msb bits into single output byte
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b1111'1100) >> 2 |  (*src_data_ptr++ & 0b0000'0011) << 6;
+                            check_and_handle_odd_width();
+
+                        }
+                    break;
+                    case pixel_formats::mono12 :
+                        // pixel by pixel copy
+                        while(src_data_ptr < buffer.end()){
+                            // combine 8 msb bits into single output byte
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b1111'0000) >> 4 |  (*src_data_ptr++ & 0b0000'1111) << 4;
+                            check_and_handle_odd_width();
+                        }
+                    break;
+                    case pixel_formats::mono14 :
+                        // pixel by pixel copy
+                        while(src_data_ptr < buffer.end()){
+                            // combine 8 msb bits into single output byte
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b1100'0000) >> 6 |  (*src_data_ptr++ & 0b0011'1111) << 2;
+                            check_and_handle_odd_width();
+                        }
+                    break;
+                    case pixel_formats::mono16 :
+                        // pixel by pixel copy
+                        while(src_data_ptr < buffer.end()){
+                            // just take the higher bytes
+                            ++src_data_ptr;
+                            *dst_data_ptr++ = *(src_data_ptr)++;
+                            check_and_handle_odd_width();
+                        }
+                    break;
+                        case pixel_formats::mono10p :
+                        // pixel by pixel copy
+                        while(src_data_ptr < buffer.end()){
+                            // combine 8 msb bits into single output byte
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b1111'1100) >> 2 |  (*src_data_ptr & 0b0000'0011) << 6;
+                            check_and_handle_odd_width();
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b1111'0000) >> 4 |  (*src_data_ptr & 0b0000'1111) << 4;
+                            check_and_handle_odd_width();
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b1100'0000) >> 6 |  (*src_data_ptr & 0b0011'1111) << 2;
+                            check_and_handle_odd_width();
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b0000'0000) >> 0 |  (*src_data_ptr & 0b1111'1111) << 0;
+                            check_and_handle_odd_width();
+                            ++src_data_ptr;
+                        }
+                        case pixel_formats::mono12p :
+                        // pixel by pixel copy
+                        while(src_data_ptr < buffer.end()){
+                            // combine 8 msb bits into single output byte
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b1111'0000) >> 4 |  (*src_data_ptr & 0b0000'1111) << 4;
+                            check_and_handle_odd_width();
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b0000'0000) >> 0 |  (*src_data_ptr & 0b1111'1111) << 0;
+                            check_and_handle_odd_width();
+                            ++src_data_ptr;
+                        }
+                        case pixel_formats::mono14p :
+                        // pixel by pixel copy
+                        while(src_data_ptr < buffer.end()){
+                            // combine 8 msb bits into single output byte
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b1100'0000) >> 6 |  (*src_data_ptr & 0b0011'1111) << 2;
+                            check_and_handle_odd_width();
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b0000'0000) >> 0 |  (*src_data_ptr++ & 0b1111'0000) >> 4 | (*src_data_ptr & 0b0000'1111) << 4 ; 
+                            check_and_handle_odd_width();
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b0000'0000) >> 0 |  (*src_data_ptr++ & 0b1111'1100) >> 2 | (*src_data_ptr & 0b0000'0011) << 6 ; 
+                            check_and_handle_odd_width();
+                            *dst_data_ptr++ = (*src_data_ptr++ & 0b0000'0000) >> 0 |  (*src_data_ptr & 0b1111'1111) << 0; 
+                            check_and_handle_odd_width();
+                            ++src_data_ptr;
+                        }
+                }
 
             }
             else{
@@ -589,7 +687,7 @@ extern "C"
                 for (size_t i = 0; i < 2; i++)
                 {
                     *dst_data_ptr = 0;
-                    dst_data_ptr++;
+                    ++dst_data_ptr;
                 }
 
                 switch (format){
