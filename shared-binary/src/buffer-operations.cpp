@@ -250,7 +250,7 @@ extern "C"
                 else{
                     *output_pixel = alpha_channel_value << 24 | static_cast<uint32_t>(red) << 16 | static_cast<uint32_t>(green) << 8 | static_cast<uint32_t>(blue); 
                 }
-               
+               output_pixel++;
             }
         }
         catch (...)
