@@ -18,7 +18,7 @@ jobs:
         arch: [x86, x64]
         include:
           - os: windows-latest
-            triplet_platform: windows # Windows static-release triplets have incorrect Run Time Linkage so just use static
+            triplet_platform: windows-static # Windows static-release triplets have incorrect Run Time Linkage so just use static
           - os: ubuntu-22.04
             triplet_platform: linux
         exclude:
