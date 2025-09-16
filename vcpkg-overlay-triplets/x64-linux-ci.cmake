@@ -9,4 +9,4 @@ set(VCPKG_BUILD_TYPE release)
 set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
 
 # force static linking of libgcc and libstd
-set(VCPKG_LINKER_FLAGS_RELEASE -static-libgcc -static-libstdc++)
+# set(VCPKG_LINKER_FLAGS_RELEASE -static-libgcc -static-libstdc++)
