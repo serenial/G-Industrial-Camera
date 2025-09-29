@@ -11,11 +11,7 @@ The LabVIEW source is distributed under the Zero-Clause BSD licence. The shared 
 
 ## Getting Started
 
-This library is a work in progress so there aren't any releases yet.
-
-If you want to try this library before then, up-to-date binaries are (probably) available [as github build artifacts](https://github.com/serenial/G-Industrial-Camera/actions/workflows/cmake-multi-platform.yml) - you must be logged into your github account to view them.
-
-Extract the build-artifact and copy the `.dll` or `.so` file in `g_industrial_cam\bin` into `LabVIEW\g_industrial_cam\bin`.
+This library is still in beta (whilst folks test it on different cameras) but there are [releases on VIPM.io](https://www.vipm.io/package/serenial_lib_g_industrial_camera/) and also non-vipm source distributions available on the [releases page](https://gitlab.com/serenial/g-industrial-camera/-/releases).
 
 If you require a build of the shared-binaries with debug symbols then please see the instructions to build from source.
 

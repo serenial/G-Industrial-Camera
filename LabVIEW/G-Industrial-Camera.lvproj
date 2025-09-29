@@ -155,7 +155,7 @@
 				<Property Name="Bld_localDestDir" Type="Path">../build/source-distribution</Property>
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{07AFE07D-8547-43CA-867C-EBA2948D8BBF}</Property>
-				<Property Name="Bld_version.build" Type="Int">34</Property>
+				<Property Name="Bld_version.build" Type="Int">35</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">Destination Directory</Property>
 				<Property Name="Destination[0].path" Type="Path">../build/source-distribution</Property>
@@ -240,115 +240,5 @@
 				<Property Name="SourceCount" Type="Int">14</Property>
 			</Item>
 		</Item>
-	</Item>
-	<Item Name="RT CompactRIO Target" Type="RT CompactRIO">
-		<Property Name="alias.name" Type="Str">RT CompactRIO Target</Property>
-		<Property Name="alias.value" Type="Str">192.168.68.130</Property>
-		<Property Name="CCSymbols" Type="Str">TARGET_TYPE,RT;OS,Linux;CPU,x64;DeviceCode,7735;</Property>
-		<Property Name="crio.ControllerPID" Type="Str">7735</Property>
-		<Property Name="host.ResponsivenessCheckEnabled" Type="Bool">true</Property>
-		<Property Name="host.ResponsivenessCheckPingDelay" Type="UInt">5000</Property>
-		<Property Name="host.ResponsivenessCheckPingTimeout" Type="UInt">1000</Property>
-		<Property Name="host.TargetCPUID" Type="UInt">9</Property>
-		<Property Name="host.TargetOSID" Type="UInt">19</Property>
-		<Property Name="host.TargetUIEnabled" Type="Bool">true</Property>
-		<Property Name="target.cleanupVisa" Type="Bool">false</Property>
-		<Property Name="target.FPProtocolGlobals_ControlTimeLimit" Type="Int">300</Property>
-		<Property Name="target.getDefault-&gt;WebServer.Port" Type="Int">80</Property>
-		<Property Name="target.getDefault-&gt;WebServer.Timeout" Type="Int">60</Property>
-		<Property Name="target.IOScan.Faults" Type="Str"></Property>
-		<Property Name="target.IOScan.NetVarPeriod" Type="UInt">100</Property>
-		<Property Name="target.IOScan.NetWatchdogEnabled" Type="Bool">false</Property>
-		<Property Name="target.IOScan.Period" Type="UInt">10000</Property>
-		<Property Name="target.IOScan.PowerupMode" Type="UInt">0</Property>
-		<Property Name="target.IOScan.Priority" Type="UInt">0</Property>
-		<Property Name="target.IOScan.ReportModeConflict" Type="Bool">true</Property>
-		<Property Name="target.IsRemotePanelSupported" Type="Bool">true</Property>
-		<Property Name="target.RTCPULoadMonitoringEnabled" Type="Bool">true</Property>
-		<Property Name="target.RTDebugWebServerHTTPPort" Type="Int">8001</Property>
-		<Property Name="target.RTTarget.ApplicationPath" Type="Path">/c/ni-rt/startup/startup.rtexe</Property>
-		<Property Name="target.RTTarget.EnableFileSharing" Type="Bool">true</Property>
-		<Property Name="target.RTTarget.IPAccess" Type="Str">+*</Property>
-		<Property Name="target.RTTarget.LaunchAppAtBoot" Type="Bool">false</Property>
-		<Property Name="target.RTTarget.VIPath" Type="Path">/home/lvuser/natinst/bin</Property>
-		<Property Name="target.server.app.propertiesEnabled" Type="Bool">true</Property>
-		<Property Name="target.server.control.propertiesEnabled" Type="Bool">true</Property>
-		<Property Name="target.server.tcp.access" Type="Str">+*</Property>
-		<Property Name="target.server.tcp.enabled" Type="Bool">false</Property>
-		<Property Name="target.server.tcp.paranoid" Type="Bool">true</Property>
-		<Property Name="target.server.tcp.port" Type="Int">3363</Property>
-		<Property Name="target.server.tcp.serviceName" Type="Str">Main Application Instance/VI Server</Property>
-		<Property Name="target.server.tcp.serviceName.default" Type="Str">Main Application Instance/VI Server</Property>
-		<Property Name="target.server.vi.access" Type="Str">+*</Property>
-		<Property Name="target.server.vi.callsEnabled" Type="Bool">true</Property>
-		<Property Name="target.server.vi.propertiesEnabled" Type="Bool">true</Property>
-		<Property Name="target.WebServer.Config" Type="Str">Listen 8000
-
-NI.ServerName default
-DocumentRoot "$LVSERVER_DOCROOT"
-TypesConfig "$LVSERVER_CONFIGROOT/mime.types"
-DirectoryIndex index.htm
-WorkerLimit 10
-InactivityTimeout 60
-
-LoadModulePath "$LVSERVER_MODULEPATHS"
-LoadModule LVAuth lvauthmodule
-LoadModule LVRFP lvrfpmodule
-
-#
-# Pipeline Definition
-#
-
-SetConnector netConnector
-
-AddHandler LVAuth
-AddHandler LVRFP
-
-AddHandler fileHandler ""
-
-AddOutputFilter chunkFilter
-
-
-</Property>
-		<Property Name="target.WebServer.Enabled" Type="Bool">false</Property>
-		<Property Name="target.WebServer.LogEnabled" Type="Bool">false</Property>
-		<Property Name="target.WebServer.LogPath" Type="Path">/c/ni-rt/system/www/www.log</Property>
-		<Property Name="target.WebServer.Port" Type="Int">80</Property>
-		<Property Name="target.WebServer.RootPath" Type="Path">/c/ni-rt/system/www</Property>
-		<Property Name="target.WebServer.TcpAccess" Type="Str">c+*</Property>
-		<Property Name="target.WebServer.Timeout" Type="Int">60</Property>
-		<Property Name="target.WebServer.ViAccess" Type="Str">+*</Property>
-		<Property Name="target.webservices.SecurityAPIKey" Type="Str">PqVr/ifkAQh+lVrdPIykXlFvg12GhhQFR8H9cUhphgg=:pTe9HRlQuMfJxAG6QCGq7UvoUpJzAzWGKy5SbZ+roSU=</Property>
-		<Property Name="target.webservices.ValidTimestampWindow" Type="Int">15</Property>
-		<Item Name="Chassis" Type="cRIO Chassis">
-			<Property Name="crio.ProgrammingMode" Type="Str">express</Property>
-			<Property Name="crio.ResourceID" Type="Str">RIO0</Property>
-			<Property Name="crio.Type" Type="Str">cRIO-9031</Property>
-			<Property Name="NI.SortType" Type="Int">3</Property>
-			<Item Name="Real-Time Scan Resources" Type="Module Container">
-				<Property Name="crio.ModuleContainerType" Type="Str">crio.RSIModuleContainer</Property>
-			</Item>
-		</Item>
-		<Item Name="Streaming Example.vi" Type="VI" URL="../examples/Streaming Example.vi"/>
-		<Item Name="Dependencies" Type="Dependencies">
-			<Item Name="vi.lib" Type="Folder">
-				<Item Name="Clear Errors.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Clear Errors.vi"/>
-				<Item Name="Enum to Array of Enums.vim" Type="VI" URL="/&lt;vilib&gt;/numeric/Enum to Array of Enums.vim"/>
-				<Item Name="Equal Comparable.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Comparison/Equal/Equal Comparable/Equal Comparable.lvclass"/>
-				<Item Name="Equal Functor.lvclass" Type="LVClass" URL="/&lt;vilib&gt;/Comparison/Equal/Equal Functor/Equal Functor.lvclass"/>
-				<Item Name="Equals.vim" Type="VI" URL="/&lt;vilib&gt;/Comparison/Equals.vim"/>
-				<Item Name="Error Cluster From Error Code.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Error Cluster From Error Code.vi"/>
-				<Item Name="Search Unsorted 1D Array Core.vim" Type="VI" URL="/&lt;vilib&gt;/Array/Helpers/Search Unsorted 1D Array Core.vim"/>
-				<Item Name="Search Unsorted 1D Array.vim" Type="VI" URL="/&lt;vilib&gt;/Array/Search Unsorted 1D Array.vim"/>
-			</Item>
-			<Item Name="Buffer.lvclass" Type="LVClass" URL="../g_industrial_cam/Buffer/Buffer.lvclass"/>
-			<Item Name="Camera.lvclass" Type="LVClass" URL="../g_industrial_cam/Camera/Camera.lvclass"/>
-			<Item Name="Device Enumeration.ctl" Type="VI" URL="../g_industrial_cam/Device Enumeration.ctl"/>
-			<Item Name="Enumerate Devices.vi" Type="VI" URL="../g_industrial_cam/Enumerate Devices.vi"/>
-			<Item Name="gindustrialcam_32-1.dll" Type="Document" URL="../g_industrial_cam/bin/gindustrialcam_32-1.dll"/>
-			<Item Name="Read Data and Draw to LV Picture.vi" Type="VI" URL="../examples/Read Data and Draw to LV Picture.vi"/>
-			<Item Name="RT Shared Binary Path.vi" Type="VI" URL="../g_industrial_cam/RT Shared Binary Path.vi"/>
-		</Item>
-		<Item Name="Build Specifications" Type="Build"/>
 	</Item>
 </Project>
