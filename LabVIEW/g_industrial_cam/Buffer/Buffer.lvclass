@@ -275,13 +275,13 @@
 				<Property Name="NI.ClassItem.State" Type="Int">34078736</Property>
 			</Item>
 			<Item Name="Draw BGR8 to Picture.vi" Type="VI" URL="../Draw BGR8 to Picture.vi">
-				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!',!!!!$1!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!""!-`````](5'FD&gt;(6S:1!C1(!!(A!!%!Z#&gt;7:G:8)O&lt;(:D&lt;'&amp;T=Q!!"E*V:G:F=A!!"U!#!!&amp;Y!!&gt;!!A!"?1"&gt;!0%!!!!!!!!!!AZ#&gt;7:G:8)O&lt;(:D&lt;'&amp;T=S&amp;1;7.U&gt;8*F)&amp;2P=#"-:7:U)&amp;"P;7ZU)%^G:H.F&gt;#ZD&gt;'Q!*%"1!!)!"Q!)&amp;&amp;2P=#"-:7:U)&amp;"P;7ZU)#AQ,$!J!!!A1&amp;!!!Q!!!!%!!B.F=H*P=C"J&lt;C!I&lt;G]A:8*S&lt;X)J!#2!=!!?!!!1$E*V:G:F=CZM&gt;G.M98.T!!!*1H6G:G6S)'FO!'%!]!!-!!-!"!!&amp;!!9!"!!%!!1!#1!+!!1!"!!,!Q!!?!!!$1A!!!!!!!!*!!!!$1M!!!!!!!!!!!!!!!!!!!!!!!!)!!!!!!!!!!!!!!!1!!!.!!!!$!!!!!!!!!!!!!!"!!Q!!!!!</Property>
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!',!!!!$1!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!""!-`````](5'FD&gt;(6S:1!C1(!!(A!!%!Z#&gt;7:G:8)O&lt;(:D&lt;'&amp;T=Q!!"E*V:G:F=A!!"U!#!!&amp;Y!!&gt;!!A!"?1"&gt;!0%!!!!!!!!!!AZ#&gt;7:G:8)O&lt;(:D&lt;'&amp;T=S&amp;1;7.U&gt;8*F)&amp;2P=#"-:7:U)&amp;"P;7ZU)%^G:H.F&gt;#ZD&gt;'Q!*%"1!!)!"Q!)&amp;&amp;2P=#"-:7:U)&amp;"P;7ZU)#AQ,$!J!!!A1&amp;!!!Q!!!!%!!B.F=H*P=C"J&lt;C!I&lt;G]A:8*S&lt;X)J!#2!=!!?!!!1$E*V:G:F=CZM&gt;G.M98.T!!!*1H6G:G6S)'FO!'%!]!!-!!-!"!!&amp;!!9!"!!%!!1!#1!+!!1!"!!,!Q!!?!!!$1A!!!!!!!!*!!!!$1M!!!!!!!!!!!!!!!!!!!)!!!!+!!!!!!!!!!!!!!!1!!!.!!!!$!!!!!!!!!!!!!!"!!Q!!!!!</Property>
 				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
 				<Property Name="NI.ClassItem.Flags" Type="Int">16777216</Property>
 				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
 				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
 				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
-				<Property Name="NI.ClassItem.State" Type="Int">8658960</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">41943056</Property>
 			</Item>
 			<Item Name="Draw Mono10p to Picture.vi" Type="VI" URL="../Draw Mono10p to Picture.vi">
 				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!',!!!!$1!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!""!-`````](5'FD&gt;(6S:1!C1(!!(A!!%!Z#&gt;7:G:8)O&lt;(:D&lt;'&amp;T=Q!!"E*V:G:F=A!!"U!#!!&amp;Y!!&gt;!!A!"?1"&gt;!0%!!!!!!!!!!AZ#&gt;7:G:8)O&lt;(:D&lt;'&amp;T=S&amp;1;7.U&gt;8*F)&amp;2P=#"-:7:U)&amp;"P;7ZU)%^G:H.F&gt;#ZD&gt;'Q!*%"1!!)!"Q!)&amp;&amp;2P=#"-:7:U)&amp;"P;7ZU)#AQ,$!J!!!A1&amp;!!!Q!!!!%!!B.F=H*P=C"J&lt;C!I&lt;G]A:8*S&lt;X)J!#2!=!!?!!!1$E*V:G:F=CZM&gt;G.M98.T!!!*1H6G:G6S)'FO!'%!]!!-!!-!"!!&amp;!!9!"!!%!!1!#1!+!!1!"!!,!Q!!?!!!$1A!!!!!!!!*!!!!$1M!!!!!!!!!!!!!!!!!!!)!!!!+!!!!!!!!!!!!!!!1!!!.!!!!$!!!!!!!!!!!!!!"!!Q!!!!!</Property>
@@ -312,14 +312,96 @@
 			</Item>
 		</Item>
 		<Item Name="Read as Pixmap" Type="Folder">
+			<Property Name="NI.SortType" Type="Int">0</Property>
+			<Item Name="Read as Pixmap BGR8.vi" Type="VI" URL="../Read as Pixmap BGR8.vi">
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!*\!!!!'A!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!"U!#!!&amp;Y!!&gt;!!A!"?1"&gt;!0%!!!!!!!!!!AZ#&gt;7:G:8)O&lt;(:D&lt;'&amp;T=S&amp;1;7.U&gt;8*F)&amp;2P=#"-:7:U)&amp;"P;7ZU)%^G:H.F&gt;#ZD&gt;'Q!*%"1!!)!&amp;!!6&amp;&amp;2P=#"-:7:U)&amp;"P;7ZU)#AQ,$!J!!!A1&amp;!!!Q!!!!%!!B.F=H*P=C"J&lt;C!I&lt;G]A:8*S&lt;X)J!#2!=!!?!!!1$E*V:G:F=CZM&gt;G.M98.T!!!*1H6G:G6S)'FO!'%!]!!-!!-!"!!2!")!%Q!%!!1!&amp;A!8!!1!"!!9!Q!!?!!!$1A!!!!!!!!*!!!!$1M!!!!!!!!!!!!!!!!!!!)!!!!+!!!!!!!!!!!!!!!1!!!.!!!!$!!!!!!!!!!!!!!"!"E!!!!!</Property>
+				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+				<Property Name="NI.ClassItem.Flags" Type="Int">20971522</Property>
+				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">798736</Property>
+			</Item>
 			<Item Name="Read as Pixmap Mono8.vi" Type="VI" URL="../Read as Pixmap Mono8.vi">
-				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!+H!!!!'Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!,%"!!!(`````!!I?1W^M&lt;X6S=S!I27VQ&gt;(E[)&amp;6T:3"(=G6Z=W.B&lt;'5J!!!(1!)!!8A!"U!#!!&amp;Z!&amp;U!]1!!!!!!!!!#$E*V:G:F=CZM&gt;G.M98.T)6"J9X2V=G5A6'^Q)%RF:H1A5'^J&lt;H1A4W:G=W6U,G.U&lt;!!E1&amp;!!!A!6!"956'^Q)%RF:H1A5'^J&lt;H1A+$!M-#E!!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!*%"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!F#&gt;7:G:8)A;7Y!91$Q!!Q!!Q!%!"%!%A!4!!1!&amp;!!8!"A!"!!%!"E$!!"Y!!!*!!!!!!!!!!E!!!!*!!!!%!!!!!!!!!!!!!!!!!!!!!A!!!!!!!!!!!!!!"!!!!U!!!!-!!!!!!!!!!!!!!%!'A!!!!!</Property>
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!+H!!!!'Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!,%"!!!(`````!!I?1W^M&lt;X6S=S!I27VQ&gt;(E[)&amp;6T:3"(=G6Z=W.B&lt;'5J!!!(1!)!!8A!"U!#!!&amp;Z!&amp;U!]1!!!!!!!!!#$E*V:G:F=CZM&gt;G.M98.T)6"J9X2V=G5A6'^Q)%RF:H1A5'^J&lt;H1A4W:G=W6U,G.U&lt;!!E1&amp;!!!A!6!"956'^Q)%RF:H1A5'^J&lt;H1A+$!M-#E!!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!*%"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!F#&gt;7:G:8)A;7Y!91$Q!!Q!!Q!%!"%!%A!4!!1!&amp;!!8!"A!"!!%!"E$!!"Y!!!.#!!!!!!!!!E!!!!.#Q!!!!!!!!!!!!!!!!!!!A!!!!I!!!!!!!!!!!!!!"!!!!U!!!!-!!!!!!!!!!!!!!%!'A!!!!!</Property>
 				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
 				<Property Name="NI.ClassItem.Flags" Type="Int">16777216</Property>
 				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
 				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
 				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
-				<Property Name="NI.ClassItem.State" Type="Int">1342709776</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">268967952</Property>
+			</Item>
+			<Item Name="Read as Pixmap Mono10.vi" Type="VI" URL="../Read as Pixmap Mono10.vi">
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!+H!!!!'Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!,%"!!!(`````!!I?1W^M&lt;X6S=S!I27VQ&gt;(E[)&amp;6T:3"(=G6Z=W.B&lt;'5J!!!(1!)!!8A!"U!#!!&amp;Z!&amp;U!]1!!!!!!!!!#$E*V:G:F=CZM&gt;G.M98.T)6"J9X2V=G5A6'^Q)%RF:H1A5'^J&lt;H1A4W:G=W6U,G.U&lt;!!E1&amp;!!!A!6!"956'^Q)%RF:H1A5'^J&lt;H1A+$!M-#E!!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!*%"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!F#&gt;7:G:8)A;7Y!91$Q!!Q!!Q!%!"%!%A!4!!1!&amp;!!8!"A!"!!%!"E$!!"Y!!!.#!!!!!!!!!E!!!!.#Q!!!!!!!!!!!!!!!!!!!A!!!!I!!!!!!!!!!!!!!"!!!!U!!!!-!!!!!!!!!!!!!!%!'A!!!!!</Property>
+				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+				<Property Name="NI.ClassItem.Flags" Type="Int">20971522</Property>
+				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">798736</Property>
+			</Item>
+			<Item Name="Read as Pixmap Mono10p.vi" Type="VI" URL="../Read as Pixmap Mono10p.vi">
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!+H!!!!'Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!,%"!!!(`````!!I?1W^M&lt;X6S=S!I27VQ&gt;(E[)&amp;6T:3"(=G6Z=W.B&lt;'5J!!!(1!)!!8A!"U!#!!&amp;Z!&amp;U!]1!!!!!!!!!#$E*V:G:F=CZM&gt;G.M98.T)6"J9X2V=G5A6'^Q)%RF:H1A5'^J&lt;H1A4W:G=W6U,G.U&lt;!!E1&amp;!!!A!6!"956'^Q)%RF:H1A5'^J&lt;H1A+$!M-#E!!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!*%"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!F#&gt;7:G:8)A;7Y!91$Q!!Q!!Q!%!"%!%A!4!!1!&amp;!!8!"A!"!!%!"E$!!"Y!!!.#!!!!!!!!!E!!!!.#Q!!!!!!!!!!!!!!!!!!!A!!!!I!!!!!!!!!!!!!!"!!!!U!!!!-!!!!!!!!!!!!!!%!'A!!!!!</Property>
+				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+				<Property Name="NI.ClassItem.Flags" Type="Int">20971522</Property>
+				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">798736</Property>
+			</Item>
+			<Item Name="Read as Pixmap Mono12.vi" Type="VI" URL="../Read as Pixmap Mono12.vi">
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!+H!!!!'Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!,%"!!!(`````!!I?1W^M&lt;X6S=S!I27VQ&gt;(E[)&amp;6T:3"(=G6Z=W.B&lt;'5J!!!(1!)!!8A!"U!#!!&amp;Z!&amp;U!]1!!!!!!!!!#$E*V:G:F=CZM&gt;G.M98.T)6"J9X2V=G5A6'^Q)%RF:H1A5'^J&lt;H1A4W:G=W6U,G.U&lt;!!E1&amp;!!!A!6!"956'^Q)%RF:H1A5'^J&lt;H1A+$!M-#E!!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!*%"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!F#&gt;7:G:8)A;7Y!91$Q!!Q!!Q!%!"%!%A!4!!1!&amp;!!8!"A!"!!%!"E$!!"Y!!!.#!!!!!!!!!E!!!!.#Q!!!!!!!!!!!!!!!!!!!A!!!!I!!!!!!!!!!!!!!"!!!!U!!!!-!!!!!!!!!!!!!!%!'A!!!!!</Property>
+				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+				<Property Name="NI.ClassItem.Flags" Type="Int">20971522</Property>
+				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">798736</Property>
+			</Item>
+			<Item Name="Read as Pixmap Mono12p.vi" Type="VI" URL="../Read as Pixmap Mono12p.vi">
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!+H!!!!'Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!,%"!!!(`````!!I?1W^M&lt;X6S=S!I27VQ&gt;(E[)&amp;6T:3"(=G6Z=W.B&lt;'5J!!!(1!)!!8A!"U!#!!&amp;Z!&amp;U!]1!!!!!!!!!#$E*V:G:F=CZM&gt;G.M98.T)6"J9X2V=G5A6'^Q)%RF:H1A5'^J&lt;H1A4W:G=W6U,G.U&lt;!!E1&amp;!!!A!6!"956'^Q)%RF:H1A5'^J&lt;H1A+$!M-#E!!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!*%"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!F#&gt;7:G:8)A;7Y!91$Q!!Q!!Q!%!"%!%A!4!!1!&amp;!!8!"A!"!!%!"E$!!"Y!!!.#!!!!!!!!!E!!!!.#Q!!!!!!!!!!!!!!!!!!!A!!!!I!!!!!!!!!!!!!!"!!!!U!!!!-!!!!!!!!!!!!!!%!'A!!!!!</Property>
+				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+				<Property Name="NI.ClassItem.Flags" Type="Int">20971522</Property>
+				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">798736</Property>
+			</Item>
+			<Item Name="Read as Pixmap Mono14.vi" Type="VI" URL="../Read as Pixmap Mono14.vi">
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!+H!!!!'Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!,%"!!!(`````!!I?1W^M&lt;X6S=S!I27VQ&gt;(E[)&amp;6T:3"(=G6Z=W.B&lt;'5J!!!(1!)!!8A!"U!#!!&amp;Z!&amp;U!]1!!!!!!!!!#$E*V:G:F=CZM&gt;G.M98.T)6"J9X2V=G5A6'^Q)%RF:H1A5'^J&lt;H1A4W:G=W6U,G.U&lt;!!E1&amp;!!!A!6!"956'^Q)%RF:H1A5'^J&lt;H1A+$!M-#E!!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!*%"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!F#&gt;7:G:8)A;7Y!91$Q!!Q!!Q!%!"%!%A!4!!1!&amp;!!8!"A!"!!%!"E$!!"Y!!!.#!!!!!!!!!E!!!!.#Q!!!!!!!!!!!!!!!!!!!A!!!!I!!!!!!!!!!!!!!"!!!!U!!!!-!!!!!!!!!!!!!!%!'A!!!!!</Property>
+				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+				<Property Name="NI.ClassItem.Flags" Type="Int">20971522</Property>
+				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">798736</Property>
+			</Item>
+			<Item Name="Read as Pixmap Mono14p.vi" Type="VI" URL="../Read as Pixmap Mono14p.vi">
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!+H!!!!'Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!,%"!!!(`````!!I?1W^M&lt;X6S=S!I27VQ&gt;(E[)&amp;6T:3"(=G6Z=W.B&lt;'5J!!!(1!)!!8A!"U!#!!&amp;Z!&amp;U!]1!!!!!!!!!#$E*V:G:F=CZM&gt;G.M98.T)6"J9X2V=G5A6'^Q)%RF:H1A5'^J&lt;H1A4W:G=W6U,G.U&lt;!!E1&amp;!!!A!6!"956'^Q)%RF:H1A5'^J&lt;H1A+$!M-#E!!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!*%"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!F#&gt;7:G:8)A;7Y!91$Q!!Q!!Q!%!"%!%A!4!!1!&amp;!!8!"A!"!!%!"E$!!"Y!!!.#!!!!!!!!!E!!!!.#Q!!!!!!!!!!!!!!!!!!!A!!!!I!!!!!!!!!!!!!!"!!!!U!!!!-!!!!!!!!!!!!!!%!'A!!!!!</Property>
+				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+				<Property Name="NI.ClassItem.Flags" Type="Int">20971522</Property>
+				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">798736</Property>
+			</Item>
+			<Item Name="Read as Pixmap Mono16.vi" Type="VI" URL="../Read as Pixmap Mono16.vi">
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!+H!!!!'Q!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!,%"!!!(`````!!I?1W^M&lt;X6S=S!I27VQ&gt;(E[)&amp;6T:3"(=G6Z=W.B&lt;'5J!!!(1!)!!8A!"U!#!!&amp;Z!&amp;U!]1!!!!!!!!!#$E*V:G:F=CZM&gt;G.M98.T)6"J9X2V=G5A6'^Q)%RF:H1A5'^J&lt;H1A4W:G=W6U,G.U&lt;!!E1&amp;!!!A!6!"956'^Q)%RF:H1A5'^J&lt;H1A+$!M-#E!!#"!5!!$!!!!!1!#%W6S=G^S)'FO)#BO&lt;S"F=H*P=CE!*%"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!F#&gt;7:G:8)A;7Y!91$Q!!Q!!Q!%!"%!%A!4!!1!&amp;!!8!"A!"!!%!"E$!!"Y!!!.#!!!!!!!!!E!!!!.#Q!!!!!!!!!!!!!!!!!!!A!!!!I!!!!!!!!!!!!!!"!!!!U!!!!-!!!!!!!!!!!!!!%!'A!!!!!</Property>
+				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+				<Property Name="NI.ClassItem.Flags" Type="Int">20971522</Property>
+				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">798736</Property>
+			</Item>
+			<Item Name="Read as Pixmap RGB8.vi" Type="VI" URL="../Read as Pixmap RGB8.vi">
+				<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!*\!!!!'A!-1#%'=X2B&gt;(6T!!!,1!-!"'.P:'5!!""!-0````]'=W^V=G.F!!!71&amp;!!!Q!!!!%!!AFF=H*P=C"P&gt;81!"!!!!"&amp;!!Q!+;7VB:W5A&gt;(FQ:1!!%5!$!!NJ&lt;7&amp;H:3"E:8"U;!!&amp;!!5!!"*!1!!"`````Q!("7FN97&gt;F!"*!1!!"`````Q!("'VB=WM!!!5!"Q!!&amp;%"!!!(`````!!I'9W^M&lt;X*T!!!,1!)!"'RF:H1!!!F!!A!$&gt;'^Q!!N!!A!&amp;=GFH;(1!$5!#!!:C&lt;X2U&lt;WU!!"B!5!!%!!Q!$1!/!!]*5G6D&gt;'&amp;O:WRF!$A!]1!!!!!!!!!"$7FN97&gt;F:'&amp;U93ZD&gt;'Q!)E"1!!9!"1!'!!A!#1!,!"!+37VB:W5A2'&amp;U91!!)E"Q!"Y!!"!/1H6G:G6S,GRW9WRB=X-!!!:#&gt;7:G:8)!!#"!1!!"`````Q!(%EVB=WMA+%6N=(2Z/C"/&lt;WZF+1!!"U!#!!&amp;Y!!&gt;!!A!"?1"&gt;!0%!!!!!!!!!!AZ#&gt;7:G:8)O&lt;(:D&lt;'&amp;T=S&amp;1;7.U&gt;8*F)&amp;2P=#"-:7:U)&amp;"P;7ZU)%^G:H.F&gt;#ZD&gt;'Q!*%"1!!)!&amp;!!6&amp;&amp;2P=#"-:7:U)&amp;"P;7ZU)#AQ,$!J!!!A1&amp;!!!Q!!!!%!!B.F=H*P=C"J&lt;C!I&lt;G]A:8*S&lt;X)J!#2!=!!?!!!1$E*V:G:F=CZM&gt;G.M98.T!!!*1H6G:G6S)'FO!'%!]!!-!!-!"!!2!")!%Q!%!!1!&amp;A!8!!1!"!!9!Q!!?!!!$1A!!!!!!!!*!!!!$1M!!!!!!!!!!!!!!!!!!!)!!!!+!!!!!!!!!!!!!!!1!!!.!!!!$!!!!!!!!!!!!!!"!"E!!!!!</Property>
+				<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+				<Property Name="NI.ClassItem.Flags" Type="Int">16777216</Property>
+				<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+				<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+				<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+				<Property Name="NI.ClassItem.State" Type="Int">269230096</Property>
 			</Item>
 		</Item>
 	</Item>
@@ -378,6 +460,15 @@
 		<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
 		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
 		<Property Name="NI.ClassItem.State" Type="Int">1082143248</Property>
+	</Item>
+	<Item Name="Read as Pixmap.vi" Type="VI" URL="../Read as Pixmap.vi">
+		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!!1!!!!!1!)!0)[X2RK!!%!!!!!!!!</Property>
+		<Property Name="NI.ClassItem.ExecutionSystem" Type="Int">-1</Property>
+		<Property Name="NI.ClassItem.Flags" Type="Int">0</Property>
+		<Property Name="NI.ClassItem.IsStaticMethod" Type="Bool">true</Property>
+		<Property Name="NI.ClassItem.MethodScope" Type="UInt">1</Property>
+		<Property Name="NI.ClassItem.Priority" Type="Int">1</Property>
+		<Property Name="NI.ClassItem.State" Type="Int">1074278928</Property>
 	</Item>
 	<Item Name="Draw to Picture.vi" Type="VI" URL="../Draw to Picture.vi">
 		<Property Name="NI.ClassItem.ConnectorPane" Type="Bin">)!#!!!!!!!)!"1!&amp;!!!-!%!!!@````]!!!!"!!%!!!!1!!!!!1!)!0)V])XE!!%!!!!!!!!</Property>

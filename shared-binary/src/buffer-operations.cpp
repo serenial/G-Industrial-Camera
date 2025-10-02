@@ -426,8 +426,6 @@ extern "C"
 
             int32_t output_width = buffer.width();
 
-            size_t mask_row_length = 0, mask_bytes_length = 0;
-
             auto width_is_even = output_width % 2 == 0;
 
             if (is_greyscale && !width_is_even)
@@ -470,13 +468,13 @@ extern "C"
                     if (pixmap_ptr->colour_array_handle.empty())
                     {
                         pixmap_ptr->colour_array_handle.size_to_fit(256);
-                        std::memcpy(pixmap_ptr->colour_array_handle.begin(), &default_colour_map[0], pixmap_ptr->colour_array_handle.size());
+                        std::memcpy(pixmap_ptr->colour_array_handle.begin(), &default_colour_map[0], pixmap_ptr->colour_array_handle.size()* sizeof(uint32_t));
                     }
                 }
                 else
                 {
                     pixmap_ptr->colour_array_handle.size_to_fit(std::min(colour_array_handle.size(), size_t(256)));
-                    std::memcpy(pixmap_ptr->colour_array_handle.begin(), colour_array_handle.begin(), pixmap_ptr->colour_array_handle.size());
+                    std::memcpy(pixmap_ptr->colour_array_handle.begin(), colour_array_handle.begin(), pixmap_ptr->colour_array_handle.size() * sizeof(uint32_t));
                 }
             }
             else
