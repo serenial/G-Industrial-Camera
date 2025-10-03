@@ -93,7 +93,7 @@ namespace
 
     const uint32_t default_colour_map[] = {0xFF000000, 0xFF010101, 0xFF020202, 0xFF030303, 0xFF040404, 0xFF050505, 0xFF060606, 0xFF070707, 0xFF080808, 0xFF090909, 0xFF0A0A0A, 0xFF0B0B0B, 0xFF0C0C0C, 0xFF0D0D0D, 0xFF0E0E0E, 0xFF0F0F0F, 0xFF101010, 0xFF111111, 0xFF121212, 0xFF131313, 0xFF141414, 0xFF151515, 0xFF161616, 0xFF171717, 0xFF181818, 0xFF191919, 0xFF1A1A1A, 0xFF1B1B1B, 0xFF1C1C1C, 0xFF1D1D1D, 0xFF1E1E1E, 0xFF1F1F1F, 0xFF202020, 0xFF212121, 0xFF222222, 0xFF232323, 0xFF242424, 0xFF252525, 0xFF262626, 0xFF272727, 0xFF282828, 0xFF292929, 0xFF2A2A2A, 0xFF2B2B2B, 0xFF2C2C2C, 0xFF2D2D2D, 0xFF2E2E2E, 0xFF2F2F2F, 0xFF303030, 0xFF313131, 0xFF323232, 0xFF333333, 0xFF343434, 0xFF353535, 0xFF363636, 0xFF373737, 0xFF383838, 0xFF393939, 0xFF3A3A3A, 0xFF3B3B3B, 0xFF3C3C3C, 0xFF3D3D3D, 0xFF3E3E3E, 0xFF3F3F3F, 0xFF404040, 0xFF414141, 0xFF424242, 0xFF434343, 0xFF444444, 0xFF454545, 0xFF464646, 0xFF474747, 0xFF484848, 0xFF494949, 0xFF4A4A4A, 0xFF4B4B4B, 0xFF4C4C4C, 0xFF4D4D4D, 0xFF4E4E4E, 0xFF4F4F4F, 0xFF505050, 0xFF515151, 0xFF525252, 0xFF535353, 0xFF545454, 0xFF555555, 0xFF565656, 0xFF575757, 0xFF585858, 0xFF595959, 0xFF5A5A5A, 0xFF5B5B5B, 0xFF5C5C5C, 0xFF5D5D5D, 0xFF5E5E5E, 0xFF5F5F5F, 0xFF606060, 0xFF616161, 0xFF626262, 0xFF636363, 0xFF646464, 0xFF656565, 0xFF666666, 0xFF676767, 0xFF686868, 0xFF696969, 0xFF6A6A6A, 0xFF6B6B6B, 0xFF6C6C6C, 0xFF6D6D6D, 0xFF6E6E6E, 0xFF6F6F6F, 0xFF707070, 0xFF717171, 0xFF727272, 0xFF737373, 0xFF747474, 0xFF757575, 0xFF767676, 0xFF777777, 0xFF787878, 0xFF797979, 0xFF7A7A7A, 0xFF7B7B7B, 0xFF7C7C7C, 0xFF7D7D7D, 0xFF7E7E7E, 0xFF7F7F7F, 0xFF808080, 0xFF818181, 0xFF828282, 0xFF838383, 0xFF848484, 0xFF858585, 0xFF868686, 0xFF878787, 0xFF888888, 0xFF898989, 0xFF8A8A8A, 0xFF8B8B8B, 0xFF8C8C8C, 0xFF8D8D8D, 0xFF8E8E8E, 0xFF8F8F8F, 0xFF909090, 0xFF919191, 0xFF929292, 0xFF939393, 0xFF949494, 0xFF959595, 0xFF969696, 0xFF979797, 0xFF989898, 0xFF999999, 0xFF9A9A9A, 0xFF9B9B9B, 0xFF9C9C9C, 0xFF9D9D9D, 0xFF9E9E9E, 0xFF9F9F9F, 0xFFA0A0A0, 0xFFA1A1A1, 0xFFA2A2A2, 0xFFA3A3A3, 0xFFA4A4A4, 0xFFA5A5A5, 0xFFA6A6A6, 0xFFA7A7A7, 0xFFA8A8A8, 0xFFA9A9A9, 0xFFAAAAAA, 0xFFABABAB, 0xFFACACAC, 0xFFADADAD, 0xFFAEAEAE, 0xFFAFAFAF, 0xFFB0B0B0, 0xFFB1B1B1, 0xFFB2B2B2, 0xFFB3B3B3, 0xFFB4B4B4, 0xFFB5B5B5, 0xFFB6B6B6, 0xFFB7B7B7, 0xFFB8B8B8, 0xFFB9B9B9, 0xFFBABABA, 0xFFBBBBBB, 0xFFBCBCBC, 0xFFBDBDBD, 0xFFBEBEBE, 0xFFBFBFBF, 0xFFC0C0C0, 0xFFC1C1C1, 0xFFC2C2C2, 0xFFC3C3C3, 0xFFC4C4C4, 0xFFC5C5C5, 0xFFC6C6C6, 0xFFC7C7C7, 0xFFC8C8C8, 0xFFC9C9C9, 0xFFCACACA, 0xFFCBCBCB, 0xFFCCCCCC, 0xFFCDCDCD, 0xFFCECECE, 0xFFCFCFCF, 0xFFD0D0D0, 0xFFD1D1D1, 0xFFD2D2D2, 0xFFD3D3D3, 0xFFD4D4D4, 0xFFD5D5D5, 0xFFD6D6D6, 0xFFD7D7D7, 0xFFD8D8D8, 0xFFD9D9D9, 0xFFDADADA, 0xFFDBDBDB, 0xFFDCDCDC, 0xFFDDDDDD, 0xFFDEDEDE, 0xFFDFDFDF, 0xFFE0E0E0, 0xFFE1E1E1, 0xFFE2E2E2, 0xFFE3E3E3, 0xFFE4E4E4, 0xFFE5E5E5, 0xFFE6E6E6, 0xFFE7E7E7, 0xFFE8E8E8, 0xFFE9E9E9, 0xFFEAEAEA, 0xFFEBEBEB, 0xFFECECEC, 0xFFEDEDED, 0xFFEEEEEE, 0xFFEFEFEF, 0xFFF0F0F0, 0xFFF1F1F1, 0xFFF2F2F2, 0xFFF3F3F3, 0xFFF4F4F4, 0xFFF5F5F5, 0xFFF6F6F6, 0xFFF7F7F7, 0xFFF8F8F8, 0xFFF9F9F9, 0xFFFAFAFA, 0xFFFBFBFB, 0xFFFCFCFC, 0xFFFDFDFD, 0xFFFEFEFE, 0xFFFFFFFF};
 
-    void copy_buffer_data_with_lv_picture_packing(const pixel_formats format, const lv_buffer &buffer, uint8_t *dst_data_ptr);
+    void copy_buffer_data_with_lv_picture_packing(const pixel_formats format, const lv_buffer &buffer, uint8_t *dst_data_ptr, const size_t dst_data_ptr_size);
 }
 
 extern "C"
@@ -128,7 +128,7 @@ extern "C"
 
             array_handle.size_to_fit({buffer.height(), buffer.width()});
 
-            std::memcpy(array_handle.begin(), buffer.begin(), buffer.size());
+            std::memcpy(array_handle.begin(), buffer.begin(), buffer.height() * buffer.width());
         }
         catch (...)
         {
@@ -148,7 +148,7 @@ extern "C"
 
             array_handle.size_to_fit({buffer.height(), buffer.width()});
 
-            std::memcpy(array_handle.begin(), buffer.begin(), buffer.size());
+            std::memcpy(array_handle.begin(), buffer.begin(), buffer.height() * buffer.width());
         }
         catch (...)
         {
@@ -173,7 +173,7 @@ extern "C"
 
             // process in 5 input bytes to give 3 output pixels
 
-            while (output_pixel < array_handle.end() && input_byte < buffer.end())
+            while (input_byte + 5 <= buffer.end() && output_pixel + 4 <= array_handle.end())
             {
 
                 auto b0 = *input_byte++;
@@ -211,7 +211,7 @@ extern "C"
 
             // process in 3 input bytes to give 2 output pixels
 
-            while (output_pixel < array_handle.end() && input_byte < buffer.end())
+            while (input_byte + 3 <= buffer.end() && output_pixel + 2 <= array_handle.end())
             {
 
                 auto b0 = *input_byte++;
@@ -243,9 +243,9 @@ extern "C"
             auto output_pixel = array_handle.begin();
             auto input_byte = buffer.begin();
 
-            // process in 6 input bytes to give 4 output pixels
+            // process in 7 input bytes to give 4 output pixels
 
-            while (output_pixel < array_handle.end() && input_byte < buffer.end())
+            while (input_byte + 7 <= buffer.end() && output_pixel + 4 <= array_handle.end())
             {
 
                 auto b0 = *input_byte++;
@@ -287,12 +287,12 @@ extern "C"
 
             // process in 3 input bytes to give 1 output pixel
 
-            while (output_pixel < array_handle.end() && input_byte < buffer.end())
+            while (input_byte + 3 <= buffer.end() && output_pixel < array_handle.end())
             {
 
-                auto red = *input_byte++;   // r
-                auto green = *input_byte++; // g
-                auto blue = *input_byte++;  // b
+                auto red = *input_byte++;
+                auto green = *input_byte++;
+                auto blue = *input_byte++;
 
                 if (*flip_rb_channels)
                 {
@@ -383,7 +383,7 @@ extern "C"
 
                 dst_data_ptr += lv_picture::greyscale_lookup_length;
 
-                copy_buffer_data_with_lv_picture_packing(format, buffer, reinterpret_cast<uint8_t *>(dst_data_ptr));
+                copy_buffer_data_with_lv_picture_packing(format, buffer, reinterpret_cast<uint8_t *>(dst_data_ptr), image_bytes_length);
             }
             else
             {
@@ -398,7 +398,7 @@ extern "C"
                     ++dst_data_ptr;
                 }
 
-                copy_buffer_data_with_lv_picture_packing(format, buffer, reinterpret_cast<uint8_t *>(dst_data_ptr));
+                copy_buffer_data_with_lv_picture_packing(format, buffer, reinterpret_cast<uint8_t *>(dst_data_ptr), image_bytes_length);
             }
         }
         catch (...)
@@ -468,7 +468,7 @@ extern "C"
                     if (pixmap_ptr->colour_array_handle.empty())
                     {
                         pixmap_ptr->colour_array_handle.size_to_fit(256);
-                        std::memcpy(pixmap_ptr->colour_array_handle.begin(), &default_colour_map[0], pixmap_ptr->colour_array_handle.size()* sizeof(uint32_t));
+                        std::memcpy(pixmap_ptr->colour_array_handle.begin(), &default_colour_map[0], pixmap_ptr->colour_array_handle.size() * sizeof(uint32_t));
                     }
                 }
                 else
@@ -482,7 +482,7 @@ extern "C"
                 pixmap_ptr->image_depth = 24;
             }
 
-            copy_buffer_data_with_lv_picture_packing(format, buffer, pixmap_ptr->image_array_handle.begin());
+            copy_buffer_data_with_lv_picture_packing(format, buffer, pixmap_ptr->image_array_handle.begin(), image_bytes_length);
 
             pixmap_ptr->image_type = 0;
         }
@@ -781,7 +781,7 @@ namespace
 {
     // copy buffer data into the format expected by lv pictures and pixmap types
     // dst_data_ptr must be sized to accommodate the data first!
-    void copy_buffer_data_with_lv_picture_packing(const pixel_formats format, const lv_buffer &buffer, uint8_t *dst_data_ptr)
+    void copy_buffer_data_with_lv_picture_packing(const pixel_formats format, const lv_buffer &buffer, uint8_t *dst_data_ptr, const size_t dst_data_ptr_size)
     {
         size_t pixel = 0;
         auto src_data_ptr = buffer.begin();
@@ -797,19 +797,21 @@ namespace
             }
         };
 
+        const auto dst_end = dst_data_ptr + dst_data_ptr_size;
+
         switch (format)
         {
         case pixel_formats::mono8:
             if (width_is_even)
             {
                 // direct copy
-                std::memcpy(dst_data_ptr, src_data_ptr, buffer.size());
+                std::memcpy(dst_data_ptr, src_data_ptr, dst_data_ptr_size);
             }
             else
             {
                 // line-by-line copy
 
-                while (src_data_ptr < buffer.end())
+                while (src_data_ptr < buffer.end() && dst_data_ptr + buffer.width() <= dst_end)
                 {
                     std::memcpy(dst_data_ptr, src_data_ptr, buffer.width());
                     src_data_ptr += buffer.width();
@@ -819,7 +821,7 @@ namespace
             break;
         case pixel_formats::mono10:
             // pixel by pixel copy
-            while (src_data_ptr < buffer.end())
+            while (src_data_ptr + 2 <= buffer.end() && dst_data_ptr < dst_end)
             {
                 // combine 8 msb bits into single output byte
                 *dst_data_ptr++ = (*src_data_ptr++ & 0b1111'1100) >> 2 | (*src_data_ptr++ & 0b0000'0011) << 6;
@@ -828,7 +830,7 @@ namespace
             break;
         case pixel_formats::mono12:
             // pixel by pixel copy
-            while (src_data_ptr < buffer.end())
+            while (src_data_ptr + 2 <= buffer.end() && dst_data_ptr < dst_end)
             {
                 // combine 8 msb bits into single output byte
                 *dst_data_ptr++ = (*src_data_ptr++ & 0b1111'0000) >> 4 | (*src_data_ptr++ & 0b0000'1111) << 4;
@@ -837,7 +839,7 @@ namespace
             break;
         case pixel_formats::mono14:
             // pixel by pixel copy
-            while (src_data_ptr < buffer.end())
+            while (src_data_ptr + 2 <= buffer.end() && dst_data_ptr < dst_end)
             {
                 // combine 8 msb bits into single output byte
                 *dst_data_ptr++ = (*src_data_ptr++ & 0b1100'0000) >> 6 | (*src_data_ptr++ & 0b0011'1111) << 2;
@@ -846,7 +848,7 @@ namespace
             break;
         case pixel_formats::mono16:
             // pixel by pixel copy
-            while (src_data_ptr < buffer.end())
+            while (src_data_ptr + 2 <= buffer.end() && dst_data_ptr < dst_end)
             {
                 // just take the higher bytes
                 ++src_data_ptr;
@@ -856,7 +858,7 @@ namespace
             break;
         case pixel_formats::mono10p:
             // pixel by pixel copy
-            while (src_data_ptr < buffer.end())
+            while (src_data_ptr + 5 <= buffer.end() && dst_data_ptr + 4 <= dst_end)
             {
                 // combine 8 msb bits into single output byte
                 *dst_data_ptr++ = (*src_data_ptr++ & 0b1111'1100) >> 2 | (*src_data_ptr & 0b0000'0011) << 6;
@@ -872,7 +874,7 @@ namespace
             break;
         case pixel_formats::mono12p:
             // pixel by pixel copy
-            while (src_data_ptr < buffer.end())
+            while (src_data_ptr + 3 <= buffer.end() && dst_data_ptr + 2 <= dst_end)
             {
                 // combine 8 msb bits into single output byte
                 *dst_data_ptr++ = (*src_data_ptr++ & 0b1111'0000) >> 4 | (*src_data_ptr & 0b0000'1111) << 4;
@@ -884,7 +886,7 @@ namespace
             break;
         case pixel_formats::mono14p:
             // pixel by pixel copy
-            while (src_data_ptr < buffer.end())
+            while (src_data_ptr + 7 <= buffer.end() && dst_data_ptr + 4 <= dst_end)
             {
                 // combine 8 msb bits into single output byte
                 *dst_data_ptr++ = (*src_data_ptr++ & 0b1100'0000) >> 6 | (*src_data_ptr & 0b0011'1111) << 2;
@@ -900,13 +902,13 @@ namespace
             break;
         case pixel_formats::RGB8:
             // straight copy
-            std::memcpy(dst_data_ptr, buffer.begin(), buffer.size());
+            std::memcpy(dst_data_ptr, buffer.begin(), dst_data_ptr_size);
             break;
         case pixel_formats::BGR8:
         {
             auto src_data_ptr = buffer.begin();
             // copy with pixel byte order swapped
-            while (src_data_ptr < buffer.end())
+            while (src_data_ptr + 3 <= buffer.end() && dst_data_ptr + 3 < dst_end)
             {
                 *(dst_data_ptr + 0) = *(src_data_ptr + 2);
                 *(dst_data_ptr + 1) = *(src_data_ptr + 1);
