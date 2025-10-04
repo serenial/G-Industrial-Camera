@@ -1,7 +1,7 @@
-<VI_Package_Builder_Settings Version="2020.1" Created_Date="2025-08-30 23:16:15" Modified_Date="2025-09-14 21:29:43" Creator="john" Comments="" ID="40ac5b5583c06c5d578e735e91214cb4">
+<VI_Package_Builder_Settings Version="2020.1" Created_Date="2025-08-30 23:16:15" Modified_Date="2025-10-04 21:19:21" Creator="john" Comments="" ID="728e09ce8abd43b71f2ceed531f2a5b1">
   <Library_General_Settings>
     <Package_File_Name>Serenial_lib_G_Industrial_Camera_Shared_Binaries</Package_File_Name>
-    <Library_Version>0.13.0.7</Library_Version>
+    <Library_Version>0.14.0.10</Library_Version>
     <Auto_Increment_Version>false</Auto_Increment_Version>
     <Library_Source_Folder>build\source-distribution\g_industrial_cam\bin</Library_Source_Folder>
     <Library_Output_Folder>build</Library_Output_Folder>
@@ -32,8 +32,8 @@
       <Copyright/>
       <Packager>Serenial</Packager>
       <URL>https://gitlab.com/serenial/g-industrial-camera/</URL>
-      <Release_Notes> - Fixed RGB8/BGR8 Read Data C++ Code
- - Added C++ code to draw buffer to LabVIEW pictures</Release_Notes>
+      <Release_Notes>- Added C++ code to draw buffer to LabVIEW Flattened Pixmap
+- Improved bounds checking to avoid out of bounds access when copying data into LabVIEW arrays with the incorrect pixel format</Release_Notes>
     </Description>
     <Destinations>
       <Toolkit_VIs>
@@ -168,7 +168,7 @@
       <LV_64-Bit>true</LV_64-Bit>
     </Install_Requirements>
     <LabVIEW>
-      <close_labview_before_install>false</close_labview_before_install>
+      <close_labview_before_install>true</close_labview_before_install>
       <restart_labview_after_install>false</restart_labview_after_install>
       <skip_mass_compile_after_install>false</skip_mass_compile_after_install>
       <install_into_global_environment>false</install_into_global_environment>
