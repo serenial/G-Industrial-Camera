@@ -29,10 +29,6 @@ if(WIN32)
   # windows.h definitions
   target_compile_definitions(g_industrial_cam PUBLIC WIN32_LEAN_AND_MEAN NOMINMAX /wd4068)
 elseif(UNIX)
-  # link against static system libs
-  target_link_options(g_industrial_cam PRIVATE
-    "-static-libgcc" "-static-libstdc++"
-  )
 
   # try and remove unused code sections
   target_compile_options(g_industrial_cam PRIVATE
