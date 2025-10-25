@@ -24,7 +24,8 @@ namespace
 
 using namespace g_industrial_cam;
 
-camera::camera(camera::signal_fn_t on_disconnect) : m_callback_on_disconnect(on_disconnect),
+camera::camera(camera::signal_fn_t on_disconnect) : m_gv_buffer_size(0),
+                                                    m_callback_on_disconnect(on_disconnect),
                                                     m_stream(nullptr)
 {
     // nothing else to init;
@@ -124,6 +125,15 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
     m_stream_max_sequential_errors = max_sequential_errors;
     m_stream_started = false;
 
+    if (arv_camera_is_gv_device(m_camera))
+    {
+
+        g_object_set(m_stream,
+                     "socket-buffer", m_gv_buffer_size > 0 ? ARV_GV_STREAM_SOCKET_BUFFER_FIXED : ARV_GV_STREAM_SOCKET_BUFFER_AUTO,
+                     "socket-buffer-size", m_gv_buffer_size,
+                     NULL);
+    }
+
     // start the stream
 
     m_stream = arv_camera_create_stream(m_camera, &camera::stream_event_callback, this, err);
@@ -137,7 +147,7 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
     // get payload
     m_camera_payload = arv_camera_get_payload(m_camera, err);
 
-    for (int i = 0; i < n_additional_buffers + 2; i++)
+    for (int i = 0; i < n_additional_buffers; i++)
     {
         // queue up the buffers into the stream - enough to fill the circular_buffer and one extra to load into the stream fifo
         arv_stream_push_buffer(m_stream, arv_buffer_new_allocate(m_camera_payload));
@@ -215,6 +225,30 @@ camera::timeout_result camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer *
         throw std::runtime_error("Camera Stream is not running.");
     }
 
+    // check buffer we were passed
+    if (*buffer_ptr)
+    {
+        // check buffer is correct size - delete and reallocate if not
+        size_t passed_buffer_size;
+        arv_buffer_get_image_data(*buffer_ptr, &passed_buffer_size);
+        if (passed_buffer_size != m_camera_payload)
+        {
+            g_object_unref(*buffer_ptr);
+            *buffer_ptr = arv_buffer_new_allocate(m_camera_payload);
+        }
+    }
+    else
+    {
+        // null-buffer: create new
+        *buffer_ptr = arv_buffer_new_allocate(m_camera_payload);
+    }
+
+    // push this into the stream FIFO
+    arv_stream_push_buffer(m_stream, *buffer_ptr);
+
+    // the buffer belongs to the camera now
+    *buffer_ptr = nullptr;
+
     auto check_something_to_pop = [&]
     { return !m_stream_buffers.empty() || m_stream == nullptr; };
 
@@ -234,35 +268,11 @@ camera::timeout_result camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer *
     if (no_timeout && !m_stream_buffers.empty())
     {
         // something to get from the circular buffer
-
-        ArvBuffer *to_push_into_stream = *buffer_ptr;
-
-        // check buffer we were passed
-        if (*buffer_ptr)
-        {
-            // check buffer is correct size - delete and reallocate if not
-            size_t passed_buffer_size;
-            arv_buffer_get_image_data(*buffer_ptr, &passed_buffer_size);
-            if (passed_buffer_size != m_camera_payload)
-            {
-                g_object_unref(*buffer_ptr);
-                to_push_into_stream = arv_buffer_new_allocate(m_camera_payload);
-            }
-        }
-        else
-        {
-            // null-buffer: create new
-            to_push_into_stream = arv_buffer_new_allocate(m_camera_payload);
-        }
-
         // collect the oldest buffer from the circular buffer;
-        *buffer_ptr = m_stream_buffers[0];
+        *buffer_ptr = m_stream_buffers.front();
 
         // pop the front to remove the buffer we have just grabbed.
         m_stream_buffers.pop_front();
-
-        // push this new buffer onto the stream FIFO
-        arv_stream_push_buffer(m_stream, to_push_into_stream);
     }
 
     lk.unlock();
@@ -310,9 +320,10 @@ void camera::stream_buffer_callback(ArvStream *stream, camera *self)
         {
             std::lock_guard lk(self->m_stream_buffers_mtx);
 
-            if (self->m_stream_buffers.full())
+            if (self->m_stream_buffers.full() && self->m_stream_buffers.capacity() > 1)
             {
                 // move the element that is about to be overwritten into the input FIFO
+                // if the buffer is only 1 deep then don't take the buffer and requeue it
                 arv_stream_push_buffer(stream, self->m_stream_buffers.front());
             }
 
@@ -852,4 +863,44 @@ int64_t camera::get_frame_count() const
 camera::bounds_t<int64_t> camera::get_frame_count_bounds() const
 {
     return call_camera_fn_to_get_bounds<int64_t>(arv_camera_get_frame_count_bounds);
+}
+
+void camera::set_gv_socket_buffer_size(int32_t size)
+{
+    if (!arv_camera_is_gv_device(m_camera))
+    {
+        throw std::invalid_argument("Unable to set this property for a non-GigE device.");
+    }
+
+    if (m_stream)
+    {
+        throw std::runtime_error("Unable to set the socket-buffer-size whilst the camera is streaming.");
+    }
+
+    m_gv_buffer_size = size;
+}
+
+bool camera::is_gv_device() const
+{   
+    return arv_camera_is_gv_device(m_camera);
+}
+
+uint32_t camera::get_gv_auto_packet_size() const
+{
+    if (!arv_camera_is_gv_device(m_camera))
+    {
+        throw std::invalid_argument("Unable to set this property for a non-GigE device.");
+    }
+
+    return call_camera_fn(arv_camera_gv_auto_packet_size);
+}
+
+void camera::set_gv_packet_size(int32_t size)
+{
+    if (!arv_camera_is_gv_device(m_camera))
+    {
+        throw std::invalid_argument("Unable to set this property for a non-GigE device.");
+    }
+    
+    call_camera_fn_with_no_return(arv_camera_gv_set_packet_size, size);
 }

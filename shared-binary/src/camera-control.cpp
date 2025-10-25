@@ -1614,4 +1614,68 @@ extern "C"
         }
         return LV_ERR_noError;
     }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_is_gige_vision(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_BooleanPtr_t is_gv)
+    {
+        try
+        {
+            *is_gv = (*camera_handle(camera_ref_ptr))->is_gv_device();
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_gige_set_socket_buffer_size(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        uint32_t size)
+    {
+        try
+        {
+            (*camera_handle(camera_ref_ptr))->set_gv_socket_buffer_size(size);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_gige_auto_packet_size(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        int32_t *size)
+    {
+        try
+        {
+            *size = (*camera_handle(camera_ref_ptr))->get_gv_auto_packet_size();
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_gige_set_packet_size(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        int32_t size)
+    {
+        try
+        {
+            (*camera_handle(camera_ref_ptr))->set_gv_packet_size(size);
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
 }

@@ -83,7 +83,7 @@ namespace g_industrial_cam
         static camera *create(const std::string &identifier_utf8, signal_fn_t on_disconnect);
         ~camera();
         ArvBuffer *take_snapshot(int32_t timeout) const;
-        timeout_result stream_start(int32_t max_sequential_errors, uint16_t n_additional_buffers, int32_t timeout_ms, bool fixed_num_frames, signal_fn_t on_stream_error, signal_fn_t on_stream_stop);
+        timeout_result stream_start(int32_t max_sequential_errors, uint16_t circular_buffer_size, int32_t timeout_ms, bool fixed_num_frames, signal_fn_t on_stream_error, signal_fn_t on_stream_stop);
         void stream_stop();
         timeout_result stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr);
         uint64_t stream_get_error_count() const;
@@ -185,6 +185,10 @@ namespace g_industrial_cam
         void software_trigger() const;
         uint64_t get_stream_frame_count() const;
         uint64_t get_stream_error_count() const;
+        void set_gv_socket_buffer_size(int32_t size);
+        bool is_gv_device() const;
+        uint32_t get_gv_auto_packet_size() const;
+        void set_gv_packet_size(int32_t size);
 
     private:
         camera(signal_fn_t on_disconnect);
@@ -193,6 +197,7 @@ namespace g_industrial_cam
         static void stream_buffer_callback(ArvStream *stream, camera *self);
         static void gv_control_lost_callback(ArvGvDevice *gv_device, camera *self);
         void populate_list_with_fn(std::vector<std::string> &list, std::add_pointer_t<const char **(ArvCamera *, guint *, GError **)> fn) const;
+        gint m_gv_buffer_size;
         ArvCamera *m_camera;
         ArvStream *m_stream;
         size_t m_camera_payload;
