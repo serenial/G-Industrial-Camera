@@ -320,11 +320,18 @@ void camera::stream_buffer_callback(ArvStream *stream, camera *self)
         {
             std::lock_guard lk(self->m_stream_buffers_mtx);
 
-            if (self->m_stream_buffers.full() && self->m_stream_buffers.capacity() > 1)
+            if (self->m_stream_buffers.full())
             {
-                // move the element that is about to be overwritten into the input FIFO
-                // if the buffer is only 1 deep then don't take the buffer and requeue it
-                arv_stream_push_buffer(stream, self->m_stream_buffers.front());
+                if (self->m_stream_buffers.capacity() == 1)
+                {
+                    // unref the object that is about to be overwritten to avoid a memory leak
+                    g_object_unref(self->m_stream_buffers.front());
+                }
+                else
+                {
+                    // move the element that is about to be overwritten into the input FIFO
+                    arv_stream_push_buffer(stream, self->m_stream_buffers.front());
+                }
             }
 
             // take the newly filled buffer and add it to the end of the circular buffer
@@ -881,7 +888,7 @@ void camera::set_gv_socket_buffer_size(int32_t size)
 }
 
 bool camera::is_gv_device() const
-{   
+{
     return arv_camera_is_gv_device(m_camera);
 }
 
@@ -901,6 +908,6 @@ void camera::set_gv_packet_size(int32_t size)
     {
         throw std::invalid_argument("Unable to set this property for a non-GigE device.");
     }
-    
+
     call_camera_fn_with_no_return(arv_camera_gv_set_packet_size, size);
 }
