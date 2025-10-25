@@ -33,6 +33,8 @@ If you want to develop the library then you require the following (C++ developme
 #### LabVIEW
 * LabVIEW 2020 or LV2024 Q3 onwards (to preserve the source version to 2020)
 * LUnit (from VIPM.io)
+* Vision Acquisition Software (_without_ the NI-IMAQdx driver so no activation required) if you would like to use/build the IMAQ integration example
+
 
 #### C++ Development (Windows x86/x64)
 [Build Tools for Windows 2022 - MSVC C++ Build Tools](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022) or newer
