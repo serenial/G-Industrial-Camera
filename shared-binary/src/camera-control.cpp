@@ -178,6 +178,28 @@ extern "C"
         return LV_ERR_noError;
     }
 
+    G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_stream_pop_buffer_back(
+        LV_ErrorClusterPtr_t error_cluster_ptr,
+        LV_EDVRReferencePtr_t camera_ref_ptr,
+        LV_EDVRReferencePtr_t buffer_ref_ptr,
+        int32_t timeout_ms)
+    {
+        try
+        {
+            auto result = (*camera_handle(camera_ref_ptr))->stream_pop_buffer_back(timeout_ms, lv_buffer(buffer_ref_ptr));
+
+            if (result == camera::timeout_result::timeout)
+            {
+                throw std::system_error(56, std::iostream_category(), "A Timeout occured whilst waiting for a stream buffer.");
+            }
+        }
+        catch (...)
+        {
+            error_cluster_ptr.copy_from_exception(std::current_exception(), __func__);
+        }
+        return LV_ERR_noError;
+    }
+
     G_INDUSTRIAL_CAM_EXPORT LV_MgErr_t g_industrial_cam_camera_clear_triggers(
         LV_ErrorClusterPtr_t error_cluster_ptr,
         LV_EDVRReferencePtr_t camera_ref_ptr)

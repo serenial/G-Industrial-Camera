@@ -1,7 +1,7 @@
-<VI_Package_Builder_Settings Version="2020.1" Created_Date="2025-08-30 23:16:15" Modified_Date="2025-10-25 22:20:07" Creator="john" Comments="" ID="d45009e8b25c07fe1a887bc965baebe3">
+<VI_Package_Builder_Settings Version="2020.1" Created_Date="2025-08-30 23:16:15" Modified_Date="2025-10-26 13:33:40" Creator="john" Comments="" ID="eac7f45e77fe4474ca5ad01bbc09b3fa">
   <Library_General_Settings>
     <Package_File_Name>Serenial_lib_G_Industrial_Camera</Package_File_Name>
-    <Library_Version>0.15.0.21</Library_Version>
+    <Library_Version>0.16.0.23</Library_Version>
     <Auto_Increment_Version>false</Auto_Increment_Version>
     <Library_Source_Folder>build\source-distribution</Library_Source_Folder>
     <Library_Output_Folder>build</Library_Output_Folder>
@@ -17,7 +17,7 @@
   </Library_General_Settings>
   <Advanced_Settings>
     <Package_Dependencies>
-      <Additional_External_Dependencies>serenial_lib_g_industrial_camera_shared_binaries &gt;=0.15.0.10</Additional_External_Dependencies>
+      <Additional_External_Dependencies>serenial_lib_g_industrial_camera_shared_binaries &gt;=0.16.0.12</Additional_External_Dependencies>
     </Package_Dependencies>
     <Custom_Action_VIs>
       <Pre-Build_VI/>
@@ -36,9 +36,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
       <Copyright>Copyright (c) 2025, Serenial and contributors</Copyright>
       <Packager>Serenial</Packager>
       <URL>https://gitlab.com/serenial/g-industrial-camera/</URL>
-      <Release_Notes>- Added GiGE Vision Network configuration control
-- Show Polymorphic Selectors by Default on additional VIs
-- Palette Icons Added</Release_Notes>
+      <Release_Notes>- Added stream method to wait for a new frame</Release_Notes>
     </Description>
     <Destinations>
       <Toolkit_VIs>
@@ -251,7 +249,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam_examples</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>707EDB7DB786B03621FA3B685CFA9B03</GUID>
+      <GUID>71387856D92E04B6A333D9A7102C762D</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>0</Parent_Palette_Index>
@@ -384,7 +382,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Buffer\Destroy.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>7B6EF9435A3AD322E5FED37CF000CE82</GUID>
+      <GUID>F2998ADD50EE8D38E8584A24C9EC2BD9</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>1</Parent_Palette_Index>
@@ -447,7 +445,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Buffer Byte-Stream Access\Release.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>746A2FEDE153F777A450B44A8AEFFBEC</GUID>
+      <GUID>0A7D13B9958833B3A8E5FEA8FB15AF38</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>0</Parent_Palette_Index>
@@ -538,7 +536,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam_examples_imaq\IMAQ Transfer.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>D839405CEF7E8C3A2FCD31C37127B86E</GUID>
+      <GUID>FD30D2493FA6ED7A95D2669D1417DE9D</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>0</Parent_Palette_Index>
@@ -699,7 +697,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\Destroy.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>81618DD3A531FA9B1AD666FBE02B2D71</GUID>
+      <GUID>D98025382CC93CEB3FD1B327BF9F2D14</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>4</Parent_Palette_Index>
@@ -1084,7 +1082,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\GiGE Vision</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>42A321E46D43BDF3FECD54BB093FD085</GUID>
+      <GUID>4713EE60FBF0C430A3C9EAAEFE73AD2E</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>5</Parent_Palette_Index>
@@ -1245,7 +1243,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\Get Gain Auto.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>DB1175C57C9881A639637C98FD624FF2</GUID>
+      <GUID>4F17B6C32C5A6DDC1DB2AB656F367A72</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>5</Parent_Palette_Index>
@@ -1378,7 +1376,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\Set Trigger Source.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>04DC6E0CCB3C08EB09BE225244DCBCFF</GUID>
+      <GUID>C02D66D46EC619A6A04BF08966C47040</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>5</Parent_Palette_Index>
@@ -1441,7 +1439,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\Set Pixel Format.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>0FAAEBA5F90B58D9282693BA25F5640E</GUID>
+      <GUID>AA41DBE6533AE377140E8260EB1AF6D7</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>5</Parent_Palette_Index>
@@ -1504,7 +1502,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\Get Frame Count Bounds.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>A912BA3DA9DA6914D5DBBBEE1A293EBD</GUID>
+      <GUID>94F4103EAEB2897B9B5B791140CE776A</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>5</Parent_Palette_Index>
@@ -1651,7 +1649,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\Get Black Level Bounds.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>2C6A4EFF219BE7B528FFD01779C0BC37</GUID>
+      <GUID>B254C2660AE98CDB0399986C0CC4CCAA</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>5</Parent_Palette_Index>
@@ -1840,7 +1838,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\Get X Offset Bounds.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>B86141B262C1D96BD04F47A031D3F5DD</GUID>
+      <GUID>48524885DE55307C624A85F736D5EF7F</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>5</Parent_Palette_Index>
@@ -1959,7 +1957,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\Get Binning.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>08AAEA7D5EFD32A4CE0EB7FA24673491</GUID>
+      <GUID>956F70D0D0E375A9C366EEE5E08704FC</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>5</Parent_Palette_Index>
@@ -2134,7 +2132,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\Available Exposure Modes.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>9366E9925D8EC815E780E219601C6CBF</GUID>
+      <GUID>56AA34F75ECD58C82650F4C49B582E21</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>5</Parent_Palette_Index>
@@ -2239,7 +2237,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\Get Frame Rate Enable.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>4DDEA0B8747F893C3E78E203F9FEDE14</GUID>
+      <GUID>CFF798C516AEC748450A25FEDCC7C477</GUID>
     </Functions_Palette_Data>
     <Functions_Palette_Data>
       <Parent_Palette_Index>5</Parent_Palette_Index>
@@ -2316,7 +2314,7 @@ Submit any issues to https://gitlab.com/serenial/g-industrial-camera/-/issues/</
         <Path>build\source-distribution\g_industrial_cam\Camera\GigE Vision Set Socket Buffer Size.vi</Path>
         <VI_Title/>
       </Items_Data>
-      <GUID>2240DE298568E26BC7513FA262A5EE43</GUID>
+      <GUID>A1E4583E81BF68AC2FDCDECBB7B869BD</GUID>
     </Functions_Palette_Data>
   </Library_Palette_Definition>
 </VI_Package_Builder_Settings>
