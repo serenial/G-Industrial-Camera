@@ -86,6 +86,7 @@ namespace g_industrial_cam
         timeout_result stream_start(int32_t max_sequential_errors, uint16_t circular_buffer_size, int32_t timeout_ms, bool fixed_num_frames, signal_fn_t on_stream_error, signal_fn_t on_stream_stop);
         void stream_stop();
         timeout_result stream_pop_buffer(int32_t timeout_ms, ArvBuffer **buffer_ptr);
+        timeout_result stream_pop_buffer_back(int32_t timeout_ms, ArvBuffer **buffer_ptr);
         uint64_t stream_get_error_count() const;
         uint64_t stream_get_frame_count() const;
 
