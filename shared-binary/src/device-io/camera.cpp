@@ -151,13 +151,8 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
     // into the input stream FIFO
     m_stream_buffers.set_capacity(n_additional_buffers+1);
 
-    for (int i = 0; i < m_stream_buffers.capacity(); i++)
+    for (int i = 0; i < m_stream_buffers.capacity() + 1; i++)
     {
-        // queue up the buffers into the stream
-        m_stream_buffers.push_back(arv_buffer_new_allocate(m_camera_payload));
-    }
-
-    for(int i=0; i< 2; i++){
         // add a buffer into the camera-buffer
         arv_stream_push_buffer(m_stream, arv_buffer_new_allocate(m_camera_payload));
     }
@@ -165,6 +160,8 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
     arv_camera_start_acquisition(m_camera, err);
 
     aravis_error::check(err);
+
+    m_new_buffer = false;
 
     // connect the new buffer callback
     g_signal_connect(m_stream, "new-buffer", G_CALLBACK(stream_buffer_callback), this);
@@ -305,22 +302,22 @@ camera::timeout_result camera::stream_pop_buffer_back(int32_t timeout_ms, ArvBuf
     }
 
     ArvBuffer *to_push = nullptr;
-    const auto start_count = m_stream_frames_count;
-
-    auto check_something_to_pop = [&]
-    { return (!m_stream_buffers.empty() && m_stream_frames_count != start_count) || m_stream == nullptr; };
 
     bool no_timeout = true;
 
+    auto new_buffer = [&](){return m_new_buffer;};
+
     std::unique_lock lk(m_stream_buffers_mtx);
+
+    m_new_buffer = false;
 
     if (timeout_ms < 0)
     {
-        m_stream_event.wait(lk, check_something_to_pop);
+        m_stream_event.wait(lk, new_buffer);
     }
     else
     {
-        no_timeout = m_stream_event.wait_for(lk, std::chrono::milliseconds(timeout_ms), check_something_to_pop);
+        no_timeout = m_stream_event.wait_for(lk, std::chrono::milliseconds(timeout_ms), new_buffer);
     }
 
     if (no_timeout && !m_stream_buffers.empty())
@@ -331,8 +328,7 @@ camera::timeout_result camera::stream_pop_buffer_back(int32_t timeout_ms, ArvBuf
         // something to get from the circular buffer
         // collect the newest buffer from the circular buffer;
         *buffer_ptr = m_stream_buffers.back();
-
-        // pop the front to remove the buffer we have just grabbed.
+        // remove the buffer we have just collected
         m_stream_buffers.pop_back();
     }
 
@@ -365,9 +361,6 @@ camera::timeout_result camera::stream_pop_buffer_back(int32_t timeout_ms, ArvBuf
 
     return no_timeout ? timeout_result::success : timeout_result::timeout;
 }
-
-
-
 
 void camera::stream_event_callback(void *self_void_ptr, ArvStreamCallbackType type, ArvBuffer *buffer)
 {
@@ -405,7 +398,7 @@ void camera::stream_buffer_callback(ArvStream *stream, camera *self)
 
     if (arv_buffer_get_status(buffer) == ARV_BUFFER_STATUS_SUCCESS)
     {
-
+        self->m_new_buffer = true;
         {
             std::lock_guard lk(self->m_stream_buffers_mtx);
 

@@ -213,6 +213,7 @@ namespace g_industrial_cam
         int32_t m_stream_sequential_error_count;
         uint64_t m_stream_frames_error_count;
         uint64_t m_stream_frames_count;
+        bool m_new_buffer;
 
         template <class T>
         struct deleter_for_g_pointer
