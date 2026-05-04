@@ -21,7 +21,9 @@ If you require a build of the shared-binaries with debug symbols then please see
 It is recommended that you install the drivers and utilities provided by the Camera's manufacturer - this will allow you to verify the connection of your camera and ensure that drivers are present on the system.
 
 #### Network/Firewall Configuration with GigE Cameras
-Ensure that LabVIEW or your built application isn't blocked by a firewall for GigE Cameras. Windows may classify static-IP attached devices as a "private network" which might cause traffic to be blocked. Check Windows Defender to ensure LabVIEW or your executable aren't blocked.
+Ensure that LabVIEW or your built application isn't blocked by a firewall for GigE Cameras. Windows may classify static-IP attached devices as a "private network" which might cause traffic to be blocked (especially UDP traffic). Check Windows Defender to ensure LabVIEW or your executable aren't blocked and that both `private` and `public` are checked.
+
+<img src="img/win-allowed-app-private-public.png" width="360"/>
 
 #### USBVision Drivers on Windows
 Some USBVision devices will not be detected by the library (like Basler devices) without modifying the USB driver that the Windows OS associates with them. A walkthough of the configuration process (using `zadig`) and its reversal are a work in progress but they loosely follow the steps outlined here [Swapping USB3 Device Driver on Windows to use `libsub`](https://github.com/AravisProject/aravis/issues/431#issuecomment-1092243935)
