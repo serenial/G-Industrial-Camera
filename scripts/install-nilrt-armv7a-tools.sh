@@ -7,13 +7,3 @@ curl https://download.ni.com/support/softlib/labview/labview_rt/2018/Linux%20Too
 echo "${TOOLCHAIN_SCRIPT_SHA512} install-tc.sh" | sha512sum --check --status
 chmod +x ./install-tc.sh
 sudo ./install-tc.sh -y
-
-
-curl https://git.yoctoproject.org/opkg-utils/snapshot/opkg-utils-0.7.0.tar.gz -Lo opkg-utils.tar.gz
-echo "${OPKG_UTILS_TAR_SHA512} opkg-utils.tar.gz" | sha512sum --check --status
-mkdir opkg-utils
-tar -zxf opkg-utils.tar.gz -C opkg-utils --strip-components=1
-cd opkg-utils
-make
-sudo make install
-

@@ -9,16 +9,13 @@
         {
             "name": "base",
             "hidden": true,
-            "generator": "Ninja"
-        },
-        {
-            "name": "ci",
-            "inherits": "base",
-            "binaryDir": "${sourceDir}/build",
+            "generator": "Ninja",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}",
-                "VCPKG_TARGET_TRIPLET": "$penv{VCPKG_DEFAULT_TRIPLET}"
+                "CMAKE_CXX_STANDARD": "17",
+                "CMAKE_C_STANDARD": "17",
+                "CMAKE_TOOLCHAIN_FILE": "${sourceDir}/vcpkg/scripts/buildsystems/vcpkg.cmake",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/LabVIEW"
             }
         },
         {
@@ -26,9 +23,7 @@
             "inherits": "base",
             "binaryDir": "${sourceDir}/build/windows-$penv{Platform}",
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "$penv{Platform}-windows-static",
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/LabVIEW"
+                "VCPKG_TARGET_TRIPLET": "$penv{Platform}-windows-static"
             },
             "condition": {
                 "type": "equals",
@@ -37,13 +32,11 @@
             }
         },
         {
-            "name": "linux-desktop-debug",
+            "name": "linux-debug",
             "inherits": "base",
-            "binaryDir": "${sourceDir}/build/linux-desktop",
+            "binaryDir": "${sourceDir}/build/linux-x64",
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x64-linux",
-                "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/LabVIEW"
+                "VCPKG_TARGET_TRIPLET": "x64-linux-ci"
             },
             "condition": {
                 "type": "equals",
@@ -59,55 +52,122 @@
             }
         },
         {
-            "name": "linux-desktop-release",
-            "inherits": "linux-desktop-debug",
+            "name": "linux-release",
+            "inherits": "linux-debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },
         {
             "name": "nilrt-armv7a-cross",
-            "inherits": "linux-x64-release",
+            "inherits": "linux-release",
             "binaryDir": "${sourceDir}/build/nilrt-armv7a",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "VCPKG_TARGET_TRIPLET": "armv7a-nilrt-linux-ci",
+                "VCPKG_TARGET_TRIPLET": "armv7a-linux-ci",
                 "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/scripts/toolchains/nilrt-armv7a.cmake",
                 "CMAKE_CXX_STANDARD": "14",
                 "CMAKE_C_STANDARD": "11"
             }
         },
+        {
+            "name": "ci",
+            "inherits": "base",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}",
+                "CMAKE_BUILD_TYPE": "Release"
+            },
+            "condition": {
+                "type": "equals",
+                "lhs": "$penv{CI}",
+                "rhs": "true"
+            }
+        },
+        {
+            "name": "ci-windows-static-x86",
+            "inherits": "ci",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static-ci"
+            }
+        },
+        {
+            "name": "ci-windows-static-x64",
+            "inherits": "ci",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static-ci"
+            }
+        },
+        {
+            "name": "ci-linux-x64",
+            "inherits": "ci",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "x64-linux-ci"
+            }
+        },
+        {
+            "name": "ci-linux-armv7a",
+            "inherits": "nilrt-armv7a-cross",
+            "binaryDir": "${sourceDir}/build",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}"
+            }
+        }
     ],
     "buildPresets": [
         {
-            "name": "windows-debug-build",
+            "name": "windows-debug",
             "configurePreset": "windows-debug",
             "targets": "install",
             "configuration": "Debug"
         },
         {
-            "name": "windows-release-build",
+            "name": "windows-release",
             "configurePreset": "windows-release",
             "targets": "install",
             "configuration": "Release"
         },
         {
-            "name": "linux-desktop-debug-build",
-            "configurePreset": "linux-desktop-debug",
+            "name": "linux-debug",
+            "configurePreset": "linux-debug",
             "targets": "install",
             "configuration": "Debug"
         },
         {
-            "name": "linux-desktop-release-build",
-            "configurePreset": "linux-desktop-release",
+            "name": "linux-release",
+            "configurePreset": "linux-release",
             "targets": "install",
             "configuration": "Release"
         },
         {
-            "name": "ci-build",
-            "configurePreset": "ci",
+            "name": "nilrt-armv7a-cross",
+            "configurePreset": "nilrt-armv7a-cross",
             "targets": "install",
             "configuration": "Release"
+        },
+        {
+            "name": "ci-windows-static-x86",
+            "configuration": "Release",
+            "targets": "install",
+            "configurePreset": "ci-windows-static-x86"
+        },
+        {
+            "name": "ci-windows-static-x64",
+            "configuration": "Release",
+            "targets": "install",
+            "configurePreset": "ci-windows-static-x64"
+        },
+        {
+            "name": "ci-linux-x64",
+            "configuration": "Release",
+            "targets": "install",
+            "configurePreset": "ci-linux-x64"
+        },
+        {
+            "name": "ci-linux-armv7a",
+            "configuration": "Release",
+            "targets": "install",
+            "configurePreset": "ci-linux-armv7a"
         }
     ]
 }
