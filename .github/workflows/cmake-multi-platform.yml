@@ -55,8 +55,8 @@ jobs:
     - name: Run CMake consuming CMakePreset.json and run vcpkg to build packages
       uses: lukka/run-cmake@v10
       with:
-          configurePreset: ci
-          buildPreset: ci-build
+          configurePreset: ci-${{ matrix.triplet_platform }}-${{ matrix.arch }}
+          buildPreset: ci-${{ matrix.triplet_platform }}-${{ matrix.arch }}
 
     - name: Store Build Output
       uses: actions/upload-artifact@v4
