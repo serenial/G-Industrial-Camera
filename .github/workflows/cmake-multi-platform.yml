@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-22.04, windows-latest]
-        arch: [x86, x64, armv7a]
+        arch: [x86, x64, armv7a-nilrt]
         include:
           - os: windows-latest
             triplet_platform: windows-static
@@ -25,7 +25,7 @@ jobs:
         - os: ubuntu-22.04
           arch: x86
         - os: windows-latest
-          arch: armv7a
+          arch: armv7a-nilrt
         
     steps:
     - name: Restore vcpkg cache
@@ -44,9 +44,9 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential g++ python3 zip unzip tar curl autoconf libudev-dev
-
-    - name: Install Armv7a Cross Compilation Tools
-      if: ${{ matrix.arch == 'armv7a' }}
+    
+    - name: Install NILRT armv7a Cross Compilation Tools
+      if: ${{ matrix.arch == 'armv7a-nilrt' }}
       run: |
         sudo bash scripts/install-nilrt-armv7a-tools.sh
 
@@ -59,6 +59,13 @@ jobs:
           configurePreset: ci-${{ matrix.triplet_platform }}-${{ matrix.arch }}
           buildPreset: ci-${{ matrix.triplet_platform }}-${{ matrix.arch }}
 
+    - name: Store Build Output Dependency Info
+      uses: actions/upload-artifact@v4
+      with:
+        name: g_augmented_reality_${{ matrix.triplet_platform }}-${{ matrix.arch }}-share
+        path: |
+         ${{ github.workspace }}/build/vcpkg_installed/**/share
+
     - name: Store Build Output
       uses: actions/upload-artifact@v4
       with:
@@ -67,7 +74,6 @@ jobs:
          ${{ github.workspace }}/g_industrial_cam/bin
          ${{ github.workspace }}/build/vcpkg_installed/**/share
          ${{ github.workspace }}/build/vcpkg_installed/**/tools/aravis
-
 
     - name: Save vcpkg cache
       uses: actions/cache/save@v4

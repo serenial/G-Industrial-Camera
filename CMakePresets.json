@@ -32,11 +32,11 @@
             }
         },
         {
-            "name": "linux-debug",
+            "name": "linux-x64-debug",
             "inherits": "base",
             "binaryDir": "${sourceDir}/build/linux-x64",
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x64-linux-ci"
+                "VCPKG_TARGET_TRIPLET": "x64-linux-desktop"
             },
             "condition": {
                 "type": "equals",
@@ -52,20 +52,34 @@
             }
         },
         {
-            "name": "linux-release",
-            "inherits": "linux-debug",
+            "name": "linux-x64-release",
+            "inherits": "linux-x64-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "linux-aarch64-debug",
+            "inherits": "linux-x64-debug",
+            "binaryDir": "${sourceDir}/build/linux-aarch64",
+            "cacheVariables": {
+                "VCPKG_TARGET_TRIPLET": "aarch64-linux-desktop"
+            }
+        },
+        {
+            "name": "linux-aarch64-release",
+            "inherits": "linux-aarch64-debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },
         {
             "name": "nilrt-armv7a-cross",
-            "inherits": "linux-release",
+            "inherits": "linux-x64-release",
             "binaryDir": "${sourceDir}/build/nilrt-armv7a",
             "cacheVariables": {
-                "BUILD_OPKG": "ON",
                 "CMAKE_BUILD_TYPE": "Release",
-                "VCPKG_TARGET_TRIPLET": "armv7a-linux-ci",
+                "VCPKG_TARGET_TRIPLET": "armv7a-nilrt-linux-ci",
                 "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/scripts/toolchains/nilrt-armv7a.cmake",
                 "CMAKE_CXX_STANDARD": "14",
                 "CMAKE_C_STANDARD": "11"
@@ -77,7 +91,8 @@
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}",
-                "CMAKE_BUILD_TYPE": "Release"
+                "CMAKE_BUILD_TYPE": "Release",
+                "GENERATE_ARCHIVE": "ON"
             },
             "condition": {
                 "type": "equals",
@@ -89,29 +104,33 @@
             "name": "ci-windows-static-x86",
             "inherits": "ci",
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x86-windows-static-ci"
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static-ci",
+                "ARCHIVE_PLATFORM_NAME":"x86"
             }
         },
         {
             "name": "ci-windows-static-x64",
             "inherits": "ci",
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x64-windows-static-ci"
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static-ci",
+                "ARCHIVE_PLATFORM_NAME":"x64"
             }
         },
         {
             "name": "ci-linux-x64",
             "inherits": "ci",
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x64-linux-ci"
+                "VCPKG_TARGET_TRIPLET": "x64-linux-ci",
+                "ARCHIVE_PLATFORM_NAME":"x64"
             }
         },
         {
-            "name": "ci-linux-armv7a",
+            "name": "ci-linux-armv7a-nilrt",
             "inherits": "nilrt-armv7a-cross",
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}"
+                "GENERATE_ARCHIVE": "OFF",
+                "ARCHIVE_PLATFORM_NAME" : "armv7a"
             }
         }
     ],
@@ -129,20 +148,14 @@
             "configuration": "Release"
         },
         {
-            "name": "linux-debug",
-            "configurePreset": "linux-debug",
+            "name": "linux-x64-debug",
+            "configurePreset": "linux-x64-debug",
             "targets": "install",
             "configuration": "Debug"
         },
         {
-            "name": "linux-release",
-            "configurePreset": "linux-release",
-            "targets": "install",
-            "configuration": "Release"
-        },
-        {
-            "name": "nilrt-armv7a-cross",
-            "configurePreset": "nilrt-armv7a-cross",
+            "name": "linux-x64-release",
+            "configurePreset": "linux-x64-release",
             "targets": "install",
             "configuration": "Release"
         },
@@ -165,10 +178,10 @@
             "configurePreset": "ci-linux-x64"
         },
         {
-            "name": "ci-linux-armv7a",
+            "name": "ci-linux-armv7a-nilrt",
             "configuration": "Release",
-            "targets": "install",
-            "configurePreset": "ci-linux-armv7a"
-        }
+            "targets": "all",
+            "configurePreset": "ci-linux-armv7a-nilrt"
+        }  
     ]
 }
