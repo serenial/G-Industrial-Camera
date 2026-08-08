@@ -64,7 +64,19 @@
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
-        }
+        },
+        {
+            "name": "nilrt-armv7a-cross",
+            "inherits": "linux-x64-release",
+            "binaryDir": "${sourceDir}/build/nilrt-armv7a",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "VCPKG_TARGET_TRIPLET": "armv7a-nilrt-linux-ci",
+                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/scripts/toolchains/nilrt-armv7a.cmake",
+                "CMAKE_CXX_STANDARD": "14",
+                "CMAKE_C_STANDARD": "11"
+            }
+        },
     ],
     "buildPresets": [
         {

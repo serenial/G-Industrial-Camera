@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-22.04, windows-latest]
-        arch: [x86, x64]
+        arch: [x86, x64, armv7a-nilrt]
         include:
           - os: windows-latest
             triplet_platform: windows-static # Windows static-release triplets have incorrect Run Time Linkage so just use static
@@ -24,6 +24,8 @@ jobs:
         exclude:
         - os: ubuntu-22.04
           arch: x86
+        - os: windows-latest
+          arch: armv7a-nilrt
         
     steps:
     - name: Restore vcpkg cache
@@ -41,6 +43,11 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential g++ python3 zip unzip tar curl autoconf libudev-dev
+    
+    - name: Install NILRT armv7a Cross Compilation Tools
+      if: ${{ matrix.arch == 'armv7a-nilrt' }}
+      run: |
+        sudo scripts/install-nilrt-armv7a-tools.sh
     
     - name: Setup VCPKG
       uses: lukka/run-vcpkg@v11
