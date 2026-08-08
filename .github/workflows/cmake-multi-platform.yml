@@ -9,31 +9,32 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     env:
-      VCPKG_DEFAULT_TRIPLET: ${{ matrix.arch }}-${{ matrix.triplet_platform}}-ci
       VCPKG_BINARY_SOURCES: clear;files,${{ github.workspace }}/vcpkg_cache,readwrite
+      VCPKG_DEFAULT_TRIPLET: ${{ matrix.arch }}-${{ matrix.triplet_platform}}-ci
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-22.04, windows-latest]
-        arch: [x86, x64, armv7a-nilrt]
+        arch: [x86, x64, armv7a]
         include:
           - os: windows-latest
-            triplet_platform: windows-static # Windows static-release triplets have incorrect Run Time Linkage so just use static
+            triplet_platform: windows-static
           - os: ubuntu-22.04
             triplet_platform: linux
         exclude:
         - os: ubuntu-22.04
           arch: x86
         - os: windows-latest
-          arch: armv7a-nilrt
+          arch: armv7a
         
     steps:
     - name: Restore vcpkg cache
       uses: actions/cache/restore@v4
       with:
         path: ${{ github.workspace }}/vcpkg_cache
-        key: vcpkg-${{ env.VCPKG_DEFAULT_TRIPLET }}-${{ hashFiles('vcpkg.json') }}
-        restore-keys: vcpkg-${{ env.VCPKG_DEFAULT_TRIPLET }}-
+        key: vcpkg-${{ matrix.arch }}-${{ matrix.triplet_platform}}-${{ hashFiles('vcpkg.json', 'vcpkg-configuration.json', 'CMakePresets.json', 'shared-binary/**/CMakeLists.txt', 'vcpkg-overlay-ports/**/*.cmake', 'vcpkg-overlay-triplets/**/*.cmake') }}
+        restore-keys: vcpkg-${{ matrix.arch }}-${{ matrix.triplet_platform}}
+
     - uses: actions/checkout@v4
       with:
         submodules: true
@@ -43,12 +44,12 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y build-essential g++ python3 zip unzip tar curl autoconf libudev-dev
-    
-    - name: Install NILRT armv7a Cross Compilation Tools
-      if: ${{ matrix.arch == 'armv7a-nilrt' }}
+
+    - name: Install Armv7a Cross Compilation Tools
+      if: ${{ matrix.arch == 'armv7a' }}
       run: |
-        sudo bash scripts/install-nilrt-armv7a-tools.sh
-    
+        sudo scripts/install-nilrt-armv7a-tools.sh
+
     - name: Setup VCPKG
       uses: lukka/run-vcpkg@v11
 
@@ -67,8 +68,9 @@ jobs:
          ${{ github.workspace }}/build/vcpkg_installed/**/share
          ${{ github.workspace }}/build/vcpkg_installed/**/tools/aravis
 
+
     - name: Save vcpkg cache
       uses: actions/cache/save@v4
       with:
         path: ${{ github.workspace }}/vcpkg_cache
-        key: vcpkg-${{ env.VCPKG_DEFAULT_TRIPLET }}-${{ hashFiles('vcpkg.json') }}
+        key: vcpkg-${{ matrix.arch }}-${{ matrix.triplet_platform}}-${{ hashFiles('vcpkg.json', 'vcpkg-configuration.json', 'CMakePresets.json', 'shared-binary/**/CMakeLists.txt', 'vcpkg-overlay-ports/**/*.cmake', 'vcpkg-overlay-triplets/**/*.cmake') }}

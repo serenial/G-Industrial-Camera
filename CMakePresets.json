@@ -63,6 +63,7 @@
             "inherits": "linux-release",
             "binaryDir": "${sourceDir}/build/nilrt-armv7a",
             "cacheVariables": {
+                "BUILD_OPKG": "ON",
                 "CMAKE_BUILD_TYPE": "Release",
                 "VCPKG_TARGET_TRIPLET": "armv7a-linux-ci",
                 "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/scripts/toolchains/nilrt-armv7a.cmake",
