@@ -48,7 +48,7 @@ jobs:
     - name: Install Armv7a Cross Compilation Tools
       if: ${{ matrix.arch == 'armv7a' }}
       run: |
-        sudo scripts/install-nilrt-armv7a-tools.sh
+        sudo bash scripts/install-nilrt-armv7a-tools.sh
 
     - name: Setup VCPKG
       uses: lukka/run-vcpkg@v11
