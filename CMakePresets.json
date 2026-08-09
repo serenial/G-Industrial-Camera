@@ -59,21 +59,6 @@
             }
         },
         {
-            "name": "linux-aarch64-debug",
-            "inherits": "linux-x64-debug",
-            "binaryDir": "${sourceDir}/build/linux-aarch64",
-            "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "aarch64-linux-desktop"
-            }
-        },
-        {
-            "name": "linux-aarch64-release",
-            "inherits": "linux-aarch64-debug",
-            "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Release"
-            }
-        },
-        {
             "name": "nilrt-armv7a-cross",
             "inherits": "linux-x64-release",
             "binaryDir": "${sourceDir}/build/nilrt-armv7a",
@@ -91,8 +76,7 @@
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
                 "CMAKE_INSTALL_PREFIX": "${sourceDir}",
-                "CMAKE_BUILD_TYPE": "Release",
-                "GENERATE_ARCHIVE": "ON"
+                "CMAKE_BUILD_TYPE": "Release"
             },
             "condition": {
                 "type": "equals",
@@ -104,24 +88,21 @@
             "name": "ci-windows-static-x86",
             "inherits": "ci",
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x86-windows-static-ci",
-                "ARCHIVE_PLATFORM_NAME":"x86"
+                "VCPKG_TARGET_TRIPLET": "x86-windows-static-ci"
             }
         },
         {
             "name": "ci-windows-static-x64",
             "inherits": "ci",
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x64-windows-static-ci",
-                "ARCHIVE_PLATFORM_NAME":"x64"
+                "VCPKG_TARGET_TRIPLET": "x64-windows-static-ci"
             }
         },
         {
             "name": "ci-linux-x64",
             "inherits": "ci",
             "cacheVariables": {
-                "VCPKG_TARGET_TRIPLET": "x64-linux-ci",
-                "ARCHIVE_PLATFORM_NAME":"x64"
+                "VCPKG_TARGET_TRIPLET": "x64-linux-ci"
             }
         },
         {
@@ -129,8 +110,7 @@
             "inherits": "nilrt-armv7a-cross",
             "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
-                "GENERATE_ARCHIVE": "OFF",
-                "ARCHIVE_PLATFORM_NAME" : "armv7a"
+                "VCPKG_TARGET_TRIPLET": "armv7a-nilrt-linux-ci"
             }
         }
     ],
