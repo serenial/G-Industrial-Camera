@@ -43,7 +43,7 @@ jobs:
       if: ${{ matrix.os == 'ubuntu-22.04' }}
       run: |
         sudo apt-get update
-        sudo apt-get install -y build-essential g++ python3 zip unzip tar curl autoconf libudev-dev
+        sudo apt-get install -y build-essential g++ python3 zip unzip tar curl autoconf libudev-dev autoconf-archive automake libtool
     
     - name: Install NILRT armv7a Cross Compilation Tools
       if: ${{ matrix.arch == 'armv7a-nilrt' }}
