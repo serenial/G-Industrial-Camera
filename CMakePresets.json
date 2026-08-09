@@ -108,7 +108,6 @@
         {
             "name": "ci-linux-armv7a-nilrt",
             "inherits": "nilrt-armv7a-cross",
-            "binaryDir": "${sourceDir}/build",
             "cacheVariables": {
                 "VCPKG_TARGET_TRIPLET": "armv7a-nilrt-linux-ci"
             }

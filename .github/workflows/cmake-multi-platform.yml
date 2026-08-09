@@ -62,7 +62,7 @@ jobs:
     - name: Store Build Output Dependency Info
       uses: actions/upload-artifact@v4
       with:
-        name: g_augmented_reality_${{ matrix.triplet_platform }}-${{ matrix.arch }}-share
+        name: g_industrial_cam_${{ matrix.triplet_platform }}-${{ matrix.arch }}-share
         path: |
          ${{ github.workspace }}/build/vcpkg_installed/**/share
 
@@ -71,7 +71,7 @@ jobs:
       with:
         name: g_industrial_cam_${{ env.VCPKG_DEFAULT_TRIPLET }}
         path: |
-         ${{ github.workspace }}/g_industrial_cam/bin
+         ${{ github.workspace }}/LabVIEW/g_industrial_cam/bin
          ${{ github.workspace }}/build/vcpkg_installed/**/tools/aravis
 
     - name: Save vcpkg cache
