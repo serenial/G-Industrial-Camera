@@ -72,7 +72,6 @@ jobs:
         name: g_industrial_cam_${{ env.VCPKG_DEFAULT_TRIPLET }}
         path: |
          ${{ github.workspace }}/g_industrial_cam/bin
-         ${{ github.workspace }}/build/vcpkg_installed/**/share
          ${{ github.workspace }}/build/vcpkg_installed/**/tools/aravis
 
     - name: Save vcpkg cache

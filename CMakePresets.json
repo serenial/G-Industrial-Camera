@@ -180,7 +180,7 @@
         {
             "name": "ci-linux-armv7a-nilrt",
             "configuration": "Release",
-            "targets": "all",
+            "targets": "install",
             "configurePreset": "ci-linux-armv7a-nilrt"
         }  
     ]
