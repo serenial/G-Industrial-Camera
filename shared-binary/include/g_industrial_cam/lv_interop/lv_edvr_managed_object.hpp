@@ -56,7 +56,7 @@ namespace g_industrial_cam
             static inline void lock(EDVRManagedObject::persistant_data *d, lock_states transition_to)
             {
                 // obtain the mutex
-                std::unique_lock lk(d->m);
+                std::unique_lock<std::mutex> lk(d->m);
                 // wait for the locked flag to be false
                 d->cv.wait(lk, [&]
                            { return (d->locked == NONE); });
@@ -70,7 +70,7 @@ namespace g_industrial_cam
             {
                 {
                     // obtain the mutex
-                    std::lock_guard lk(d->m);
+                    std::lock_guard<std::mutex> lk(d->m);
                     if (d->locked == transition_from)
                     {
                         d->locked = NONE;
@@ -118,7 +118,7 @@ namespace g_industrial_cam
             {
                 persistant_data *pdp = reinterpret_cast<persistant_data *>(ptr->metadata_ptr);
                 // obtain the mutex
-                std::unique_lock lk(pdp->m);
+                std::unique_lock<std::mutex> lk(pdp->m);
                 // wait for the locked flag to be cleared
                 // note - DVR Delete calls lock_callback_fn first so only check we aren't locked from CPP side
                 pdp->cv.wait(lk, [&]

@@ -166,7 +166,7 @@ lv_buffer::buffer_persistant_data_t *lv_buffer::get_metadata()
 void lv_buffer::buffer_persistant_data_t::lock(lv_buffer::buffer_persistant_data_t *d, lv_buffer::buffer_persistant_data_t::lock_states transition_to)
 {
     // obtain the mutex
-    std::unique_lock lk(d->m_mtx);
+    std::unique_lock<std::mutex> lk(d->m_mtx);
     // wait for the locked flag to be NONE
     // this will lead to deadlocks if CPP or CPP_MAPPED but that is probably desired behaviour
     d->m_cv.wait(lk, [&]
@@ -180,7 +180,7 @@ void lv_buffer::buffer_persistant_data_t::unlock(lv_buffer::buffer_persistant_da
 {
     {
         // obtain the mutex
-        std::lock_guard lk(d->m_mtx);
+        std::lock_guard<std::mutex> lk(d->m_mtx);
         if (d->m_locked == transition_from)
         {
             d->m_locked = NONE;
@@ -200,7 +200,7 @@ void lv_buffer::upgrade_to_mapped()
 {
     {
         // obtain the mutex
-        std::lock_guard lk(data->m_mtx);
+        std::lock_guard<std::mutex> lk(data->m_mtx);
         if (data->m_locked == buffer_persistant_data_t::lock_states::CPP)
         {
             data->m_locked = buffer_persistant_data_t::lock_states::CPP_MAPPED;
@@ -214,7 +214,7 @@ void lv_buffer::downgrade_from_mapped()
 {
     {
         // obtain the mutex
-        std::lock_guard lk(data->m_mtx);
+        std::lock_guard<std::mutex> lk(data->m_mtx);
         if (data->m_locked == buffer_persistant_data_t::lock_states::CPP_MAPPED)
         {
             data->m_locked = buffer_persistant_data_t::lock_states::CPP;
@@ -258,7 +258,7 @@ void lv_buffer::on_labview_delete(LV_EDVRDataPtr_t ptr)
 {
     auto data = reinterpret_cast<buffer_persistant_data_t *>(ptr->metadata_ptr);
     // obtain the mutex
-    std::unique_lock lk(data->m_mtx);
+    std::unique_lock<std::mutex> lk(data->m_mtx);
     // wait for the locked flag to be cleared
     // note - DVR Delete calls lock_callback_fn first so only check we aren't locked from CPP side
     data->m_cv.wait(lk, [&]

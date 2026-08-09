@@ -1298,7 +1298,7 @@ extern "C"
     {
         try
         {
-            std::vector<std::byte> bytes;
+            std::vector<uint8_t> bytes;
 
             if (*set)
             {

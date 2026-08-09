@@ -9,11 +9,6 @@
 using namespace g_industrial_cam;
 using namespace lv_interop;
 
-LV_StringHandle_t::operator std::string_view() const
-{
-    return std::string_view{begin(), size()};
-}
-
 LV_StringHandle_t::operator const std::string() const
 {
     return std::string{begin(), size()};

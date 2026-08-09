@@ -9,7 +9,7 @@ if(NOT _NILRT_ARM3V7_A_TOOLCHAIN)
     set(CMAKE_CROSSCOMPILING ON)
 
     # Compile tools location
-    set(OE_COMPILE_TOOLS_DIR "/usr/local/oecore-x86_64/")
+    set(OE_COMPILE_TOOLS_DIR "/usr/local/oecore-x86_64")
 
     # Sysroot configuration
     set(SDKTARGETSYSROOT "${OE_COMPILE_TOOLS_DIR}/sysroots/cortexa9-vfpv3-nilrt-linux-gnueabi")
@@ -23,7 +23,9 @@ if(NOT _NILRT_ARM3V7_A_TOOLCHAIN)
 
     set(CMAKE_C_COMPILER "${TOOLCHAIN_BIN_DIR}/${CROSS_COMPILE_PREFIX}gcc")
     set(CMAKE_CXX_COMPILER "${TOOLCHAIN_BIN_DIR}/${CROSS_COMPILE_PREFIX}g++")
-    set(CMAKE_ASM_COMPILER "${TOOLCHAIN_BIN_DIR}/${CROSS_COMPILE_PREFIX}as")
+    # Don't specify the ASM compiler as it won't know what to do with the --SYSROOTS arg
+    # and CMAKE will use the C_COMPILER
+    # set(CMAKE_ASM_COMPILER "${TOOLCHAIN_BIN_DIR}/${CROSS_COMPILE_PREFIX}as")
 
     # Binutils
     set(CMAKE_AR "${TOOLCHAIN_BIN_DIR}/${CROSS_COMPILE_PREFIX}ar" CACHE FILEPATH "Archiver")

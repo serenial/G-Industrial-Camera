@@ -172,7 +172,7 @@ camera::timeout_result camera::stream_start(int32_t max_sequential_errors, uint1
     auto started = [&]()
     { return m_stream_started; };
 
-    std::unique_lock lk(m_stream_buffers_mtx);
+    std::unique_lock<std::mutex> lk(m_stream_buffers_mtx);
 
     if (timeout_ms < 0)
     {
@@ -234,7 +234,7 @@ camera::timeout_result camera::stream_pop_buffer(int32_t timeout_ms, ArvBuffer *
 
     bool no_timeout = true;
 
-    std::unique_lock lk(m_stream_buffers_mtx);
+    std::unique_lock<std::mutex> lk(m_stream_buffers_mtx);
 
     if (timeout_ms < 0)
     {
@@ -307,7 +307,7 @@ camera::timeout_result camera::stream_pop_buffer_back(int32_t timeout_ms, ArvBuf
 
     auto new_buffer = [&](){return m_new_buffer;};
 
-    std::unique_lock lk(m_stream_buffers_mtx);
+    std::unique_lock<std::mutex> lk(m_stream_buffers_mtx);
 
     m_new_buffer = false;
 
@@ -375,7 +375,7 @@ void camera::stream_event_callback(void *self_void_ptr, ArvStreamCallbackType ty
     {
     case ARV_STREAM_CALLBACK_TYPE_INIT:
     {
-        std::lock_guard lk(self->m_stream_buffers_mtx);
+        std::lock_guard<std::mutex> lk(self->m_stream_buffers_mtx);
         self->m_stream_sequential_error_count = 0;
         self->m_stream_started = true;
         self->m_stream_frames_error_count = 0;
@@ -400,7 +400,7 @@ void camera::stream_buffer_callback(ArvStream *stream, camera *self)
     {
         self->m_new_buffer = true;
         {
-            std::lock_guard lk(self->m_stream_buffers_mtx);
+            std::lock_guard<std::mutex> lk(self->m_stream_buffers_mtx);
 
             if (self->m_stream_buffers.full())
             {
@@ -532,15 +532,15 @@ void camera::available_triggers(std::vector<std::string> &triggers_utf8) const
     call_camera_fn_to_populate_list(arv_camera_dup_available_triggers, triggers_utf8);
 }
 
-void camera::read_register(const std::string &register_utf8, std::vector<std::byte> &bytes) const
+void camera::read_register(const std::string &register_utf8, std::vector<uint8_t> &bytes) const
 {
     guint64 n_bytes = 0;
     aravis_error err;
     std::unique_ptr<void, ::deleter_for_g_pointer<void *>> result(arv_camera_dup_register(m_camera, register_utf8.c_str(), &n_bytes, err));
 
-    bytes.resize(n_bytes);
+    bytes.resize(static_cast<size_t>(n_bytes));
 
-    std::memcpy(bytes.data(), result.get(), n_bytes);
+    std::memcpy(bytes.data(), result.get(), static_cast<size_t>(n_bytes));
 }
 
 void camera::execute_command(const std::string &command_utf8) const
@@ -792,7 +792,7 @@ void camera::set_region(const camera::region_t &region) const
     call_camera_fn_with_no_return(arv_camera_set_region, region.offset.x, region.offset.y, region.size.width, region.size.height);
 }
 
-void camera::set_register(const std::string &register_utf8, const std::vector<std::byte> &bytes) const
+void camera::set_register(const std::string &register_utf8, const std::vector<uint8_t> &bytes) const
 {
     call_camera_fn_with_no_return(arv_camera_set_register, register_utf8.c_str(), bytes.size(), const_cast<void *>(reinterpret_cast<const void *>(bytes.data())));
 }
@@ -844,14 +844,14 @@ int32_t camera::get_y_binning_increment() const
     return call_camera_fn(arv_camera_get_y_binning_increment);
 }
 
-std::string_view camera::get_genicam_xml() const
+const std::string camera::get_genicam_xml() const
 {
 
     size_t length;
 
     auto char_ptr = arv_device_get_genicam_xml(arv_camera_get_device(m_camera), &length);
 
-    return std::string_view{char_ptr, length};
+    return std::string{char_ptr, length};
 }
 
 double camera::get_black_level() const

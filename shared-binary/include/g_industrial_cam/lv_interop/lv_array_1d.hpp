@@ -72,7 +72,7 @@ namespace g_industrial_cam
             void copy_memory_from(const std::vector<ElementType> &vector)
             {
                 // memcpy only works with fundamental types
-                static_assert(std::is_trivially_copyable_v<ElementType> == true, "Default copying is only compatible for fundamental value types. Specify the copy function [](auto from, auto to){ /* do conversion */}");
+                static_assert(std::is_trivially_copyable<ElementType>::value == true, "Default copying is only compatible for fundamental value types. Specify the copy function [](auto from, auto to){ /* do conversion */}");
                 size_to_fit(vector.size());
                 std::memcpy(LV_MDArrayHandle_t<1, T>::begin(), vector.data(), vector.size() * sizeof(T));
             }

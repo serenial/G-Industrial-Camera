@@ -98,7 +98,7 @@ namespace g_industrial_cam
         void available_pixel_formats(std::vector<std::string> &pixel_formats_utf8) const;
         void available_triggers(std::vector<std::string> &triggers_utf8) const;
         void clear_triggers();
-        void read_register(const std::string &register_utf8, std::vector<std::byte> &bytes) const;
+        void read_register(const std::string &register_utf8, std::vector<uint8_t> &bytes) const;
         void execute_command(const std::string &command_utf8) const;
         bool get_boolean(const std::string &feature_utf8) const;
         double get_black_level() const;
@@ -142,7 +142,7 @@ namespace g_industrial_cam
         bounds_t<int32_t> get_y_binning_bounds() const;
         int32_t get_x_binning_increment() const;
         int32_t get_y_binning_increment() const;
-        std::string_view get_genicam_xml() const;
+        const std::string get_genicam_xml() const;
         bool is_black_level_auto_available() const;
         bool is_black_level_available() const;
         bool is_component_available() const;
@@ -179,7 +179,7 @@ namespace g_industrial_cam
         void set_integer(const std::string &feature_utf8, int64_t value) const;
         void set_pixel_format(const std::string &pixel_format_utf8);
         void set_region(const region_t& region) const;
-        void set_register(const std::string &register_utf8, const std::vector<std::byte> &bytes) const;
+        void set_register(const std::string &register_utf8, const std::vector<uint8_t> &bytes) const;
         void set_string(const std::string &feature_utf8, const std::string &value_utf8) const;
         void set_trigger(const std::string &source_utf8) const;
         void set_trigger_source(const std::string &source_utf8) const;
