@@ -14,10 +14,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-22.04, windows-latest]
+        os: [ubuntu-22.04, windows-2022]
         arch: [x86, x64]
         include:
-          - os: windows-latest
+          - os: windows-2022
             triplet_platform: windows-static # Windows static-release triplets have incorrect Run Time Linkage so just use static
           - os: ubuntu-22.04
             triplet_platform: linux
