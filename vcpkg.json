@@ -5,6 +5,12 @@
     {
       "name": "pkgconf",
       "host": true
+    },
+    {
+      "name": "libusb",
+      "default-features": false,
+      "platform": "arm32",
+      "features": []
     }
   ]
 }
