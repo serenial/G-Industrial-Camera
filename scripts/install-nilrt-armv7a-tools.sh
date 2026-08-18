@@ -7,3 +7,4 @@ curl https://download.ni.com/support/softlib/labview/labview_rt/2018/Linux%20Too
 echo "${TOOLCHAIN_SCRIPT_SHA512} install-tc.sh" | sha512sum --check --status
 chmod +x ./install-tc.sh
 sudo ./install-tc.sh -y
+# 

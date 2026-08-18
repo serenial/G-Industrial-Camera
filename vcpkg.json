@@ -1,16 +1,14 @@
 {
   "dependencies": [
-    "aravis",
     "boost-circular-buffer",
     {
       "name": "pkgconf",
       "host": true
     },
     {
-      "name": "libusb",
+      "name": "aravis",
       "default-features": false,
-      "platform": "arm32",
-      "features": []
+      "platform": "arm32"
     }
   ]
 }
