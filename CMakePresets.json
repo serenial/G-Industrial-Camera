@@ -109,7 +109,7 @@
             "name": "ci-linux-armv7a-nilrt",
             "inherits": "nilrt-armv7a-cross",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_BUILD_TYPE": "Release",
                 "VCPKG_TARGET_TRIPLET": "armv7a-nilrt-linux-ci"
             }
         }
@@ -159,7 +159,7 @@
         },
         {
             "name": "ci-linux-armv7a-nilrt",
-            "configuration": "Debug",
+            "configuration": "Release",
             "targets": "install",
             "configurePreset": "ci-linux-armv7a-nilrt"
         }  
