@@ -1,5 +1,5 @@
 # based on vcpkg/scripts/toolchains/linux.cmake
-# values from /usr/local/oecore-x86_64/environment-setup-cortexa9-vfpv3-nilrt-linux-gnueabi
+# values from /usr/local/oecore-arm32/environment-setup-cortexa9-vfpv3-nilrt-linux-gnueabi
 if(NOT _NILRT_ARM3V7_A_TOOLCHAIN)
     set(_NILRT_ARM3V7_A_TOOLCHAIN TRUE)
 
@@ -9,7 +9,7 @@ if(NOT _NILRT_ARM3V7_A_TOOLCHAIN)
     set(CMAKE_CROSSCOMPILING ON)
 
     # Compile tools location
-    set(OE_COMPILE_TOOLS_DIR "/usr/local/oecore-x86_64")
+    set(OE_COMPILE_TOOLS_DIR "/usr/local/oecore-arm32")
 
     # Sysroot configuration
     set(SDKTARGETSYSROOT "${OE_COMPILE_TOOLS_DIR}/sysroots/cortexa9-vfpv3-nilrt-linux-gnueabi")
@@ -36,8 +36,8 @@ if(NOT _NILRT_ARM3V7_A_TOOLCHAIN)
     set(CMAKE_OBJDUMP "${TOOLCHAIN_BIN_DIR}/${CROSS_COMPILE_PREFIX}objdump" CACHE FILEPATH "Objdump")
 
     # Compiler and Linker Flags
-    set(CMAKE_C_FLAGS_INIT "-march=armv7-a -mfpu=vfpv3  -mfloat-abi=softfp -mcpu=cortex-a9 -O3 -fPIC")
-    set(CMAKE_CXX_FLAGS_INIT "-march=armv7-a -mfpu=vfpv3  -mfloat-abi=softfp -mcpu=cortex-a9 -O3 -fPIC")
+    set(CMAKE_C_FLAGS_INIT "-mfpu=vfpv3  -mfloat-abi=softfp -mcpu=cortex-a9 -O3 -fPIC")
+    set(CMAKE_CXX_FLAGS_INIT "-mfpu=vfpv3  -mfloat-abi=softfp -mcpu=cortex-a9 -O3 -fPIC")
 
     set(CMAKE_MODULE_LINKER_FLAGS_INIT "-Wl,-O1")
     set(CMAKE_SHARED_LINKER_FLAGS_INIT "-Wl,-O1")

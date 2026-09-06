@@ -1,10 +1,13 @@
 #! /bin/sh
 
-TOOLCHAIN_SCRIPT_SHA512="31833d2ddc49b18d740332d9c2e8680ab3834b0f0a8e5555511323d6d6a819f01cd43725ad6c79c1571e47a0b23fa8209c367d40bb90b755fc896d51cf41cd7d"
-OPKG_UTILS_TAR_SHA512="441ee5ed416c3565617ae5fc413846ebc53e33876f9cce5e721afef2b8d9cd68723231ea12c8a2effaba2ccb33a36dc6e180994a57e6871f34d671c03ab36b7b"
+ZIPFILE_NAME="NILinux2026Q3DeviceDrivers"
+ZIPFILE_SHA512="6e7e2590c79dd06bddabe287794e03032622493f89b55c2711f1f4d89ae529c2576b1216139f34235021d967123a58dab138865614678bca73f2f79575593bcd"
 
-curl https://download.ni.com/support/softlib/labview/labview_rt/2018/Linux%20Toolchains/linux/oecore-x86_64-cortexa9-vfpv3-toolchain-6.0.sh -Lo install-tc.sh
-echo "${TOOLCHAIN_SCRIPT_SHA512} install-tc.sh" | sha512sum --check --status
-chmod +x ./install-tc.sh
-sudo ./install-tc.sh -y
-# 
+curl https://download.ni.com/support/softlib/MasterRepository/LinuxDrivers2026Q3/NILinux2026Q3DeviceDrivers.zip -Lo $ZIPFILE_NAME.zip
+echo "${ZIPFILE_SHA512} ${ZIPFILE_NAME}.zip" | sha512sum --check --status
+
+mkdir $ZIPFILE_NAME
+unzip $ZIPFILE_NAME.zip -d $ZIPFILE_NAME
+
+sudo apt install ./$ZIPFILE_NAME/ni-ubuntu2204-* && sudo apt update
+sudo apt install ni-linuxrt-toolchain-*arm
