@@ -8,6 +8,7 @@
 #include <string>
 #include <type_traits>
 #include <stddef.h>
+#include <cstdint>
 
 #include "./set_packing.hpp"
 
