@@ -17,7 +17,7 @@ jobs:
         os: [ubuntu-22.04, windows-2022]
         arch: [x86, x64, armv7a-oe]
         include:
-          - os: windows-2022
+          - os: windows-latest
             triplet_platform: windows-static
           - os: ubuntu-22.04
             triplet_platform: linux
