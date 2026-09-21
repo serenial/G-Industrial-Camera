@@ -45,8 +45,8 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential g++ python3 zip unzip tar curl autoconf libudev-dev autoconf-archive automake libtool
     
-    - name: Install open embedded armv7a Cross Compilation Tools
-      if: ${{ matrix.arch == 'armv7a-oe' }}
+    - name: Install open-embedded armv7a Cross Compilation Tools
+      if: ${{ matrix.arch == 'armv7a-oe'}}
       run: |
         sudo bash scripts/install-oe-armv7a-tools.sh
 
