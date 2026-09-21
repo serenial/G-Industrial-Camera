@@ -59,13 +59,13 @@
             }
         },
         {
-            "name": "nilrt-armv7a-cross",
+            "name": "oe-armv7a-cross",
             "inherits": "linux-x64-release",
-            "binaryDir": "${sourceDir}/build/nilrt-armv7a",
+            "binaryDir": "${sourceDir}/build/oe-armv7a",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "VCPKG_TARGET_TRIPLET": "armv7a-nilrt-linux-ci",
-                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/scripts/toolchains/nilrt-armv7a.cmake"
+                "VCPKG_TARGET_TRIPLET": "armv7a-oe-linux-ci",
+                "VCPKG_CHAINLOAD_TOOLCHAIN_FILE": "${sourceDir}/scripts/toolchains/oe-armv7a.cmake"
             }
         },
         {
@@ -104,11 +104,11 @@
             }
         },
         {
-            "name": "ci-linux-armv7a-nilrt",
-            "inherits": "nilrt-armv7a-cross",
+            "name": "ci-linux-armv7a-oe",
+            "inherits": "oe-armv7a-cross",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "VCPKG_TARGET_TRIPLET": "armv7a-nilrt-linux-ci"
+                "VCPKG_TARGET_TRIPLET": "armv7a-oe-linux-ci"
             }
         }
     ],
@@ -156,10 +156,10 @@
             "configurePreset": "ci-linux-x64"
         },
         {
-            "name": "ci-linux-armv7a-nilrt",
+            "name": "ci-linux-armv7a-oe",
             "configuration": "Release",
             "targets": "install",
-            "configurePreset": "ci-linux-armv7a-nilrt"
+            "configurePreset": "ci-linux-armv7a-oe"
         }  
     ]
 }
